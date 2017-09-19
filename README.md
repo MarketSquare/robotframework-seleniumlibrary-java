@@ -48,7 +48,7 @@ Differences
 Demo
 ----
 
-This is a maven project. You can execute the integration tests (using [jBrowser](https://github.com/machinepublishers/jbrowserdriver) with:
+This is a maven project. You can execute the integration tests (using [jBrowser](https://github.com/machinepublishers/jbrowserdriver)) with:
 
     mvn integration-test
 
