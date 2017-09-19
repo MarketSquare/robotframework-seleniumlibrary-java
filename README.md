@@ -48,8 +48,7 @@ Differences
 Demo
 ----
 
-This is a maven project. If you have firefox installed,
-you can execute the unit tests with:
+This is a maven project. You can execute the integration tests (using [jBrowser](https://github.com/machinepublishers/jbrowserdriver) with:
 
     mvn integration-test
 
@@ -59,5 +58,5 @@ Getting Help
 The [user group for Robot Framework](https://groups.google.com/forum/#!forum/robotframework-users)
 is the best place to get help. Consider including in the post:
 * Full description of what you are trying to do and expected outcome
-* Version number of SeleniumLibrary, Robot Framework, and Selenium
+* Version number of SeleniumLibrary, Robot Framework
 * StackTraces or other debug output containing error information
