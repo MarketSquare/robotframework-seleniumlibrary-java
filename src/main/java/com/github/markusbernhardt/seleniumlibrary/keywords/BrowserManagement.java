@@ -20,13 +20,12 @@ import org.apache.http.HttpHost;
 import org.apache.http.auth.AuthScope;
 import org.apache.http.auth.NTCredentials;
 import org.apache.http.auth.UsernamePasswordCredentials;
-import org.apache.http.conn.params.ConnRoutePNames;
-import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.impl.conn.DefaultHttpRoutePlanner;
+import org.apache.http.client.config.RequestConfig;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.JSONValue;
 import org.openqa.selenium.Dimension;
+import org.openqa.selenium.MutableCapabilities;
 import org.openqa.selenium.Platform;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -37,7 +36,6 @@ import org.openqa.selenium.htmlunit.HtmlUnitDriver;
 import org.openqa.selenium.ie.InternetExplorerDriver;
 import org.openqa.selenium.phantomjs.PhantomJSDriver;
 import org.openqa.selenium.remote.Augmenter;
-import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.remote.HttpCommandExecutor;
 import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.safari.SafariDriver;
@@ -212,8 +210,8 @@ public class BrowserManagement extends RunOnFailureKeywordsAdapter {
 	}
 
 	public String openBrowser(String url, String browserName, String alias, String remoteUrl,
-			String desiredCapabilities) throws Throwable {
-		return openBrowser(url, browserName, alias, remoteUrl, desiredCapabilities, null);
+			String mutableCapabilities) throws Throwable {
+		return openBrowser(url, browserName, alias, remoteUrl, mutableCapabilities, null);
 	}
 
 	/**
@@ -287,19 +285,19 @@ public class BrowserManagement extends RunOnFailureKeywordsAdapter {
 	 * later to switch back to it. Index starts from 1 and is reset back to it
 	 * when the `Close All Browsers` keyword is used.<br>
 	 * <br>
-	 * <b>DesiredCapabilities</b><br>
-	 * The DesiredCapabilities can be specified in a simple key:value format or
+	 * <b>mutableCapabilities</b><br>
+	 * The mutableCapabilities can be specified in a simple key:value format or
 	 * as a JSON object. With the JSON format more complex parameters, like the
 	 * proxy, can be configured.<br>
 	 * <br>
-	 * Example of desiredCapabilities as simple string:<br>
+	 * Example of mutableCapabilities as simple string:<br>
 	 * <table border="1" cellspacing="0" summary="">
 	 * <tr>
 	 * <td>platform:Windows 8,browserName:firefox,version:25</td>
 	 * </tr>
 	 * </table>
 	 * <br>
-	 * Example of desiredCapabilities as JSON object:<br>
+	 * Example of mutableCapabilities as JSON object:<br>
 	 * <table border="1" cellspacing="0" summary="">
 	 * <tr>
 	 * <td>{<br>
@@ -361,15 +359,15 @@ public class BrowserManagement extends RunOnFailureKeywordsAdapter {
 	 *            Default=False. Optional remote grid URL. When specified no
 	 *            local WebDriver instance is created, but a network connection
 	 *            to a Selenium 2 WebDriver Grid Hub at the given URL is opened.
-	 * @param desiredCapabilities
+	 * @param mutableCapabilities
 	 *            Default=NONE. Optional desired capabilities of the newly
 	 *            created remote browser instances can be specified in a simple
 	 *            key1:val1,key2:val2 format or as a JSON object (see examples
 	 *            above). Used to communicate to the remote grid, which kind of
 	 *            browser, etc. should be used. For more information see:
 	 *            <a href=
-	 *            "http://code.google.com/p/selenium/wiki/DesiredCapabilities" >
-	 *            DesiredCapabilities</a>
+	 *            "http://code.google.com/p/selenium/wiki/mutableCapabilities" >
+	 *            mutableCapabilities</a>
 	 * @param browserOptions
 	 *            Default=NONE. Extended browser options as JSON structure.
 	 * @return The index of the newly created browser instance.
@@ -381,10 +379,10 @@ public class BrowserManagement extends RunOnFailureKeywordsAdapter {
 	 * @see BrowserManagement#switchBrowser
 	 */
 	@RobotKeyword
-	@ArgumentNames({ "url", "browserName=firefox", "alias=NONE", "remoteUrl=False", "desiredCapabilities=NONE",
+	@ArgumentNames({ "url", "browserName=firefox", "alias=NONE", "remoteUrl=False", "mutableCapabilities=NONE",
 			"browserOptions=NONE" })
 	public String openBrowser(String url, String browserName, String alias, String remoteUrl,
-			String desiredCapabilities, String browserOptions) throws Throwable {
+			String mutableCapabilities, String browserOptions) throws Throwable {
 		try {
 			logging.info("browserName: " + browserName);
 			if (remoteUrl != null) {
@@ -394,7 +392,7 @@ public class BrowserManagement extends RunOnFailureKeywordsAdapter {
 				logging.info(String.format("Opening browser '%s' to base url '%s'", browserName, url));
 			}
 
-			WebDriver webDriver = createWebDriver(browserName, desiredCapabilities, remoteUrl, browserOptions);
+			WebDriver webDriver = createWebDriver(browserName, mutableCapabilities, remoteUrl, browserOptions);
 			webDriver.get(url);
 			String sessionId = webDriverCache.register(webDriver, alias);
 			logging.debug(String.format("Opened browser with session id %s", sessionId));
@@ -804,8 +802,8 @@ public class BrowserManagement extends RunOnFailureKeywordsAdapter {
 	 * is requested in the desired capabilities, no error is thrown;</b> a
 	 * read-only capabilities object is returned that indicates the capabilities
 	 * the session actually supports. For more information see:
-	 * <a href= "http://code.google.com/p/selenium/wiki/DesiredCapabilities" >
-	 * DesiredCapabilities</a><br>
+	 * <a href= "http://code.google.com/p/selenium/wiki/mutableCapabilities" >
+	 * mutableCapabilities</a><br>
 	 * 
 	 * @return The capabilities of the remote node.
 	 * 
@@ -1359,17 +1357,17 @@ public class BrowserManagement extends RunOnFailureKeywordsAdapter {
 		return auth.substring(index + 1);
 	}
 
-	protected WebDriver createWebDriver(String browserName, String desiredCapabilitiesString, String remoteUrlString,
+	protected WebDriver createWebDriver(String browserName, String mutableCapabilitiesString, String remoteUrlString,
 			String browserOptions) throws MalformedURLException {
 		browserName = browserName.toLowerCase().replace(" ", "");
-		DesiredCapabilities desiredCapabilities = createDesiredCapabilities(browserName, desiredCapabilitiesString,
+		MutableCapabilities mutableCapabilities = createmutableCapabilities(browserName, mutableCapabilitiesString,
 				browserOptions);
 
 		WebDriver webDriver;
 		if (remoteUrlString != null && !"False".equals(remoteUrlString)) {
-			webDriver = createRemoteWebDriver(desiredCapabilities, new URL(remoteUrlString));
+			webDriver = createRemoteWebDriver(mutableCapabilities, new URL(remoteUrlString));
 		} else {
-			webDriver = createLocalWebDriver(browserName, desiredCapabilities);
+			webDriver = createLocalWebDriver(browserName, mutableCapabilities);
 		}
 
 		webDriver.manage().timeouts().setScriptTimeout((int) (timeout * 1000.0), TimeUnit.MILLISECONDS);
@@ -1378,35 +1376,35 @@ public class BrowserManagement extends RunOnFailureKeywordsAdapter {
 		return webDriver;
 	}
 
-	protected WebDriver createLocalWebDriver(String browserName, DesiredCapabilities desiredCapabilities) {
+	protected WebDriver createLocalWebDriver(String browserName, MutableCapabilities mutableCapabilities) {
 		System.out.println(browserName);
 		if ("ff".equals(browserName) || "firefox".equals(browserName)) {
-			return new FirefoxDriver(desiredCapabilities);
+			return new FirefoxDriver(mutableCapabilities);
 		} else if ("ie".equals(browserName) || "internetexplorer".equals(browserName)) {
-			return new InternetExplorerDriver(desiredCapabilities);
+			return new InternetExplorerDriver(mutableCapabilities);
 		} else if ("gc".equals(browserName) || "chrome".equals(browserName) || "googlechrome".equals(browserName)) {
-			return new ChromeDriver(desiredCapabilities);
+			return new ChromeDriver(mutableCapabilities);
 		} else if ("opera".equals(browserName)) {
-			return new OperaDriver(desiredCapabilities);
+			return new OperaDriver(mutableCapabilities);
 		} else if ("phantomjs".equals(browserName)) {
-			return new PhantomJSDriver(desiredCapabilities);
+			return new PhantomJSDriver(mutableCapabilities);
 		} else if ("safari".equals(browserName)) {
-			return new SafariDriver(desiredCapabilities);
+			return new SafariDriver(mutableCapabilities);
 		} else if ("htmlunit".equals(browserName)) {
-			return new HtmlUnitDriver(desiredCapabilities);
+			return new HtmlUnitDriver(mutableCapabilities);
 		} else if ("htmlunitwithjs".equals(browserName)) {
-			HtmlUnitDriver driver = new HtmlUnitDriver(desiredCapabilities);
+			HtmlUnitDriver driver = new HtmlUnitDriver(mutableCapabilities);
 			driver.setJavascriptEnabled(true);
 			return driver;
 		} else if ("iphone".equals(browserName) || "ipad".equals(browserName)) {
 			try {
-				return new IOSDriver<WebElement>(new URL(""), desiredCapabilities);
+				return new IOSDriver<WebElement>(new URL(""), mutableCapabilities);
 			} catch (Exception e) {
 				throw new SeleniumLibraryFatalException("Creating " + browserName + " instance failed.", e);
 			}
 		} else if ("android".equals(browserName)) {
 			try {
-				return new SelendroidDriver(desiredCapabilities);
+				return new SelendroidDriver(mutableCapabilities);
 			} catch (Exception e) {
 				throw new SeleniumLibraryFatalException(e);
 			}
@@ -1417,67 +1415,67 @@ public class BrowserManagement extends RunOnFailureKeywordsAdapter {
 		throw new SeleniumLibraryFatalException(browserName + " is not a supported browser.");
 	}
 
-	protected WebDriver createRemoteWebDriver(DesiredCapabilities desiredCapabilities, URL remoteUrl) {
+	protected WebDriver createRemoteWebDriver(MutableCapabilities mutableCapabilities, URL remoteUrl) {
 		HttpCommandExecutor httpCommandExecutor = new HttpCommandExecutor(remoteUrl);
 		setRemoteWebDriverProxy(httpCommandExecutor);
-		return new Augmenter().augment(new RemoteWebDriver(httpCommandExecutor, desiredCapabilities));
+		return new Augmenter().augment(new RemoteWebDriver(httpCommandExecutor, mutableCapabilities));
 	}
 
-	protected DesiredCapabilities createDesiredCapabilities(String browserName, String desiredCapabilitiesString,
+	protected MutableCapabilities createmutableCapabilities(String browserName, String mutableCapabilitiesString,
 			String browserOptions) {
-		DesiredCapabilities desiredCapabilities;
+		mutableCapabilities mutableCapabilities;
 		if ("ff".equals(browserName) || "firefox".equals(browserName)) {
-			desiredCapabilities = DesiredCapabilities.firefox();
-			parseBrowserOptionsFirefox(browserOptions, desiredCapabilities);
+			mutableCapabilities = mutableCapabilities.firefox();
+			parseBrowserOptionsFirefox(browserOptions, mutableCapabilities);
 		} else if ("ie".equals(browserName) || "internetexplorer".equals(browserName)) {
-			desiredCapabilities = DesiredCapabilities.internetExplorer();
+			mutableCapabilities = mutableCapabilities.internetExplorer();
 		} else if ("gc".equals(browserName) || "chrome".equals(browserName) || "googlechrome".equals(browserName)) {
-			desiredCapabilities = DesiredCapabilities.chrome();
+			mutableCapabilities = mutableCapabilities.chrome();
 		} else if ("opera".equals(browserName)) {
-			desiredCapabilities = DesiredCapabilities.opera();
+			mutableCapabilities = mutableCapabilities.opera();
 		} else if ("phantomjs".equals(browserName)) {
-			desiredCapabilities = DesiredCapabilities.phantomjs();
+			mutableCapabilities = mutableCapabilities.phantomjs();
 		} else if ("safari".equals(browserName)) {
-			desiredCapabilities = DesiredCapabilities.safari();
+			mutableCapabilities = mutableCapabilities.safari();
 		} else if ("ipad".equals(browserName)) {
-			desiredCapabilities = DesiredCapabilities.ipad();
+			mutableCapabilities = mutableCapabilities.ipad();
 		} else if ("iphone".equals(browserName)) {
-			desiredCapabilities = DesiredCapabilities.iphone();
+			mutableCapabilities = mutableCapabilities.iphone();
 		} else if ("android".equals(browserName)) {
-			desiredCapabilities = DesiredCapabilities.android();
+			mutableCapabilities = mutableCapabilities.android();
 		} else if ("htmlunit".equals(browserName) || "htmlunitwithjs".equals(browserName)) {
-			desiredCapabilities = DesiredCapabilities.htmlUnit();
+			mutableCapabilities = mutableCapabilities.htmlUnit();
 		} else if ("jbrowser".equals(browserName)) {
-			desiredCapabilities = new DesiredCapabilities("jbrowser", "1", Platform.ANY);
+			mutableCapabilities = new mutableCapabilities("jbrowser", "1", Platform.ANY);
 		} else {
 			throw new SeleniumLibraryFatalException(browserName + " is not a supported browser.");
 		}
 
-		if (desiredCapabilitiesString != null && !"None".equals(desiredCapabilitiesString)) {
-			JSONObject jsonObject = (JSONObject) JSONValue.parse(desiredCapabilitiesString);
+		if (mutableCapabilitiesString != null && !"None".equals(mutableCapabilitiesString)) {
+			JSONObject jsonObject = (JSONObject) JSONValue.parse(mutableCapabilitiesString);
 			if (jsonObject != null) {
 				// Valid JSON
 				Iterator<?> iterator = jsonObject.entrySet().iterator();
 				while (iterator.hasNext()) {
 					Entry<?, ?> entry = (Entry<?, ?>) iterator.next();
-					desiredCapabilities.setCapability(entry.getKey().toString(), entry.getValue());
+					mutableCapabilities.setCapability(entry.getKey().toString(), entry.getValue());
 				}
 			} else {
 				// Invalid JSON. Old style key-value pairs
-				for (String capability : desiredCapabilitiesString.split(",")) {
+				for (String capability : mutableCapabilitiesString.split(",")) {
 					String[] keyValue = capability.split(":");
 					if (keyValue.length == 2) {
-						desiredCapabilities.setCapability(keyValue[0], keyValue[1]);
+						mutableCapabilities.setCapability(keyValue[0], keyValue[1]);
 					} else {
-						logging.warn("Invalid desiredCapabilities: " + desiredCapabilitiesString);
+						logging.warn("Invalid mutableCapabilities: " + mutableCapabilitiesString);
 					}
 				}
 			}
 		}
-		return desiredCapabilities;
+		return mutableCapabilities;
 	}
 
-	protected void parseBrowserOptionsFirefox(String browserOptions, DesiredCapabilities desiredCapabilities) {
+	protected void parseBrowserOptionsFirefox(String browserOptions, MutableCapabilities mutableCapabilities) {
 		if (browserOptions != null && !"NONE".equals(browserOptions)) {
 			JSONObject jsonObject = (JSONObject) JSONValue.parse(browserOptions);
 			if (jsonObject != null) {
@@ -1510,17 +1508,13 @@ public class BrowserManagement extends RunOnFailureKeywordsAdapter {
 						Iterator<?> iteratorExtensions = extensions.iterator();
 						while (iteratorExtensions.hasNext()) {
 							File file = new File(iteratorExtensions.next().toString().replace('/', File.separatorChar));
-							try {
-								firefoxProfile.addExtension(file);
-							} catch (IOException e) {
-								logging.warn("Could not load extension: " + file.getAbsolutePath());
-							}
+							firefoxProfile.addExtension(file);
 						}
 					} else {
 						logging.warn("Unknown browserOption: " + key + ":" + entry.getValue());
 					}
 				}
-				desiredCapabilities.setCapability(FirefoxDriver.PROFILE, firefoxProfile);
+				mutableCapabilities.setCapability(FirefoxDriver.PROFILE, firefoxProfile);
 			} else {
 				logging.warn("Invalid browserOptions: " + browserOptions);
 			}
@@ -1558,7 +1552,7 @@ public class BrowserManagement extends RunOnFailureKeywordsAdapter {
 			// proxies correctly.
 			client.setRoutePlanner(new DefaultHttpRoutePlanner(client.getConnectionManager().getSchemeRegistry()));
 			HttpHost proxy = new HttpHost(remoteWebDriverProxyHost, Integer.parseInt(remoteWebDriverProxyPort));
-			client.getParams().setParameter(ConnRoutePNames.DEFAULT_PROXY, proxy);
+			client.getParams().setParameter(RequestConfig.DEFAULT_PROXY, proxy);
 		} catch (SecurityException e) {
 			throw new SeleniumLibraryFatalException(
 					String.format("The SecurityManager does not allow us to lookup to the %s field.", fieldName));
