@@ -149,163 +149,7 @@
 			</resource>
 		</resources>
 
-		<plugins>
-			<plugin>
-				<!-- Weave the failure handler into the code -->
-				<groupId>org.codehaus.mojo</groupId>
-				<artifactId>aspectj-maven-plugin</artifactId>
-				<version>1.10</version>
-				<executions>
-					<execution>
-						<goals>
-							<goal>compile</goal>
-						</goals>
-					</execution>
-				</executions>
-				<configuration>
-					<source>${java.version}</source>
-					<target>${java.version}</target>
-					<complianceLevel>${java.version}</complianceLevel>
-					<showWeaveInfo>true</showWeaveInfo>
-				</configuration>
-				<dependencies>
-					<dependency>
-						<groupId>org.aspectj</groupId>
-						<artifactId>aspectjtools</artifactId>
-						<version>${aspectj.version}</version>
-					</dependency>
-				</dependencies>
-			</plugin>
-			<plugin>
-				<!-- Integration-Test, build documentation -->
-				<groupId>org.robotframework</groupId>
-				<artifactId>robotframework-maven-plugin</artifactId>
-				<version>${robotframework.maven.plugin.version}</version>
-				<executions>
-					<execution>
-						<id>test</id>
-						<phase>integration-test</phase>
-						<goals>
-							<goal>run</goal>
-						</goals>
-						<configuration>
-							<logLevel>debug</logLevel>
-							<testCasesDirectory>${project.basedir}/src/test/robotframework/testsuites</testCasesDirectory>
-							<variables>
-								<variable>browser:${browser}</variable>
-							</variables>
-							<externalRunner>
-								<jvmArgs>
-									<jvmArg>-Dphantomjs.binary.path=${phantomjs.binary.path}</jvmArg>
-									<jvmArg>-Dwebdriver.gecko.driver=${webdriver.gecko.driver}</jvmArg>
-								</jvmArgs>
-							</externalRunner>
-						</configuration>
-					</execution>
-					<execution>
-						<id>html</id>
-						<phase>package</phase>
-						<goals>
-							<goal>libdoc</goal>
-						</goals>
-						<configuration>
-							<libdoc>
-								<outputDirectory>${project.build.directory}</outputDirectory>
-								<outputFile>${keywords.class}.html</outputFile>
-								<libraryOrResourceFile>${keywords.class}</libraryOrResourceFile>
-							</libdoc>
-						</configuration>
-					</execution>
-					<execution>
-						<id>xml</id>
-						<phase>package</phase>
-						<goals>
-							<goal>libdoc</goal>
-						</goals>
-						<configuration>
-							<libdoc>
-								<outputDirectory>${project.build.directory}</outputDirectory>
-								<outputFile>${keywords.class}.xml</outputFile>
-								<libraryOrResourceFile>${keywords.class}</libraryOrResourceFile>
-							</libdoc>
-						</configuration>
-					</execution>
-				</executions>
-				<dependencies>
-					<dependency>
-						<groupId>org.robotframework</groupId>
-						<artifactId>robotframework</artifactId>
-						<version>${robotframework.version}</version>
-					</dependency>
-				</dependencies>
-			</plugin>
-			<plugin>
-				<!-- Set 1.7 as target, use project source encoding -->
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-compiler-plugin</artifactId>
-				<version>3.3</version>
-				<configuration>
-					<source>${java.version}</source>
-					<target>${java.version}</target>
-					<encoding>${project.build.sourceEncoding}</encoding>
-					<optimize>true</optimize>
-					<debug>true</debug>
-					<compilerId>javac</compilerId>
-				</configuration>
-			</plugin>
-			<plugin>
-				<!-- Build the fat jar with all dependencies -->
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-assembly-plugin</artifactId>
-				<version>2.6</version>
-				<configuration>
-					<descriptorRefs>
-						<descriptorRef>jar-with-dependencies</descriptorRef>
-					</descriptorRefs>
-				</configuration>
-				<executions>
-					<execution>
-						<id>make-assembly</id>
-						<phase>package</phase>
-						<goals>
-							<goal>single</goal>
-						</goals>
-					</execution>
-				</executions>
-			</plugin>
-			<plugin>
-				<!-- extract documentation for libdoc -->
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-javadoc-plugin</artifactId>
-				<version>2.10.4</version>
-				<executions>
-					<execution>
-						<id>xml-doclet</id>
-						<phase>prepare-package</phase>
-						<goals>
-							<goal>javadoc</goal>
-						</goals>
-						<configuration>
-							<doclet>com.github.markusbernhardt.xmldoclet.XmlDoclet</doclet>
-							<additionalparam>-d ${project.build.directory}/classes -filename
-								com/github/markusbernhardt/seleniumlibrary/SeleniumLibrary.javadoc</additionalparam>
-							<useStandardDocletOptions>false</useStandardDocletOptions>
-							<javadocExecutable>${java.home}/../bin</javadocExecutable>
-							<sourceFileIncludes>
-								<sourceFileInclude>*.java</sourceFileInclude>
-								<sourceFileInclude>com/github/markusbernhardt/seleniumlibrary/SeleniumLibrary.java</sourceFileInclude>
-								<sourceFileInclude>com/github/markusbernhardt/seleniumlibrary/keywords/*.java</sourceFileInclude>
-							</sourceFileIncludes>
-							<docletArtifact>
-								<groupId>com.github.markusbernhardt</groupId>
-								<artifactId>xml-doclet</artifactId>
-								<version>${xml.doclet.version}</version>
-							</docletArtifact>
-						</configuration>
-					</execution>
-				</executions>
-			</plugin>
-		</plugins>
+
 		<pluginManagement>
 			<plugins>
 				<plugin>
@@ -368,11 +212,186 @@
 						</execution>
 					</executions>
 				</plugin>
+				<plugin>
+					<!-- Integration-Test, build documentation -->
+					<groupId>org.robotframework</groupId>
+					<artifactId>robotframework-maven-plugin</artifactId>
+					<version>${robotframework.maven.plugin.version}</version>
+					<executions>
+						<execution>
+							<id>test</id>
+							<phase>integration-test</phase>
+							<goals>
+								<goal>run</goal>
+							</goals>
+							<configuration>
+								<logLevel>debug</logLevel>
+								<testCasesDirectory>${project.basedir}/src/test/robotframework/testsuites</testCasesDirectory>
+								<variables>
+									<variable>browser:${browser}</variable>
+								</variables>
+								<report>target/robotframework-reports/${browser}_report.html</report>
+								<log>target/robotframework-reports/${browser}_log.html</log>
+								<output>target/robotframework-reports/${browser}_output.xml</output>
+								<xunitFile>target/robotframework-reports/${browser}_xUnit.xml</xunitFile>
+								<externalRunner>
+									<jvmArgs>
+										<jvmArg>-Dphantomjs.binary.path=${phantomjs.binary.path}</jvmArg>
+										<jvmArg>-Dwebdriver.gecko.driver=${webdriver.gecko.driver}</jvmArg>
+										<jvmArg>-Dwebdriver.chrome.driver=${webdriver.chrome.driver}</jvmArg>
+									</jvmArgs>
+								</externalRunner>
+							</configuration>
+						</execution>
+						<execution>
+							<id>html</id>
+							<phase>package</phase>
+							<goals>
+								<goal>libdoc</goal>
+							</goals>
+							<configuration>
+								<libdoc>
+									<outputDirectory>${project.build.directory}</outputDirectory>
+									<outputFile>${keywords.class}.html</outputFile>
+									<libraryOrResourceFile>${keywords.class}</libraryOrResourceFile>
+								</libdoc>
+							</configuration>
+						</execution>
+						<execution>
+							<id>xml</id>
+							<phase>package</phase>
+							<goals>
+								<goal>libdoc</goal>
+							</goals>
+							<configuration>
+								<libdoc>
+									<outputDirectory>${project.build.directory}</outputDirectory>
+									<outputFile>${keywords.class}.xml</outputFile>
+									<libraryOrResourceFile>${keywords.class}</libraryOrResourceFile>
+								</libdoc>
+							</configuration>
+						</execution>
+					</executions>
+					<dependencies>
+						<dependency>
+							<groupId>org.robotframework</groupId>
+							<artifactId>robotframework</artifactId>
+							<version>${robotframework.version}</version>
+						</dependency>
+					</dependencies>
+				</plugin>
 			</plugins>
 		</pluginManagement>
 	</build>
 
 	<profiles>
+		<profile>
+			<id>build</id>
+			<activation>
+				<activeByDefault>true</activeByDefault>
+			</activation>
+			<build>
+				<plugins>
+					<plugin>
+						<!-- Weave the failure handler into the code -->
+						<groupId>org.codehaus.mojo</groupId>
+						<artifactId>aspectj-maven-plugin</artifactId>
+						<version>1.10</version>
+						<executions>
+							<execution>
+								<goals>
+									<goal>compile</goal>
+								</goals>
+							</execution>
+						</executions>
+						<configuration>
+							<source>${java.version}</source>
+							<target>${java.version}</target>
+							<complianceLevel>${java.version}</complianceLevel>
+							<showWeaveInfo>true</showWeaveInfo>
+						</configuration>
+						<dependencies>
+							<dependency>
+								<groupId>org.aspectj</groupId>
+								<artifactId>aspectjtools</artifactId>
+								<version>${aspectj.version}</version>
+							</dependency>
+						</dependencies>
+					</plugin>
+					<plugin>
+						<groupId>org.robotframework</groupId>
+						<artifactId>robotframework-maven-plugin</artifactId>
+					</plugin>
+					<plugin>
+						<!-- Set 1.7 as target, use project source encoding -->
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-compiler-plugin</artifactId>
+						<version>3.3</version>
+						<configuration>
+							<source>${java.version}</source>
+							<target>${java.version}</target>
+							<encoding>${project.build.sourceEncoding}</encoding>
+							<optimize>true</optimize>
+							<debug>true</debug>
+							<compilerId>javac</compilerId>
+						</configuration>
+					</plugin>
+					<plugin>
+						<!-- Build the fat jar with all dependencies -->
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-assembly-plugin</artifactId>
+						<version>2.6</version>
+						<configuration>
+							<descriptorRefs>
+								<descriptorRef>jar-with-dependencies</descriptorRef>
+							</descriptorRefs>
+						</configuration>
+						<executions>
+							<execution>
+								<id>make-assembly</id>
+								<phase>package</phase>
+								<goals>
+									<goal>single</goal>
+								</goals>
+							</execution>
+						</executions>
+					</plugin>
+					<plugin>
+						<!-- extract documentation for libdoc -->
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-javadoc-plugin</artifactId>
+						<version>2.10.4</version>
+						<executions>
+							<execution>
+								<id>xml-doclet</id>
+								<phase>prepare-package</phase>
+								<goals>
+									<goal>javadoc</goal>
+								</goals>
+								<configuration>
+									<doclet>com.github.markusbernhardt.xmldoclet.XmlDoclet</doclet>
+									<additionalparam>-d ${project.build.directory}/classes
+										-filename
+										com/github/markusbernhardt/seleniumlibrary/SeleniumLibrary.javadoc</additionalparam>
+									<useStandardDocletOptions>false</useStandardDocletOptions>
+									<javadocExecutable>${java.home}/../bin</javadocExecutable>
+									<sourceFileIncludes>
+										<sourceFileInclude>*.java</sourceFileInclude>
+										<sourceFileInclude>com/github/markusbernhardt/seleniumlibrary/SeleniumLibrary.java</sourceFileInclude>
+										<sourceFileInclude>com/github/markusbernhardt/seleniumlibrary/keywords/*.java</sourceFileInclude>
+									</sourceFileIncludes>
+									<docletArtifact>
+										<groupId>com.github.markusbernhardt</groupId>
+										<artifactId>xml-doclet</artifactId>
+										<version>${xml.doclet.version}</version>
+									</docletArtifact>
+								</configuration>
+							</execution>
+						</executions>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
 		<profile>
 			<id>firefox</id>
 			<properties>
@@ -383,6 +402,10 @@
 					<plugin>
 						<groupId>com.lazerycode.selenium</groupId>
 						<artifactId>driver-binary-downloader-maven-plugin</artifactId>
+					</plugin>
+					<plugin>
+						<groupId>org.robotframework</groupId>
+						<artifactId>robotframework-maven-plugin</artifactId>
 					</plugin>
 				</plugins>
 			</build>
@@ -397,6 +420,28 @@
 					<plugin>
 						<groupId>com.lazerycode.selenium</groupId>
 						<artifactId>driver-binary-downloader-maven-plugin</artifactId>
+					</plugin>
+					<plugin>
+						<groupId>org.robotframework</groupId>
+						<artifactId>robotframework-maven-plugin</artifactId>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+		<profile>
+			<id>googlechrome</id>
+			<properties>
+				<browser>googlechrome</browser>
+			</properties>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>com.lazerycode.selenium</groupId>
+						<artifactId>driver-binary-downloader-maven-plugin</artifactId>
+					</plugin>
+					<plugin>
+						<groupId>org.robotframework</groupId>
+						<artifactId>robotframework-maven-plugin</artifactId>
 					</plugin>
 				</plugins>
 			</build>
