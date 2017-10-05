@@ -234,6 +234,9 @@
 								<log>target/robotframework-reports/${browser}_log.html</log>
 								<output>target/robotframework-reports/${browser}_output.xml</output>
 								<xunitFile>target/robotframework-reports/${browser}_xUnit.xml</xunitFile>
+								<nonCriticalTags>
+									<nonCriticalTag>${browser}</nonCriticalTag>
+								</nonCriticalTags>
 								<externalRunner>
 									<jvmArgs>
 										<jvmArg>-Dphantomjs.binary.path=${phantomjs.binary.path}</jvmArg>
@@ -301,6 +304,39 @@
 							<compilerId>javac</compilerId>
 						</configuration>
 					</plugin>
+					<plugin>
+                        <!-- extract documentation for libdoc -->
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-javadoc-plugin</artifactId>
+                        <version>2.10.4</version>
+                        <executions>
+                            <execution>
+                                <id>xml-doclet</id>
+                                <phase>prepare-package</phase>
+                                <goals>
+                                    <goal>javadoc</goal>
+                                </goals>
+                                <configuration>
+                                    <doclet>com.github.markusbernhardt.xmldoclet.XmlDoclet</doclet>
+                                    <additionalparam>-d ${project.build.directory}/classes
+                                        -filename
+                                        com/github/markusbernhardt/seleniumlibrary/SeleniumLibrary.javadoc</additionalparam>
+                                    <useStandardDocletOptions>false</useStandardDocletOptions>
+                                    <javadocExecutable>${java.home}/../bin</javadocExecutable>
+                                    <sourceFileIncludes>
+                                        <sourceFileInclude>*.java</sourceFileInclude>
+                                        <sourceFileInclude>com/github/markusbernhardt/seleniumlibrary/SeleniumLibrary.java</sourceFileInclude>
+                                        <sourceFileInclude>com/github/markusbernhardt/seleniumlibrary/keywords/*.java</sourceFileInclude>
+                                    </sourceFileIncludes>
+                                    <docletArtifact>
+                                        <groupId>com.github.markusbernhardt</groupId>
+                                        <artifactId>xml-doclet</artifactId>
+                                        <version>${xml.doclet.version}</version>
+                                    </docletArtifact>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
 					<plugin>
 						<!-- Build the fat jar with all dependencies -->
 						<groupId>org.apache.maven.plugins</groupId>
@@ -437,6 +473,7 @@
 					<plugin>
 						<groupId>org.robotframework</groupId>
 						<artifactId>robotframework-maven-plugin</artifactId>
+						<inherited>false</inherited>
 						<executions>
 							<execution>
 								<id>html</id>
@@ -464,39 +501,6 @@
 										<outputFile>${keywords.class}.xml</outputFile>
 										<libraryOrResourceFile>${keywords.class}</libraryOrResourceFile>
 									</libdoc>
-								</configuration>
-							</execution>
-						</executions>
-					</plugin>
-					<plugin>
-						<!-- extract documentation for libdoc -->
-						<groupId>org.apache.maven.plugins</groupId>
-						<artifactId>maven-javadoc-plugin</artifactId>
-						<version>2.10.4</version>
-						<executions>
-							<execution>
-								<id>xml-doclet</id>
-								<phase>prepare-package</phase>
-								<goals>
-									<goal>javadoc</goal>
-								</goals>
-								<configuration>
-									<doclet>com.github.markusbernhardt.xmldoclet.XmlDoclet</doclet>
-									<additionalparam>-d ${project.build.directory}/classes
-										-filename
-										com/github/markusbernhardt/seleniumlibrary/SeleniumLibrary.javadoc</additionalparam>
-									<useStandardDocletOptions>false</useStandardDocletOptions>
-									<javadocExecutable>${java.home}/../bin</javadocExecutable>
-									<sourceFileIncludes>
-										<sourceFileInclude>*.java</sourceFileInclude>
-										<sourceFileInclude>com/github/markusbernhardt/seleniumlibrary/SeleniumLibrary.java</sourceFileInclude>
-										<sourceFileInclude>com/github/markusbernhardt/seleniumlibrary/keywords/*.java</sourceFileInclude>
-									</sourceFileIncludes>
-									<docletArtifact>
-										<groupId>com.github.markusbernhardt</groupId>
-										<artifactId>xml-doclet</artifactId>
-										<version>${xml.doclet.version}</version>
-									</docletArtifact>
 								</configuration>
 							</execution>
 						</executions>
