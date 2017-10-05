@@ -219,7 +219,7 @@
 					<version>${robotframework.maven.plugin.version}</version>
 					<executions>
 						<execution>
-							<id>test</id>
+							<id>test-${browser}</id>
 							<phase>integration-test</phase>
 							<goals>
 								<goal>run</goal>
@@ -243,42 +243,7 @@
 								</externalRunner>
 							</configuration>
 						</execution>
-						<execution>
-							<id>html</id>
-							<phase>package</phase>
-							<goals>
-								<goal>libdoc</goal>
-							</goals>
-							<configuration>
-								<libdoc>
-									<outputDirectory>${project.build.directory}</outputDirectory>
-									<outputFile>${keywords.class}.html</outputFile>
-									<libraryOrResourceFile>${keywords.class}</libraryOrResourceFile>
-								</libdoc>
-							</configuration>
-						</execution>
-						<execution>
-							<id>xml</id>
-							<phase>package</phase>
-							<goals>
-								<goal>libdoc</goal>
-							</goals>
-							<configuration>
-								<libdoc>
-									<outputDirectory>${project.build.directory}</outputDirectory>
-									<outputFile>${keywords.class}.xml</outputFile>
-									<libraryOrResourceFile>${keywords.class}</libraryOrResourceFile>
-								</libdoc>
-							</configuration>
-						</execution>
 					</executions>
-					<dependencies>
-						<dependency>
-							<groupId>org.robotframework</groupId>
-							<artifactId>robotframework</artifactId>
-							<version>${robotframework.version}</version>
-						</dependency>
-					</dependencies>
 				</plugin>
 			</plugins>
 		</pluginManagement>
@@ -353,39 +318,6 @@
 								<goals>
 									<goal>single</goal>
 								</goals>
-							</execution>
-						</executions>
-					</plugin>
-					<plugin>
-						<!-- extract documentation for libdoc -->
-						<groupId>org.apache.maven.plugins</groupId>
-						<artifactId>maven-javadoc-plugin</artifactId>
-						<version>2.10.4</version>
-						<executions>
-							<execution>
-								<id>xml-doclet</id>
-								<phase>prepare-package</phase>
-								<goals>
-									<goal>javadoc</goal>
-								</goals>
-								<configuration>
-									<doclet>com.github.markusbernhardt.xmldoclet.XmlDoclet</doclet>
-									<additionalparam>-d ${project.build.directory}/classes
-										-filename
-										com/github/markusbernhardt/seleniumlibrary/SeleniumLibrary.javadoc</additionalparam>
-									<useStandardDocletOptions>false</useStandardDocletOptions>
-									<javadocExecutable>${java.home}/../bin</javadocExecutable>
-									<sourceFileIncludes>
-										<sourceFileInclude>*.java</sourceFileInclude>
-										<sourceFileInclude>com/github/markusbernhardt/seleniumlibrary/SeleniumLibrary.java</sourceFileInclude>
-										<sourceFileInclude>com/github/markusbernhardt/seleniumlibrary/keywords/*.java</sourceFileInclude>
-									</sourceFileIncludes>
-									<docletArtifact>
-										<groupId>com.github.markusbernhardt</groupId>
-										<artifactId>xml-doclet</artifactId>
-										<version>${xml.doclet.version}</version>
-									</docletArtifact>
-								</configuration>
 							</execution>
 						</executions>
 					</plugin>
@@ -505,11 +437,10 @@
 					<plugin>
 						<groupId>org.robotframework</groupId>
 						<artifactId>robotframework-maven-plugin</artifactId>
-						<version>${robotframework.maven.plugin.version}</version>
 						<executions>
 							<execution>
 								<id>html</id>
-								<phase>package</phase>
+								<phase>prepare-package</phase>
 								<goals>
 									<goal>libdoc</goal>
 								</goals>
@@ -523,7 +454,7 @@
 							</execution>
 							<execution>
 								<id>xml</id>
-								<phase>package</phase>
+								<phase>prepare-package</phase>
 								<goals>
 									<goal>libdoc</goal>
 								</goals>
@@ -533,6 +464,39 @@
 										<outputFile>${keywords.class}.xml</outputFile>
 										<libraryOrResourceFile>${keywords.class}</libraryOrResourceFile>
 									</libdoc>
+								</configuration>
+							</execution>
+						</executions>
+					</plugin>
+					<plugin>
+						<!-- extract documentation for libdoc -->
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-javadoc-plugin</artifactId>
+						<version>2.10.4</version>
+						<executions>
+							<execution>
+								<id>xml-doclet</id>
+								<phase>prepare-package</phase>
+								<goals>
+									<goal>javadoc</goal>
+								</goals>
+								<configuration>
+									<doclet>com.github.markusbernhardt.xmldoclet.XmlDoclet</doclet>
+									<additionalparam>-d ${project.build.directory}/classes
+										-filename
+										com/github/markusbernhardt/seleniumlibrary/SeleniumLibrary.javadoc</additionalparam>
+									<useStandardDocletOptions>false</useStandardDocletOptions>
+									<javadocExecutable>${java.home}/../bin</javadocExecutable>
+									<sourceFileIncludes>
+										<sourceFileInclude>*.java</sourceFileInclude>
+										<sourceFileInclude>com/github/markusbernhardt/seleniumlibrary/SeleniumLibrary.java</sourceFileInclude>
+										<sourceFileInclude>com/github/markusbernhardt/seleniumlibrary/keywords/*.java</sourceFileInclude>
+									</sourceFileIncludes>
+									<docletArtifact>
+										<groupId>com.github.markusbernhardt</groupId>
+										<artifactId>xml-doclet</artifactId>
+										<version>${xml.doclet.version}</version>
+									</docletArtifact>
 								</configuration>
 							</execution>
 						</executions>

@@ -9,10 +9,10 @@ before_script:
   - "sh -e /etc/init.d/xvfb start"
   - sleep 3 # give xvfb some time to start
 install:
-  - mvn --settings .travis/settings.xml install -Dgpg.skip -B -V -Pbuild,firefox,googlechrome,phantomjs
-  - mvn --settings .travis/settings.xml verify-Dgpg.skip -Pfirefox
-  - mvn --settings .travis/settings.xml verify-Dgpg.skip -Pgooglechrome
-  - mvn --settings .travis/settings.xml verify-Dgpg.skip -Pphantomjs
+  - mvn --settings .travis/settings.xml install -Dgpg.skip -B -V -Pbuild
+  - mvn --settings .travis/settings.xml verify -Dgpg.skip -Pfirefox
+  - mvn --settings .travis/settings.xml verify -Dgpg.skip -Pgooglechrome
+  - mvn --settings .travis/settings.xml verify -Dgpg.skip -Pphantomjs
 before_install:
   - if [ ! -z "$GPG_SECRET_KEYS" ]; then echo $GPG_SECRET_KEYS | base64 --decode | $GPG_EXECUTABLE --import; fi
   - if [ ! -z "$GPG_OWNERTRUST" ]; then echo $GPG_OWNERTRUST | base64 --decode | $GPG_EXECUTABLE --import-ownertrust; fi
