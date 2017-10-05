@@ -12,6 +12,7 @@ addons:
 before_install:
   - if [ ! -z "$GPG_SECRET_KEYS" ]; then echo $GPG_SECRET_KEYS | base64 --decode | $GPG_EXECUTABLE --import; fi
   - if [ ! -z "$GPG_OWNERTRUST" ]; then echo $GPG_OWNERTRUST | base64 --decode | $GPG_EXECUTABLE --import-ownertrust; fi
+  - dbus-uuidgen > /var/lib/dbus/machine-id
   - "export DISPLAY=:99.0"
   - "sh -e /etc/init.d/xvfb start"
   - sleep 3 # give xvfb some time to start
@@ -29,6 +30,7 @@ deploy:
       repo: Hi-Fi/robotframework-seleniumlibrary-java
       branch: master
       jdk: oraclejdk8
+      env: PROFILE=build
   -
     provider: script
     script: .travis/deploy.sh
@@ -37,3 +39,4 @@ deploy:
       repo: Hi-Fi/robotframework-seleniumlibrary-java
       tags: true
       jdk: oraclejdk8
+      env: PROFILE=build

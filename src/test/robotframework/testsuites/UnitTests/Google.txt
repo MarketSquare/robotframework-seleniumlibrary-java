@@ -4,6 +4,7 @@ Suite Teardown    Google.Site.Close
 Test Setup        Google.Site.Init
 Resource          ../../settings/Settings.txt
 Resource          ../../imports/Google.txt
+Default Tags      phantomjs
 
 *** Testcases ***
 Open And Close Google Site
