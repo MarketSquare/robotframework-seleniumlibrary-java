@@ -10,6 +10,7 @@ env:
 stages:
   - test
   - name: deploySnapshot
+    if: branch = master
   - name: deployRelease
     if: tag IS present
         
