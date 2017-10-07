@@ -477,7 +477,7 @@
 						<executions>
 							<execution>
 								<id>html</id>
-								<phase>prepare-package</phase>
+								<phase>package</phase>
 								<goals>
 									<goal>libdoc</goal>
 								</goals>
@@ -491,7 +491,7 @@
 							</execution>
 							<execution>
 								<id>xml</id>
-								<phase>prepare-package</phase>
+								<phase>package</phase>
 								<goals>
 									<goal>libdoc</goal>
 								</goals>
