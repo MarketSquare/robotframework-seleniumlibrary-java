@@ -11,6 +11,7 @@ Open And Close Google Site
     Capture Page Screenshot
     
 Store Web Element In JavaScript
+    Wait Until Page Contains Element    //*[contains(@class,'gsfi')]
     Execute Javascript    window.document.my_element = window.document.getElementsByClassName('gsfi')[0];
     ${className}=    Execute Javascript    return window.document.my_element.className;
     Should Contain    ${className}    gsfi
