@@ -1,41 +1,40 @@
 language: java
 jdk:
   - oraclejdk8
-env:
-  - PROFILE=build
-  - PROFILE=build,firefox
-  - PROFILE=build,googlechrome
-  - PROFILE=build,phantomjs
+
 addons:
   firefox: "latest"
   chrome: stable
+  
 before_install:
   - if [ ! -z "$GPG_SECRET_KEYS" ]; then echo $GPG_SECRET_KEYS | base64 --decode | $GPG_EXECUTABLE --import; fi
   - if [ ! -z "$GPG_OWNERTRUST" ]; then echo $GPG_OWNERTRUST | base64 --decode | $GPG_EXECUTABLE --import-ownertrust; fi
   - "export DISPLAY=:99.0"
   - "sh -e /etc/init.d/xvfb start"
   - sleep 3 # give xvfb some time to start
-install:
-  - mvn --settings .travis/settings.xml install -Dgpg.skip -B -V -P$PROFILE
-  - mvn --settings .travis/settings.xml verify -Dgpg.skip -P$PROFILE
-  - mvn --settings .travis/settings.xml verify -Dgpg.skip -P$PROFILE
-  - mvn --settings .travis/settings.xml verify -Dgpg.skip -P$PROFILE
-deploy:
-  -
-    provider: script
-    script: .travis/deploy.sh
-    skip_cleanup: true
-    on:
-      repo: Hi-Fi/robotframework-seleniumlibrary-java
-      branch: master
-      jdk: oraclejdk8
-      env: PROFILE=build
-  -
-    provider: script
-    script: .travis/deploy.sh
-    skip_cleanup: true
-    on:
-      repo: Hi-Fi/robotframework-seleniumlibrary-java
-      tags: true
-      jdk: oraclejdk8
-      env: PROFILE=build
+    
+jobs:
+  include:
+    - stage: test
+      env:
+        - PROFILE=build
+        - PROFILE=build,firefox
+        - PROFILE=build,googlechrome
+        - PROFILE=build,phantomjs
+      script: mvn --settings .travis/settings.xml verify -Dgpg.skip -B -V -P$PROFILE
+    - stage: deploySnapshot
+      deploy:
+        provider: script
+        script: .travis/deploy.sh
+        skip_cleanup: true
+        on:
+          repo: Hi-Fi/robotframework-seleniumlibrary-java
+          branch: master
+    - stage: deployRelease
+      deploy:
+        provider: script
+        script: .travis/deploy.sh
+        skip_cleanup: true
+        on:
+          repo: Hi-Fi/robotframework-seleniumlibrary-java
+          tags: true
