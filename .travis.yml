@@ -10,12 +10,10 @@ env:
 stages:
   - test
   - name: deploySnapshot
-    if: branch = master
   - name: deployRelease
     if: tag IS present
         
 addons:
-  firefox: "latest"
   chrome: stable
 
 before_install:
