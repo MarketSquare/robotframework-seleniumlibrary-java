@@ -2,27 +2,30 @@ language: java
 jdk:
   - oraclejdk8
 
+env:
+  - PROFILE=build
+  - PROFILE=build,firefox
+  - PROFILE=build,googlechrome
+  - PROFILE=build,phantomjs
+        
 addons:
   firefox: "latest"
   chrome: stable
-  
+
 before_install:
   - if [ ! -z "$GPG_SECRET_KEYS" ]; then echo $GPG_SECRET_KEYS | base64 --decode | $GPG_EXECUTABLE --import; fi
   - if [ ! -z "$GPG_OWNERTRUST" ]; then echo $GPG_OWNERTRUST | base64 --decode | $GPG_EXECUTABLE --import-ownertrust; fi
   - "export DISPLAY=:99.0"
   - "sh -e /etc/init.d/xvfb start"
   - sleep 3 # give xvfb some time to start
+  
+install: mvn --settings .travis/settings.xml verify -Dgpg.skip -B -V -P$PROFILE
     
 jobs:
   include:
-    - stage: test
-      env:
-        - PROFILE=build
-        - PROFILE=build,firefox
-        - PROFILE=build,googlechrome
-        - PROFILE=build,phantomjs
-      install: mvn --settings .travis/settings.xml verify -Dgpg.skip -B -V -P$PROFILE
     - stage: deploySnapshot
+      install: skip
+      script: skip
       deploy:
         provider: script
         script: .travis/deploy.sh
@@ -31,6 +34,8 @@ jobs:
           repo: Hi-Fi/robotframework-seleniumlibrary-java
           branch: master
     - stage: deployRelease
+      install: skip
+      script: skip
       deploy:
         provider: script
         script: .travis/deploy.sh
