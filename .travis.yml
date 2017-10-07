@@ -6,6 +6,13 @@ env:
   - PROFILE=build
   - PROFILE=build,googlechrome
   - PROFILE=build,phantomjs
+  
+stages:
+  - test
+  - name: deploySnapshot
+    if: branch = master
+  - name: deployRelease
+    if: tag IS present
         
 addons:
   firefox: "latest"
