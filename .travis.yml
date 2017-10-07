@@ -4,7 +4,6 @@ jdk:
 
 env:
   - PROFILE=build
-  - PROFILE=build,firefox
   - PROFILE=build,googlechrome
   - PROFILE=build,phantomjs
         
@@ -20,10 +19,12 @@ before_install:
   - sleep 3 # give xvfb some time to start
   
 install: mvn --settings .travis/settings.xml verify -Dgpg.skip -B -V -P$PROFILE
+script: skip
     
 jobs:
   include:
     - stage: deploySnapshot
+      addons: skip
       install: skip
       script: skip
       deploy:
@@ -34,6 +35,7 @@ jobs:
           repo: Hi-Fi/robotframework-seleniumlibrary-java
           branch: master
     - stage: deployRelease
+      addons: skip
       install: skip
       script: skip
       deploy:
