@@ -21,7 +21,7 @@ jobs:
         - PROFILE=build,firefox
         - PROFILE=build,googlechrome
         - PROFILE=build,phantomjs
-      script: mvn --settings .travis/settings.xml verify -Dgpg.skip -B -V -P$PROFILE
+      install: mvn --settings .travis/settings.xml verify -Dgpg.skip -B -V -P$PROFILE
     - stage: deploySnapshot
       deploy:
         provider: script
