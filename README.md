@@ -45,18 +45,18 @@ your pom.xml:
     <dependency>
         <groupId>com.github.hi_fi</groupId>
         <artifactId>robotframework-seleniumlibrary-java</artifactId>
-        <version>3.5.3.0</version>
+        <version>3.5.3.1</version>
         <scope>test</scope>
     </dependency>
 
 If you cannot use the robotframework-maven-plugin you can use the
-[jar-with-dependencies](http://search.maven.org/remotecontent?filepath=com/github/hi-fi/robotframework-seleniumlibrary/3.5.3.0/robotframework-seleniumlibrary-3.5.3.0-jar-with-dependencies.jar),
+[jar-with-dependencies](http://search.maven.org/remotecontent?filepath=com/github/hi-fi/robotframework-seleniumlibrary/3.5.3.1/robotframework-seleniumlibrary-3.5.3.1-jar-with-dependencies.jar),
 which contains all required libraries.
 
 * More information about this library can be found in the
-  [Keyword Documentation](http://search.maven.org/remotecontent?filepath=com/github/hi-fi/robotframework-seleniumlibrary/3.5.3.0/robotframework-seleniumlibrary-3.5.3.0.html).
+  [Keyword Documentation](http://search.maven.org/remotecontent?filepath=com/github/hi-fi/robotframework-seleniumlibrary/3.5.3.1/robotframework-seleniumlibrary-3.5.3.1.html).
 * For keyword completion in RIDE you can download this
-  [Library Specs](http://search.maven.org/remotecontent?filepath=com/github/hi-fi/robotframework-seleniumlibrary/3.5.3.0/robotframework-seleniumlibrary-3.5.3.0.xml)
+  [Library Specs](http://search.maven.org/remotecontent?filepath=com/github/hi-fi/robotframework-seleniumlibrary/3.5.3.1/robotframework-seleniumlibrary-3.5.3.1.xml)
   and place it in your PYTHONPATH.
 
 Differences
@@ -70,6 +70,12 @@ Demo
 This is a maven project. You can execute the integration tests (using [jBrowser](https://github.com/machinepublishers/jbrowserdriver)) with:
 
     mvn integration-test
+    
+Other browsers are behind profiles (require browser installation with Firefox and Google Chrome, but not driver):
+
+* Firefox: mvn integration-test -Pfirefox
+* Google Chrome: mvn integration-test -Pgooglechrome
+* PhantomJS: mvn integration-test -Pphantomjs 
 
 Getting Help
 ------------
