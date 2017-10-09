@@ -12,4 +12,4 @@ then
     exit 1
 fi
 
-mvn clean deploy --settings .travis/settings.xml -DskipTests=true -B -U -Prelease
+mvn clean deploy --settings .travis/settings.xml -DskipTests=true -B -U -Pbuild,release
