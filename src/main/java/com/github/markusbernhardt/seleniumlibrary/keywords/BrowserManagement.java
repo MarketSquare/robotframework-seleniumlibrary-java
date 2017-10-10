@@ -11,8 +11,11 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.Map.Entry;
 import java.util.concurrent.TimeUnit;
 
@@ -36,6 +39,7 @@ import org.openqa.selenium.firefox.FirefoxProfile;
 import org.openqa.selenium.htmlunit.HtmlUnitDriver;
 import org.openqa.selenium.ie.InternetExplorerDriver;
 import org.openqa.selenium.opera.OperaDriver;
+
 import org.openqa.selenium.phantomjs.PhantomJSDriver;
 import org.openqa.selenium.remote.Augmenter;
 import org.openqa.selenium.remote.DesiredCapabilities;
@@ -189,31 +193,6 @@ public class BrowserManagement extends RunOnFailureKeywordsAdapter {
 			logging.debug(String.format("Closing browser with session id %s", webDriverCache.getCurrentSessionId()));
 			webDriverCache.close();
 		}
-	}
-
-	@RobotKeywordOverload
-	public String openBrowser(String url) throws Throwable {
-		return openBrowser(url, "firefox");
-	}
-
-	@RobotKeywordOverload
-	public String openBrowser(String url, String browserName) throws Throwable {
-		return openBrowser(url, browserName, null);
-	}
-
-	@RobotKeywordOverload
-	public String openBrowser(String url, String browserName, String alias) throws Throwable {
-		return openBrowser(url, browserName, alias, null);
-	}
-
-	@RobotKeywordOverload
-	public String openBrowser(String url, String browserName, String alias, String remoteUrl) throws Throwable {
-		return openBrowser(url, browserName, alias, remoteUrl, null);
-	}
-
-	public String openBrowser(String url, String browserName, String alias, String remoteUrl,
-			String desiredCapabilities) throws Throwable {
-		return openBrowser(url, browserName, alias, remoteUrl, desiredCapabilities, null);
 	}
 
 	/**
@@ -383,28 +362,30 @@ public class BrowserManagement extends RunOnFailureKeywordsAdapter {
 	@RobotKeyword
 	@ArgumentNames({ "url", "browserName=firefox", "alias=NONE", "remoteUrl=False", "desiredCapabilities=NONE",
 			"browserOptions=NONE" })
-	public String openBrowser(String url, String browserName, String alias, String remoteUrl,
-			String desiredCapabilities, String browserOptions) throws Throwable {
+	public String openBrowser(String[] args) throws Throwable {
+		Map<String,String> map = this.handleOpenBrowserArguments(args);
+		
 		try {
-			logging.info("browserName: " + browserName);
-			if (remoteUrl != null) {
+			logging.info("browserName: " + map.get("browsername"));
+			if (map.get("remoteurl") != null && map.get("remoteurl").toUpperCase() != "NONE") {
 				logging.info(String.format("Opening browser '%s' to base url '%s' through remote server at '%s'",
-						browserName, url, remoteUrl));
+						map.get("browsername"), map.get("url"), map.get("remoteurl")));
 			} else {
-				logging.info(String.format("Opening browser '%s' to base url '%s'", browserName, url));
+				logging.info(String.format("Opening browser '%s' to base url '%s'", map.get("browsername"), map.get("url")));
 			}
 
-			WebDriver webDriver = createWebDriver(browserName, desiredCapabilities, remoteUrl, browserOptions);
-			webDriver.get(url);
-			String sessionId = webDriverCache.register(webDriver, alias);
+			WebDriver webDriver = createWebDriver(map.get("browsername"), map.get("desiredcapabilities"), map.get("remoteurl"), map.get("browseroptions"));
+			webDriver.get(map.get("url"));
+			String sessionId = webDriverCache.register(webDriver, map.get("alias"));
 			logging.debug(String.format("Opened browser with session id %s", sessionId));
 			return sessionId;
 		} catch (Throwable t) {
-			if (remoteUrl != null) {
-				logging.warn(String.format("Opening browser '%s' to base url '%s' through remote server at '%s' failed",
-						browserName, url, remoteUrl));
+			if (map.get("remoteurl") != null && map.get("remoteurl").toUpperCase() != "NONE") {
+				logging.warn(String.format(
+						"Opening browser '%s' to base url '%s' through remote server at '%s' failed", map.get("browsername"), map.get("url"),
+						map.get("remoteurl")));
 			} else {
-				logging.warn(String.format("Opening browser '%s' to base url '%s' failed", browserName, url));
+				logging.warn(String.format("Opening browser '%s' to base url '%s' failed", map.get("browsername"), map.get("url")));
 			}
 			throw new SeleniumLibraryFatalException(t);
 		}
@@ -1366,7 +1347,7 @@ public class BrowserManagement extends RunOnFailureKeywordsAdapter {
 				browserOptions);
 
 		WebDriver webDriver;
-		if (remoteUrlString != null && !"False".equals(remoteUrlString)) {
+		if (remoteUrlString != null && remoteUrlString.toUpperCase() != "FALSE" && remoteUrlString.toUpperCase() != "NONE") {
 			webDriver = createRemoteWebDriver(desiredCapabilities, new URL(remoteUrlString));
 		} else {
 			webDriver = createLocalWebDriver(browserName, desiredCapabilities);
@@ -1584,5 +1565,26 @@ public class BrowserManagement extends RunOnFailureKeywordsAdapter {
 			msg.add(String.format("%d: %s", index + 1, items.get(index)));
 		}
 		return items;
+	}
+	
+//	{ "url", "browserName=firefox", "alias=NONE", "remoteUrl=NONE", "desiredCapabilities=NONE","browserOptions=NONE" }
+	private Map<String, String> handleOpenBrowserArguments(String[] args) {
+		Map<String, String> map = new HashMap<String, String>();
+		map.put("url", args[0]);
+		map.put("browsername", args.length > 1 && !args[1].contains("=") ? args[1]: "firefox");
+		map.put("alias", args.length > 2 && !args[2].contains("=") ? args[2]: null);
+		map.put("remoteurl", args.length > 3 && !args[3].contains("=") ? args[3]: null);
+		map.put("desiredcapabilities", args.length > 4 && !args[4].contains("=") ? args[4]: null);
+		map.put("browseroptions", args.length > 5 && !args[5].contains("=") ? args[5]: null);
+
+		for (String argument : args) {
+			String key = argument.split("=",2)[0].toLowerCase();
+			String[] arguments = {"brosername","alias","remoteurl","desiredcapabilities","browseroptions"};
+			if (Arrays.asList(arguments).contains(key)) {
+				map.put(key, argument.split("=",2)[1]);
+			}
+		}
+		
+		return map;
 	}
 }
