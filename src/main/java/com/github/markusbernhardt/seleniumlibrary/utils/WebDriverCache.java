@@ -58,7 +58,7 @@ public class WebDriverCache {
 		// store the new tuple
 		openSessionIds.push(currentSessionIdAliasWebDriverTuple.id);
 		tupleBySessionId.put(currentSessionIdAliasWebDriverTuple.id, currentSessionIdAliasWebDriverTuple);
-		if (alias != null) {
+		if (alias != null && !"None".equalsIgnoreCase(alias)) {
 			tupleByAlias.put(currentSessionIdAliasWebDriverTuple.alias, currentSessionIdAliasWebDriverTuple);
 		}
 		return currentSessionIdAliasWebDriverTuple.id;

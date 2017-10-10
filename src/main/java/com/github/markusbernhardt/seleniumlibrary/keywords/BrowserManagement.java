@@ -101,6 +101,9 @@ public class BrowserManagement extends RunOnFailureKeywordsAdapter {
 	 */
 	@Autowired
 	protected Element element;
+	
+	@Autowired
+	private Robot robot;
 
 	// ##############################
 	// Getter / Setter
@@ -360,32 +363,36 @@ public class BrowserManagement extends RunOnFailureKeywordsAdapter {
 	 * @see BrowserManagement#switchBrowser
 	 */
 	@RobotKeyword
-	@ArgumentNames({ "url", "browserName=firefox", "alias=NONE", "remoteUrl=False", "desiredCapabilities=NONE",
-			"browserOptions=NONE" })
-	public String openBrowser(String[] args) throws Throwable {
-		Map<String,String> map = this.handleOpenBrowserArguments(args);
-		
+	@ArgumentNames({ "url", "browserName=firefox", "alias=None", "remoteUrl=False", "desiredCapabilities=None",
+			"browserOptions=None" })
+	public String openBrowser(String url, String... args) throws Throwable {
+	    String browserName = robot.getParamsValue(args, 0, "firefox");
+	    String alias = robot.getParamsValue(args, 1, "None");
+	    String remoteUrl = robot.getParamsValue(args, 3, null);
+	    String desiredCapabilities = robot.getParamsValue(args, 3, null);
+	    String browserOptions = robot.getParamsValue(args, 4, null);
+	    
 		try {
-			logging.info("browserName: " + map.get("browsername"));
-			if (map.get("remoteurl") != null && map.get("remoteurl").toUpperCase() != "NONE") {
+			logging.info("browserName: " + browserName);
+			if (remoteUrl != null) {
 				logging.info(String.format("Opening browser '%s' to base url '%s' through remote server at '%s'",
-						map.get("browsername"), map.get("url"), map.get("remoteurl")));
+				        browserName, url, remoteUrl));
 			} else {
-				logging.info(String.format("Opening browser '%s' to base url '%s'", map.get("browsername"), map.get("url")));
+				logging.info(String.format("Opening browser '%s' to base url '%s'", browserName, url));
 			}
 
-			WebDriver webDriver = createWebDriver(map.get("browsername"), map.get("desiredcapabilities"), map.get("remoteurl"), map.get("browseroptions"));
-			webDriver.get(map.get("url"));
-			String sessionId = webDriverCache.register(webDriver, map.get("alias"));
+			WebDriver webDriver = createWebDriver(browserName, desiredCapabilities, remoteUrl, browserOptions);
+			webDriver.get(url);
+			String sessionId = webDriverCache.register(webDriver, alias);
 			logging.debug(String.format("Opened browser with session id %s", sessionId));
 			return sessionId;
 		} catch (Throwable t) {
-			if (map.get("remoteurl") != null && map.get("remoteurl").toUpperCase() != "NONE") {
+			if (remoteUrl != null) {
 				logging.warn(String.format(
-						"Opening browser '%s' to base url '%s' through remote server at '%s' failed", map.get("browsername"), map.get("url"),
-						map.get("remoteurl")));
+						"Opening browser '%s' to base url '%s' through remote server at '%s' failed", browserName, url,
+						remoteUrl));
 			} else {
-				logging.warn(String.format("Opening browser '%s' to base url '%s' failed", map.get("browsername"), map.get("url")));
+				logging.warn(String.format("Opening browser '%s' to base url '%s' failed", browserName, url));
 			}
 			throw new SeleniumLibraryFatalException(t);
 		}
@@ -1179,26 +1186,6 @@ public class BrowserManagement extends RunOnFailureKeywordsAdapter {
 		return oldWait;
 	}
 
-	@RobotKeywordOverload
-	public void setRemoteWebDriverProxy(String host, String port) {
-		setRemoteWebDriverProxy(host, port, "");
-	}
-
-	@RobotKeywordOverload
-	public void setRemoteWebDriverProxy(String host, String port, String user) {
-		setRemoteWebDriverProxy(host, port, user, "");
-	}
-
-	@RobotKeywordOverload
-	public void setRemoteWebDriverProxy(String host, String port, String user, String password) {
-		setRemoteWebDriverProxy(host, port, user, password, "");
-	}
-
-	@RobotKeywordOverload
-	public void setRemoteWebDriverProxy(String host, String port, String user, String password, String domain) {
-		setRemoteWebDriverProxy(host, port, user, password, domain, "");
-	}
-
 	/**
 	 * Configures proxy handling for remote WebDriver instances.<br>
 	 * <br>
@@ -1240,9 +1227,12 @@ public class BrowserManagement extends RunOnFailureKeywordsAdapter {
 	 *            Default=NONE. The name of the workstation
 	 */
 	@RobotKeyword
-	@ArgumentNames({ "host", "port", "username=NONE", "password=NONE", "domain=NONE", "workstation=NONE" })
-	public void setRemoteWebDriverProxy(String host, String port, String username, String password, String domain,
-			String workstation) {
+	@ArgumentNames({ "host", "port", "username=None", "password=None", "domain=None", "workstation=None" })
+	public void setRemoteWebDriverProxy(String host, String port, String... args) {
+	    String username = robot.getParamsValue(args, 0, "");
+	    String password = robot.getParamsValue(args, 1, "");
+	    String domain = robot.getParamsValue(args, 2, "");
+	    String workstation = robot.getParamsValue(args, 3, "");
 
 		if (host.length() == 0 || port.length() == 0) {
 			// No host and port given as proxy
@@ -1474,6 +1464,7 @@ public class BrowserManagement extends RunOnFailureKeywordsAdapter {
 						while (iteratorPreferences.hasNext()) {
 							Entry<?, ?> entryPreferences = (Entry<?, ?>) iteratorPreferences.next();
 							Object valuePreferences = entryPreferences.getValue();
+							logging.debug(String.format("Adding property: %s with value: %s", entryPreferences.getKey().toString(), valuePreferences));
 							if (valuePreferences instanceof Number) {
 								firefoxProfile.setPreference(entryPreferences.getKey().toString(),
 										((Number) valuePreferences).intValue());
@@ -1565,26 +1556,5 @@ public class BrowserManagement extends RunOnFailureKeywordsAdapter {
 			msg.add(String.format("%d: %s", index + 1, items.get(index)));
 		}
 		return items;
-	}
-	
-//	{ "url", "browserName=firefox", "alias=NONE", "remoteUrl=NONE", "desiredCapabilities=NONE","browserOptions=NONE" }
-	private Map<String, String> handleOpenBrowserArguments(String[] args) {
-		Map<String, String> map = new HashMap<String, String>();
-		map.put("url", args[0]);
-		map.put("browsername", args.length > 1 && !args[1].contains("=") ? args[1]: "firefox");
-		map.put("alias", args.length > 2 && !args[2].contains("=") ? args[2]: null);
-		map.put("remoteurl", args.length > 3 && !args[3].contains("=") ? args[3]: null);
-		map.put("desiredcapabilities", args.length > 4 && !args[4].contains("=") ? args[4]: null);
-		map.put("browseroptions", args.length > 5 && !args[5].contains("=") ? args[5]: null);
-
-		for (String argument : args) {
-			String key = argument.split("=",2)[0].toLowerCase();
-			String[] arguments = {"brosername","alias","remoteurl","desiredcapabilities","browseroptions"};
-			if (Arrays.asList(arguments).contains(key)) {
-				map.put(key, argument.split("=",2)[1]);
-			}
-		}
-		
-		return map;
 	}
 }
