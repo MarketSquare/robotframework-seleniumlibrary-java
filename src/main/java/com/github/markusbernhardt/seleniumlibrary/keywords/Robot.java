@@ -5,8 +5,11 @@ import java.util.List;
 import java.util.Map;
 
 import org.python.util.PythonInterpreter;
+import org.robotframework.javalib.annotation.RobotKeywords;
+
 import com.google.gson.Gson;
 
+@RobotKeywords
 public class Robot {
 
     protected Logging logging = new Logging();
