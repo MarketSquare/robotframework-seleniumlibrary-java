@@ -342,6 +342,7 @@ public class Logging extends RunOnFailureKeywordsAdapter {
     }
 
     protected void log0(String msg, String methodName, String methodArguments) {
+        msg = String.valueOf(msg);
         if (msg.length() > 1024) {
             // Message is too large.
             // There is a hard limit of 100k in the Jython source code parser

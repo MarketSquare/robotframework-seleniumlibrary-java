@@ -1443,7 +1443,7 @@ public class BrowserManagement extends RunOnFailureKeywordsAdapter {
     }
 
     protected void parseBrowserOptionsChrome(String browserOptions, DesiredCapabilities desiredCapabilities) {
-        if (browserOptions != null && !"NONE".equals(browserOptions)) {
+        if (browserOptions != null && !"NONE".equalsIgnoreCase(browserOptions)) {
             JSONObject jsonObject = (JSONObject) JSONValue.parse(browserOptions);
             if (jsonObject != null) {
                 Map<String, Object> chromeOptions = new HashMap<String, Object>();
@@ -1463,7 +1463,7 @@ public class BrowserManagement extends RunOnFailureKeywordsAdapter {
     }
 
     protected void parseBrowserOptionsFirefox(String browserOptions, DesiredCapabilities desiredCapabilities) {
-        if (browserOptions != null && !"NONE".equals(browserOptions)) {
+        if (browserOptions != null && !"NONE".equalsIgnoreCase(browserOptions)) {
             JSONObject jsonObject = (JSONObject) JSONValue.parse(browserOptions);
             if (jsonObject != null) {
                 FirefoxProfile firefoxProfile = new FirefoxProfile();
