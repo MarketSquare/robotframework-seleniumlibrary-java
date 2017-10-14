@@ -330,17 +330,19 @@ public class BrowserManagement extends RunOnFailureKeywordsAdapter {
      * 
      * @param url
      *            The URL to open in the newly created browser instance.
-     * @param browserName
+     * @param args 
+     *            Contains optional arguments. If value is not set, default value is used. 
+     *            browserName
      *            Default=firefox. Optional name of the browser to start.
-     * @param alias
+     *            alias
      *            Default=NONE. Optional alias for the newly created browser
      *            instance. The alias can be used later for switching between
      *            browsers instances, just as returned index.
-     * @param remoteUrl
+     *            remoteUrl
      *            Default=False. Optional remote grid URL. When specified no local
      *            WebDriver instance is created, but a network connection to a
      *            Selenium 2 WebDriver Grid Hub at the given URL is opened.
-     * @param desiredCapabilities
+     *            desiredCapabilities
      *            Default=NONE. Optional desired capabilities of the newly created
      *            remote browser instances can be specified in a simple
      *            key1:val1,key2:val2 format or as a JSON object (see examples
@@ -348,7 +350,7 @@ public class BrowserManagement extends RunOnFailureKeywordsAdapter {
      *            browser, etc. should be used. For more information see: <a href=
      *            "http://code.google.com/p/selenium/wiki/DesiredCapabilities" >
      *            DesiredCapabilities</a>
-     * @param browserOptions
+     *            browserOptions
      *            Default=NONE. Extended browser options as JSON structure.
      * @return The index of the newly created browser instance.
      * @throws Throwable
@@ -1203,13 +1205,15 @@ public class BrowserManagement extends RunOnFailureKeywordsAdapter {
      *            The hostname of the proxy
      * @param port
      *            The port of the proxy
-     * @param username
+     * @param args
+     *            Contains optional arguments. If value is not set, default value is used. 
+     *            username
      *            Default=NONE. The usename
-     * @param password
-     *            Default=NONE. The password of the user
-     * @param domain
+     *            password
+     *            Default=NONE. The password of the user   
+     *            domain
      *            Default=NONE. The NTLM domain name
-     * @param workstation
+     *            workstation
      *            Default=NONE. The name of the workstation
      */
     @RobotKeyword
