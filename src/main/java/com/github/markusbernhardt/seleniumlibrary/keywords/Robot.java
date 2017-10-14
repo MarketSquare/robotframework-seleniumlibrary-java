@@ -13,11 +13,7 @@ import com.google.gson.Gson;
 @RobotKeywords
 public class Robot {
 
-    /**
-     * Instantiated Logging keyword bean
-     */
-    @Autowired
-    protected Logging logging;
+    protected Logging logging = new Logging();
 
 	@SuppressWarnings("unchecked")
 	public <T> T getParamsValue(String[] params, int index, T defaultValue) {

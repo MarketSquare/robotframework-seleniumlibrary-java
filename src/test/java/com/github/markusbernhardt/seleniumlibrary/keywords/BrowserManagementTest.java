@@ -3,12 +3,21 @@ package com.github.markusbernhardt.seleniumlibrary.keywords;
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
 
+import org.junit.BeforeClass;
 import org.junit.Test;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.firefox.FirefoxProfile;
 import org.openqa.selenium.remote.DesiredCapabilities;
 
 public class BrowserManagementTest {
+    
+    private static BrowserManagement bm;
+    
+    @BeforeClass
+    public static void initialize() {
+        bm = new BrowserManagement();
+        bm.logging = new Logging();
+    }
 
     @Test
     public void testOpenBrowser() {
@@ -29,8 +38,6 @@ public class BrowserManagementTest {
     public void testCreateDesiredCapabilities() {
         String desired = "{\"platform\":\"WINDOWS\",\"browserName\":\"firefox\",\"version\":\"\"}";
         String browserOptions = "{\"preferences\": {\"network.proxy.type\": 1, \"network.proxy.http\": \"localhost\", \"network.proxy.http_port\": 73571}}";
-        BrowserManagement bm = new BrowserManagement();
-        bm.logging = new Logging();
         DesiredCapabilities dc = bm.createDesiredCapabilities("firefox", desired, browserOptions);
         FirefoxProfile profile = (FirefoxProfile) dc.getCapability("firefox_profile");
         assertTrue(dc.getCapability("platform").toString().equals("WINDOWS"));
@@ -40,8 +47,6 @@ public class BrowserManagementTest {
     @Test
     public void testCreateDesiredCapabilitiesWithoutBrowserOptions() {
         String desired = "{\"platform\":\"WINDOWS\",\"browserName\":\"firefox\",\"version\":\"\"}";
-        BrowserManagement bm = new BrowserManagement();
-        bm.logging = new Logging();
         DesiredCapabilities dc = bm.createDesiredCapabilities("firefox", desired, null);
         FirefoxProfile profile = (FirefoxProfile) dc.getCapability("firefox_profile");
         assertTrue(dc.getCapability("platform").toString().equals("WINDOWS"));
@@ -50,10 +55,16 @@ public class BrowserManagementTest {
     @Test
     public void testCreateDesiredCapabilitiesWithOnlyBrowserOptions() {
         String browserOptions = "{\"preferences\": {\"network.proxy.type\": 1, \"network.proxy.http\": \"localhost\", \"network.proxy.http_port\": 73571}}";
-        BrowserManagement bm = new BrowserManagement();
-        bm.logging = new Logging();
         DesiredCapabilities dc = bm.createDesiredCapabilities("firefox", null, browserOptions);
         FirefoxProfile profile = (FirefoxProfile) dc.getCapability("firefox_profile");
         assertTrue(profile.getStringPreference("network.proxy.http", "wrong") != "wrong");
+    }
+    
+    @Test
+    public void parseChromeBrowserOptions() {
+        DesiredCapabilities dc = DesiredCapabilities.chrome();
+        String browserOptions = "{\"args\":[\"start-maximized\"],\"extensions\":[],\"prefs\":{\"intl.accept_languages\":\"de-AT\"}}";
+        bm.parseBrowserOptionsChrome(browserOptions, dc);
+        assertTrue(dc.getCapability("chromeOptions").toString().contains("de-AT"));
     }
 }
