@@ -18,8 +18,8 @@ use this library by adding the following dependency to
 your pom.xml:
 
     <dependency>
-        <groupId>com.github.hi_fi</groupId>
-        <artifactId>robotframework-seleniumlibrary-java</artifactId>
+        <groupId>com.github.hi-fi</groupId>
+        <artifactId>robotframework-seleniumlibrary</artifactId>
         <version>2.53.1.1</version>
         <scope>test</scope>
     </dependency>
@@ -43,8 +43,8 @@ use this library by adding the following dependency to
 your pom.xml:
 
     <dependency>
-        <groupId>com.github.hi_fi</groupId>
-        <artifactId>robotframework-seleniumlibrary-java</artifactId>
+        <groupId>com.github.hi-fi</groupId>
+        <artifactId>robotframework-seleniumlibrary</artifactId>
         <version>3.5.3.1</version>
         <scope>test</scope>
     </dependency>
