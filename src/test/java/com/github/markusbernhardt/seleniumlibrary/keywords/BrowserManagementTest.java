@@ -65,6 +65,6 @@ public class BrowserManagementTest {
         DesiredCapabilities dc = DesiredCapabilities.chrome();
         String browserOptions = "{\"args\":[\"start-maximized\"],\"extensions\":[],\"prefs\":{\"intl.accept_languages\":\"de-AT\"}}";
         bm.parseBrowserOptionsChrome(browserOptions, dc);
-        assertTrue(dc.getCapability("chromeOptions").toString().contains("de-AT"));
+        assertTrue(dc.getCapability("goog:chromeOptions").toString().contains("de-AT"));
     }
 }
