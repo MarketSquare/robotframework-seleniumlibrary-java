@@ -420,6 +420,20 @@
 				</plugins>
 			</build>
 		</profile>
+		      <profile>
+            <id>htmlunitwithjs</id>
+            <properties>
+                <browser>htmlunitwithjs</browser>
+            </properties>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.robotframework</groupId>
+                        <artifactId>robotframework-maven-plugin</artifactId>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
 		<profile>
 			<id>release</id>
 			<build>
