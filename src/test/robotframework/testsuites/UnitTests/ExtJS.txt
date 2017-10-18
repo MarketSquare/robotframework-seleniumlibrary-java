@@ -22,7 +22,6 @@ Open Page
 Buy Ticket
     Wait Until Page Contains Element    ${inputfield password}
     Input Text    ${inputfield password}    password
-    Capture Page Screenshot
-
+    Capture Page Screenshot    images${/}screenshot1.png
     Click Element    ${login}
-    Capture Page Screenshot
+    Capture Page Screenshot    images${/}screenshot2.png

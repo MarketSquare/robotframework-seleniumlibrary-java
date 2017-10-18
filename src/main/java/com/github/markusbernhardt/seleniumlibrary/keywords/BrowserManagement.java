@@ -381,8 +381,7 @@ public class BrowserManagement extends RunOnFailureKeywordsAdapter {
             logging.debug(String.format("Opened browser with session id %s", sessionId));
             return sessionId;
         } catch (Throwable t) {
-            if (remoteUrl != null && remoteUrl.toUpperCase() != "FALSE"
-                    && remoteUrl.toUpperCase() != "NONE") {
+            if (remoteUrl != null && !remoteUrl.equalsIgnoreCase("FALSE") && !remoteUrl.equalsIgnoreCase("NONE")) {
                 logging.warn(String.format("Opening browser '%s' to base url '%s' through remote server at '%s' failed",
                         browserName, url, remoteUrl));
             } else {
@@ -1329,8 +1328,7 @@ public class BrowserManagement extends RunOnFailureKeywordsAdapter {
                 browserOptions);
 
         WebDriver webDriver;
-        if (remoteUrlString != null && !remoteUrlString.equalsIgnoreCase("FALSE")
-                && !remoteUrlString.equalsIgnoreCase("NONE")) {
+        if (remoteUrlString != null && !remoteUrlString.equalsIgnoreCase("FALSE") && !remoteUrlString.equalsIgnoreCase("NONE")) {
             logging.info(String.format("Opening browser '%s' through remote server at '%s'",
                     browserName, remoteUrlString));
             webDriver = createRemoteWebDriver(desiredCapabilities, new URL(remoteUrlString));

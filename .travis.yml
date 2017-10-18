@@ -5,7 +5,6 @@ jdk:
 env:
   - PROFILE=build
   - PROFILE=build,googlechrome
-  - PROFILE=build,phantomjs
   
 stages:
   - test

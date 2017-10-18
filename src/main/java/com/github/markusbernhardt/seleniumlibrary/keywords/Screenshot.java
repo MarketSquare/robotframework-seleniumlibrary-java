@@ -4,8 +4,10 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
+import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.TakesScreenshot;
+import org.openqa.selenium.WebDriver;
 import org.robotframework.javalib.annotation.ArgumentNames;
 import org.robotframework.javalib.annotation.Autowired;
 import org.robotframework.javalib.annotation.RobotKeyword;
@@ -61,18 +63,24 @@ public class Screenshot extends RunOnFailureKeywordsAdapter {
 		File logdir = logging.getLogDir();
 		File path = new File(logdir, normalizeFilename(filename));
 		String link = Robotframework.getLinkPath(path, logdir);
+		WebDriver currentWebDriver = browserManagement.getCurrentWebDriver();
 
-		TakesScreenshot takesScreenshot = ((TakesScreenshot) browserManagement.getCurrentWebDriver());
-		if (takesScreenshot == null) {
-			logging.warn("Can't take screenshot. No open browser found");
-			return;
+		if (currentWebDriver.getClass().toString().contains("HtmlUnit")) {
+		    logging.warn("HTMLunit is not supporting screenshots.");
+		    return;
+		} else {
+    		TakesScreenshot takesScreenshot = ((TakesScreenshot) currentWebDriver);
+    		if (takesScreenshot == null) {
+    			logging.warn("Can't take screenshot. No open browser found");
+    			return;
+    		}
+    
+    		byte[] png = takesScreenshot.getScreenshotAs(OutputType.BYTES);
+    		writeScreenshot(path, png);
+    
+    		logging.html(String.format(
+    				"</td></tr><tr><td colspan=\"3\"><a href=\"%s\"><img src=\"%s\" width=\"800px\"></a>", link, link));
 		}
-
-		byte[] png = takesScreenshot.getScreenshotAs(OutputType.BYTES);
-		writeScreenshot(path, png);
-
-		logging.html(String.format(
-				"</td></tr><tr><td colspan=\"3\"><a href=\"%s\"><img src=\"%s\" width=\"800px\"></a>", link, link));
 	}
 
 	// ##############################
@@ -84,11 +92,13 @@ public class Screenshot extends RunOnFailureKeywordsAdapter {
 	protected void writeScreenshot(File path, byte[] png) {
 		FileOutputStream fos = null;
 		try {
+		    path.getParentFile().mkdirs();
 			fos = new FileOutputStream(path);
 			fos.write(png);
 			fos.flush();
 		} catch (IOException e) {
 			logging.warn(String.format("Can't write screenshot '%s'", path.getAbsolutePath()));
+			logging.debug(ExceptionUtils.getStackTrace(e));
 		} finally {
 			if (fos != null) {
 				try {
