@@ -23,7 +23,7 @@ public abstract class Robotframework {
 			for (int i = 0; i < s.length(); i++) {
 				final char c = s.charAt(i);
 				if (((c >= 'A') && (c <= 'Z')) || ((c >= 'a') && (c <= 'z')) || ((c >= '0') && (c <= '9'))
-						|| (c == '-') || (c == '.') || (c == '_') || (c == '~')) {
+						|| (c == '-') || (c == '.') || (c == '_') || (c == '~') || (c == '\\') || (c == '/')) {
 					sb.append(c);
 				} else {
 					final byte[] bytes = ("" + c).getBytes("UTF-8");
