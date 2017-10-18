@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
+import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.TakesScreenshot;
 import org.robotframework.javalib.annotation.ArgumentNames;
@@ -84,11 +85,13 @@ public class Screenshot extends RunOnFailureKeywordsAdapter {
 	protected void writeScreenshot(File path, byte[] png) {
 		FileOutputStream fos = null;
 		try {
+		    path.getParentFile().mkdirs();
 			fos = new FileOutputStream(path);
 			fos.write(png);
 			fos.flush();
 		} catch (IOException e) {
 			logging.warn(String.format("Can't write screenshot '%s'", path.getAbsolutePath()));
+			logging.debug(ExceptionUtils.getStackTrace(e));
 		} finally {
 			if (fos != null) {
 				try {
