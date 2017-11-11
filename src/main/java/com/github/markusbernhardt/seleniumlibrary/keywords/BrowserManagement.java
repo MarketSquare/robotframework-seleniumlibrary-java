@@ -4,14 +4,12 @@ import io.appium.java_client.ios.IOSDriver;
 import io.selendroid.client.SelendroidDriver;
 
 import java.io.File;
-import java.io.IOException;
 import java.lang.reflect.Field;
 import java.net.InetAddress;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -63,7 +61,6 @@ import com.github.markusbernhardt.seleniumlibrary.utils.WebDriverCache;
 import com.github.markusbernhardt.seleniumlibrary.utils.WebDriverCache.SessionIdAliasWebDriverTuple;
 import com.machinepublishers.jbrowserdriver.JBrowserDriver;
 import com.machinepublishers.jbrowserdriver.Settings;
-import com.machinepublishers.jbrowserdriver.Timezone;
 
 @SuppressWarnings("deprecation")
 @RobotKeywords

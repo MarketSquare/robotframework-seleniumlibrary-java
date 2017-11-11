@@ -28,7 +28,7 @@ Search With JavaScript Locator
    
 Search With JavaScript Locator Text
     SeleniumLibrary.Add Location Strategy    text    return window.document.evaluate("//*[contains(@value,'" + arguments[0] + "')]", window.document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue;
-    Wait Until Element Is Visible    text=Google-Suche
+    Wait Until Element Is Visible    text=Google
 
 Search Without Locator Type
     Input Text    lst-ib    Robotframework Selenium2Library Java
