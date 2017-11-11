@@ -4,7 +4,7 @@
 
 	<groupId>com.github.hi-fi</groupId>
 	<artifactId>robotframework-seleniumlibrary</artifactId>
-	<version>3.6.0.1-SNAPSHOT</version>
+	<version>3.7.1.1-SNAPSHOT</version>
 	<packaging>jar</packaging>
 
 	<name>Robot Framework :: SeleniumLibrary</name>
@@ -71,7 +71,7 @@
 		<xml.doclet.version>1.0.5</xml.doclet.version>
 		<robotframework.version>3.0.2</robotframework.version>
 		<robotframework.maven.plugin.version>1.4.7</robotframework.maven.plugin.version>
-		<selenium.version>3.6.0</selenium.version>
+		<selenium.version>3.7.1</selenium.version>
 		<keywords.class>SeleniumLibrary</keywords.class>
 		<browser>jbrowser</browser>
 	</properties>
