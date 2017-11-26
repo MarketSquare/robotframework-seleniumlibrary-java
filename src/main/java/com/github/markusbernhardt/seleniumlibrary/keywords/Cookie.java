@@ -1,6 +1,8 @@
 package com.github.markusbernhardt.seleniumlibrary.keywords;
 
+import java.text.DateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 import org.robotframework.javalib.annotation.ArgumentNames;
 import org.robotframework.javalib.annotation.Autowired;
@@ -19,39 +21,28 @@ public class Cookie extends RunOnFailureKeywordsAdapter {
 	 */
 	@Autowired
 	protected BrowserManagement browserManagement;
+	
+	@Autowired
+	protected Robot robot;
 
 	// ##############################
 	// Keywords
 	// ##############################
 
-	/**
-	 * Deletes all cookies.<br>
-	 */
-	@RobotKeyword
+	@RobotKeyword("Deletes all cookies.")
 	public void deleteAllCookies() {
 		browserManagement.getCurrentWebDriver().manage().deleteAllCookies();
 	}
 
-	/**
-	 * Deletes cookie matching <b>name</b>.<br>
-	 * <br>
-	 * If the cookie is not found, nothing happens<br>
-	 * 
-	 * @param name
-	 *            The name of the cookie to delete.
-	 */
-	@RobotKeyword
+	@RobotKeyword("Deletes cookie matching ``name``.\n\r"
+	        + "\n\r"
+	        + "If the cookie is not found, nothing happens.")
 	@ArgumentNames({ "name" })
 	public void deleteCookie(String name) {
 		browserManagement.getCurrentWebDriver().manage().deleteCookieNamed(name);
 	}
 
-	/**
-	 * Returns all cookies of the current page.<br>
-	 * 
-	 * @return All cookies of the current page.
-	 */
-	@RobotKeyword
+	@RobotKeyword("Returns all cookies of the current page.")
 	public String getCookies() {
 		StringBuffer ret = new StringBuffer();
 
@@ -67,16 +58,9 @@ public class Cookie extends RunOnFailureKeywordsAdapter {
 		return ret.toString();
 	}
 
-	/**
-	 * Returns value of cookie found with <b>name</b>.<br>
-	 * <br>
-	 * If no cookie is found with name, this keyword fails.<br>
-	 * 
-	 * @param name
-	 *            The name of the cookie
-	 * @return The value of the found cookie
-	 */
-	@RobotKeyword
+	@RobotKeyword("Returns value of cookie found with ``name``.\n\r"
+	        + "\n\r"
+	        + "If no cookie is found with name, this keyword fails.")
 	@ArgumentNames({ "name" })
 	public String getCookieValue(String name) {
 		org.openqa.selenium.Cookie cookie = browserManagement.getCurrentWebDriver().manage().getCookieNamed(name);
@@ -88,48 +72,14 @@ public class Cookie extends RunOnFailureKeywordsAdapter {
 		}
 	}
 
-	@RobotKeywordOverload
-	public void addCookie(String name, String value) {
-		addCookie(name, value, null);
-	}
-
-	@RobotKeywordOverload
-	public void addCookie(String name, String value, String path) {
-		addCookie(name, value, path, null);
-	}
-
-	@RobotKeywordOverload
-	public void addCookie(String name, String value, String path, String domain) {
-		addCookie(name, value, path, domain, "");
-	}
-
-	@RobotKeywordOverload
-	public void addCookie(String name, String value, String path, String domain, String secure) {
-		addCookie(name, value, path, domain, secure, null);
-	}
-
-	/**
-	 * Adds a cookie to your current session.<br>
-	 * 
-	 * @param name
-	 *            The name of the cookie.
-	 * @param value
-	 *            The cookie value.
-	 * @param path
-	 *            Default=NONE. The path the cookie is visible to.
-	 * @param domain
-	 *            Default=NONE. The domain the cookie is visible to.
-	 * @param secure
-	 *            Default=NONE. Whether this cookie requires a secure
-	 *            connection.
-	 * @param expiry
-	 *            Default=NONE. The cookie's expiration date
-	 */
-	@RobotKeyword
-	@ArgumentNames({ "name", "value", "path=NONE", "domain=NONE", "secure=NONE", "expiry=NONE" })
-	public void addCookie(String name, String value, String path, String domain, String secure, String expiry) {
-		// Parameter expiry not used by Python library
-		org.openqa.selenium.Cookie cookie = new org.openqa.selenium.Cookie(name, value, domain, path, null,
+	@RobotKeyword("Adds a cookie to your current session.")
+	@ArgumentNames({ "name", "value", "path=NONE", "domain=NONE", "secure=NONE"})
+	public void addCookie(String name, String value, String...params) {
+	    String path = robot.getParamsValue(params, 0, null);
+	    String domain = robot.getParamsValue(params, 1, null);
+	    String secure = robot.getParamsValue(params, 2, "");
+	    Date expiry = null;
+		org.openqa.selenium.Cookie cookie = new org.openqa.selenium.Cookie(name, value, domain, path, expiry,
 				"true".equals(secure.toLowerCase()));
 		browserManagement.getCurrentWebDriver().manage().addCookie(cookie);
 	}
