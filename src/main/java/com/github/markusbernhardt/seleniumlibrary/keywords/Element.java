@@ -43,30 +43,20 @@ public class Element extends RunOnFailureKeywordsAdapter {
 	 */
 	@Autowired
 	protected Logging logging;
+	
+	@Autowired
+	protected Robot robot;
 
 	// ##############################
 	// Keywords - Element Lookups
 	// ##############################
 
-	@RobotKeywordOverload
-	@ArgumentNames({ "text" })
-	public void currentFrameContains(String text) {
-		currentFrameContains(text, "INFO");
-	}
-
-	/**
-	 * Verify the current frame contains <b>text</b>.<br>
-	 * <br>
-	 * See `Introduction` for details about log levels.<br>
-	 * 
-	 * @param text
-	 *            The text to verify.
-	 * @param logLevel
-	 *            Default=INFO. Optional log level.
-	 */
-	@RobotKeyword
+	@RobotKeyword("Verify the current frame contains ``text``.\n\r"
+	        + "\n\r"
+	        + "See `Introduction` for details about log levels.")
 	@ArgumentNames({ "text", "logLevel=INFO" })
-	public void currentFrameContains(String text, String logLevel) {
+	public void currentFrameContains(String text, String...params) {
+	    String logLevel = robot.getParamsValue(params, 0, "INFO");
 		if (!isTextPresent(text)) {
 			logging.log(String.format("Current Frame Contains: %s => FAILED", text), logLevel);
 			throw new SeleniumLibraryNonFatalException(
@@ -76,24 +66,12 @@ public class Element extends RunOnFailureKeywordsAdapter {
 		}
 	}
 
-	@RobotKeywordOverload
-	public void currentFrameShouldNotContain(String text) {
-		currentFrameShouldNotContain(text, "INFO");
-	}
-
-	/**
-	 * Verify the current frame does not contain <b>text</b>.<br>
-	 * <br>
-	 * See `Introduction` for details about log levels.<br>
-	 * 
-	 * @param text
-	 *            The text to verify.
-	 * @param logLevel
-	 *            Default=INFO. Optional log level.
-	 */
-	@RobotKeyword
+    @RobotKeyword("Verify the current frame does not contain ``text``.\n\r"
+            + "\n\r"
+            + "See `Introduction` for details about log levels.")
 	@ArgumentNames({ "text", "logLevel=INFO" })
-	public void currentFrameShouldNotContain(String text, String logLevel) {
+	public void currentFrameShouldNotContain(String text, String...params) {
+	    String logLevel = robot.getParamsValue(params, 0, "INFO");
 		if (isTextPresent(text)) {
 			logging.log(String.format("Current Frame Should Not Contain: %s => FAILED", text), logLevel);
 			throw new SeleniumLibraryNonFatalException(
@@ -103,26 +81,12 @@ public class Element extends RunOnFailureKeywordsAdapter {
 		}
 	}
 
-	@RobotKeywordOverload
-	public void elementShouldContain(String locator, String text) {
-		elementShouldContain(locator, text, "");
-	}
-
-	/**
-	 * Verify the element identified by <b>locator</b> contains <b>text</b>.<br>
-	 * <br>
-	 * See `Introduction` for details about locators.
-	 * 
-	 * @param locator
-	 *            The locator to locate the element.
-	 * @param text
-	 *            The text to verify.
-	 * @param message
-	 *            Default=NONE. Optional custom error message.
-	 */
-	@RobotKeyword
+	@RobotKeyword("Verify the element identified by ``locator`` contains ``text``.\n\r"
+	        + "\n\r"
+	        + "See `Introduction` for details about locators.")
 	@ArgumentNames({ "locator", "text", "message=NONE" })
-	public void elementShouldContain(String locator, String text, String message) {
+	public void elementShouldContain(String locator, String text, String...params) {
+	    String message = robot.getParamsValue(params, 0, "");
 		String actual = getText(locator);
 
 		if (!actual.toLowerCase().contains(text.toLowerCase())) {
@@ -134,27 +98,12 @@ public class Element extends RunOnFailureKeywordsAdapter {
 		}
 	}
 
-	@RobotKeywordOverload
-	public void elementShouldNotContain(String locator, String text) {
-		elementShouldNotContain(locator, text, "");
-	}
-
-	/**
-	 * Verify the element identified by <b>locator</b> does not contain
-	 * <b>text</b>.<br>
-	 * <br>
-	 * See `Introduction` for details about locators.
-	 * 
-	 * @param locator
-	 *            The locator to locate the element.
-	 * @param text
-	 *            The text to verify.
-	 * @param message
-	 *            Default=NONE. Optional custom error message.
-	 */
-	@RobotKeyword
+	@RobotKeyword("Verify the element identified by ``locator`` does not contain ``text``.\r\n"
+	        + "\r\n"
+	        + "See `Introduction` for details about locators.")
 	@ArgumentNames({ "locator", "text", "message=NONE" })
-	public void elementShouldNotContain(String locator, String text, String message) {
+	public void elementShouldNotContain(String locator, String text, String...params) {
+	    String message = robot.getParamsValue(params, 0, "");
 		String actual = getText(locator);
 
 		if (actual.toLowerCase().contains(text.toLowerCase())) {
@@ -166,26 +115,12 @@ public class Element extends RunOnFailureKeywordsAdapter {
 		}
 	}
 
-	@RobotKeywordOverload
-	public void frameShouldContain(String locator, String text) {
-		frameShouldContain(locator, text, "INFO");
-	}
-
-	/**
-	 * Verify the frame identified by <b>locator</b> contains <b>text</b>.<br>
-	 * <br>
-	 * See `Introduction` for details about locators.
-	 * 
-	 * @param locator
-	 *            The locator to locate the frame.
-	 * @param text
-	 *            The text to verify.
-	 * @param logLevel
-	 *            Default=INFO. Optional log level.
-	 */
-	@RobotKeyword
+	@RobotKeyword("Verify the frame identified by ``locator`` contains ``text``.\n\r"
+	        + "\n\r"
+	        + "See `Introduction` for details about locators.")
 	@ArgumentNames({ "locator", "text", "logLevel=INFO" })
-	public void frameShouldContain(String locator, String text, String logLevel) {
+	public void frameShouldContain(String locator, String text, String...params) {
+	    String logLevel = robot.getParamsValue(params, 0, "INFO");
 		if (!frameContains(locator, text)) {
 			logging.log(String.format("Frame Should Contain: %s => FAILED", text), logLevel);
 			throw new SeleniumLibraryNonFatalException(
@@ -195,22 +130,12 @@ public class Element extends RunOnFailureKeywordsAdapter {
 		}
 	}
 
-	/**
-	 * Verify the frame identified by <b>locator</b> does not contain
-	 * <b>text</b>.<br>
-	 * <br>
-	 * See `Introduction` for details about locators.
-	 * 
-	 * @param locator
-	 *            The locator to locate the frame.
-	 * @param text
-	 *            The text to verify.
-	 * @param logLevel
-	 *            Default=INFO. Optional log level.
-	 */
-	@RobotKeyword
+	@RobotKeyword("Verify the frame identified by ``locator`` does not contain ``text``.\n\r"
+	        + "\n\r"
+	        + "See `Introduction` for details about locators.")
 	@ArgumentNames({ "locator", "text", "logLevel=INFO" })
-	public void frameShouldNotContain(String locator, String text, String logLevel) {
+	public void frameShouldNotContain(String locator, String text, String...params) {
+        String logLevel = robot.getParamsValue(params, 0, "INFO");
 		if (frameContains(locator, text)) {
 			logging.log(String.format("Frame Should Not Contain: %s => FAILED", text), logLevel);
 			throw new SeleniumLibraryNonFatalException(
@@ -220,24 +145,12 @@ public class Element extends RunOnFailureKeywordsAdapter {
 		}
 	}
 
-	@RobotKeywordOverload
-	public void pageShouldContain(String text) {
-		pageShouldContain(text, "INFO");
-	}
-
-	/**
-	 * Verify the current page contains <b>text</b>.<br>
-	 * <br>
-	 * See `Introduction` for details about log levels.<br>
-	 * 
-	 * @param text
-	 *            The text to verify.
-	 * @param logLevel
-	 *            Default=INFO. Optional log level.
-	 */
-	@RobotKeyword
+	@RobotKeyword("Verify the current page contains ``text``.\n\r"
+	        + "\n\r"
+	        + "See `Introduction` for details about log levels.")
 	@ArgumentNames({ "text", "logLevel=INFO" })
-	public void pageShouldContain(String text, String logLevel) {
+	public void pageShouldContain(String text, String...params) {
+        String logLevel = robot.getParamsValue(params, 0, "INFO");
 		if (!pageContains(text)) {
 			logging.log(String.format("Page Should Contain: %s => FAILED", text), logLevel);
 			throw new SeleniumLibraryNonFatalException(
@@ -247,24 +160,12 @@ public class Element extends RunOnFailureKeywordsAdapter {
 		}
 	}
 
-	@RobotKeywordOverload
-	public void pageShouldNotContain(String text) {
-		pageShouldNotContain(text, "INFO");
-	}
-
-	/**
-	 * Verify the current page does not contain <b>text</b>.<br>
-	 * <br>
-	 * See `Introduction` for details about log levels.<br>
-	 * 
-	 * @param text
-	 *            The text to verify.
-	 * @param logLevel
-	 *            Default=INFO. Optional log level.
-	 */
-	@RobotKeyword
+	@RobotKeyword("Verify the current page does not contain ``text``.\n\r"
+	        + "\n\r"
+	        + "See `Introduction` for details about log levels.")
 	@ArgumentNames({ "text", "logLevel=INFO" })
-	public void pageShouldNotContain(String text, String logLevel) {
+	public void pageShouldNotContain(String text, String...params) {
+        String logLevel = robot.getParamsValue(params, 0, "INFO");
 		if (pageContains(text)) {
 			logging.log(String.format("Page Should Not Contain: %s => FAILED", text), logLevel);
 			throw new SeleniumLibraryNonFatalException(
@@ -274,34 +175,14 @@ public class Element extends RunOnFailureKeywordsAdapter {
 		}
 	}
 
-	@RobotKeywordOverload
-	public void pageShouldContainElement(String locator) {
-		pageShouldContainElement(locator, "", "INFO");
-	}
-
-	@RobotKeywordOverload
-	public void pageShouldContainElement(String locator, String message) {
-		pageShouldContainElement(locator, message, "INFO");
-	}
-
-	/**
-	 * Verify the element identified by <b>locator</b> is found on the current
-	 * page.<br>
-	 * <br>
-	 * Key attributes for arbitrary elements are id and name. See `Introduction`
-	 * for details about log levels and locators.<br>
-	 * 
-	 * @param locator
-	 *            The locator to locate the element.
-	 * @param message
-	 *            Default=NONE. Optional custom error message.
-	 * @param logLevel
-	 *            Default=INFO. Optional log level.
-	 */
-	@RobotKeyword
+	@RobotKeyword("Verify the element identified by ``locator`` is found on the current page\r\n" + 
+	        "\r\n" + 
+	        "Key attributes for arbitrary elements are id and name. See `Introduction` for details about log levels and locators.")
 	@ArgumentNames({ "locator", "message=NONE", "logLevel=INFO" })
-	public void pageShouldContainElement(String locator, String message, String logLevel) {
-		pageShouldContainElement(locator, null, message, "INFO");
+	public void pageShouldContainElement(String locator, String...params) {
+	    String message = robot.getParamsValue(params, 0, "");
+	    String logLevel = robot.getParamsValue(params, 1, "INFO");
+		pageShouldContainElement(locator, null, message, logLevel);
 	}
 
 	protected void pageShouldContainElement(String locator, String tag, String message, String logLevel) {
@@ -317,34 +198,14 @@ public class Element extends RunOnFailureKeywordsAdapter {
 		}
 	}
 
-	@RobotKeywordOverload
-	public void pageShouldNotContainElement(String locator) {
-		pageShouldNotContainElement(locator, "", "INFO");
-	}
-
-	@RobotKeywordOverload
-	public void pageShouldNotContainElement(String locator, String message) {
-		pageShouldNotContainElement(locator, message, "INFO");
-	}
-
-	/**
-	 * Verify the element identified by <b>locator</b> is not found on the
-	 * current page.<br>
-	 * <br>
-	 * Key attributes for arbitrary elements are id and name. See `Introduction`
-	 * for details about log levels and locators.<br>
-	 * 
-	 * @param locator
-	 *            The locator to locate the element.
-	 * @param message
-	 *            Default=NONE. Optional custom error message.
-	 * @param logLevel
-	 *            Default=INFO. Optional log level.
-	 */
-	@RobotKeyword
+    @RobotKeyword("Verify the element identified by ``locator`` is not found on the current page\r\n" + 
+            "\r\n" + 
+            "Key attributes for arbitrary elements are id and name. See `Introduction` for details about log levels and locators.")
 	@ArgumentNames({ "locator", "message=NONE", "logLevel=INFO" })
-	public void pageShouldNotContainElement(String locator, String message, String logLevel) {
-		pageShouldNotContainElement(locator, null, message, "INFO");
+	public void pageShouldNotContainElement(String locator, String...params) {
+        String message = robot.getParamsValue(params, 0, "");
+        String logLevel = robot.getParamsValue(params, 1, "INFO");
+		pageShouldNotContainElement(locator, null, message, logLevel);
 	}
 
 	protected void pageShouldNotContainElement(String locator, String tag, String message, String logLevel) {
@@ -364,33 +225,13 @@ public class Element extends RunOnFailureKeywordsAdapter {
 	// Keywords - Attributes
 	// ##############################
 
-	/**
-	 * Assigns a temporary identifier to the element identified by
-	 * <b>locator</b><br>
-	 * <br>
-	 * This is mainly useful, when the locator is a complicated and slow XPath
-	 * expression. The identifier expires when the page is reloaded.<br>
-	 * <br>
-	 * Example:
-	 * <table border="1" cellspacing="0" summary="">
-	 * <tr>
-	 * <td>Assign ID to Element</td>
-	 * <td>xpath=//div[@id=\"first_div\"]</td>
-	 * <td>my id</td>
-	 * </tr>
-	 * <tr>
-	 * <td>Page Should Contain Element</td>
-	 * <td>my id</td>
-	 * <td></td>
-	 * </tr>
-	 * </table>
-	 * 
-	 * @param locator
-	 *            The locator to locate the element.
-	 * @param id
-	 *            The id to assign.
-	 */
-	@RobotKeyword
+	@RobotKeyword("Assigns a temporary identifier to the element identified by ``locator``.\r\n" + 
+	        "\r\n" + 
+	        "This is mainly useful, when the locator is a complicated and slow XPath expression. The identifier expires when the page is reloaded.\r\n" + 
+	        "\r\n" + 
+	        "Example:\r\n" + 
+	        " | Assign ID to Element | xpath=//div[@id=\\\"first_div\\\"] | my id | \r\n" + 
+	        " | Page Should Contain Element | my id |")
 	@ArgumentNames({ "locator", "id" })
 	public void assignIdToElement(String locator, String id) {
 		logging.info(String.format("Assigning temporary id '%s' to element '%s'", id, locator));
@@ -401,15 +242,17 @@ public class Element extends RunOnFailureKeywordsAdapter {
 	}
 
 	/**
-	 * Verify the element identified by <b>locator</b> is enabled.<br>
-	 * <br>
+	 * Verify the element identified by ``locator`` is enabled.
+	 * 
 	 * Key attributes for arbitrary elements are id and name. See `Introduction`
-	 * for details about locators.<br>
+	 * for details about locators.
 	 * 
 	 * @param locator
 	 *            The locator to locate the element.
 	 */
-	@RobotKeyword
+    @RobotKeyword("Verify the element identified by ``locator`` is found on the current page\r\n" + 
+            "\r\n" + 
+            "Key attributes for arbitrary elements are id and name. See `Introduction` for details about log levels and locators.")
 	@ArgumentNames({ "locator" })
 	public void elementShouldBeEnabled(String locator) {
 		if (!isEnabled(locator)) {
@@ -417,16 +260,9 @@ public class Element extends RunOnFailureKeywordsAdapter {
 		}
 	}
 
-	/**
-	 * Verify the element identified by <b>locator</b> is disabled.<br>
-	 * <br>
-	 * Key attributes for arbitrary elements are id and name. See `Introduction`
-	 * for details about locators.<br>
-	 * 
-	 * @param locator
-	 *            The locator to locate the element.
-	 */
-	@RobotKeyword
+    @RobotKeyword("Verify the element identified by ``locator`` is disabled.\r\n" + 
+            "\r\n" + 
+            "Key attributes for arbitrary elements are id and name. See `Introduction` for details about locators.")
 	@ArgumentNames({ "locator" })
 	public void elementShouldBeDisabled(String locator) {
 		if (isEnabled(locator)) {
@@ -439,20 +275,12 @@ public class Element extends RunOnFailureKeywordsAdapter {
 		elementShouldBeSelected(locator, "");
 	}
 
-	/**
-	 * Verify the element identified by <b>locator</b> is selected.<br>
-	 * <br>
-	 * Key attributes for arbitrary elements are id and name. See `Introduction`
-	 * for details about locators.<br>
-	 * 
-	 * @param locator
-	 *            The locator to locate the element.
-	 * @param message
-	 *            Default=NONE. Optional custom error message.
-	 */
-	@RobotKeyword
+	@RobotKeyword("Verify the element identified by ``locator`` is selected.\r\n" + 
+            "\r\n" + 
+            "Key attributes for arbitrary elements are id and name. See `Introduction` for details about locators.")
 	@ArgumentNames({ "locator", "message=NONE" })
-	public void elementShouldBeSelected(String locator, String message) {
+	public void elementShouldBeSelected(String locator, String...params) {
+        String message = robot.getParamsValue(params, 0, "");
 		logging.info(String.format("Verifying element '%s' is selected.", locator));
 		boolean selected = isSelected(locator);
 
@@ -464,25 +292,23 @@ public class Element extends RunOnFailureKeywordsAdapter {
 		}
 	}
 
-	@RobotKeywordOverload
-	public void elementShouldNotBeSelected(String locator) {
-		elementShouldNotBeSelected(locator, "");
-	}
-
 	/**
-	 * Verify the element identified by <b>locator</b> is not selected.<br>
-	 * <br>
+	 * Verify the element identified by ``locator`` is not selected.
+	 * 
 	 * Key attributes for arbitrary elements are id and name. See `Introduction`
-	 * for details about locators.<br>
+	 * for details about locators.
 	 * 
 	 * @param locator
 	 *            The locator to locate the element.
 	 * @param message
 	 *            Default=NONE. Optional custom error message.
 	 */
-	@RobotKeyword
+	@RobotKeyword("Verify the element identified by ``locator`` is found on the current page\r\n" + 
+            "\r\n" + 
+            "Key attributes for arbitrary elements are id and name. See `Introduction` for details about locators.")
 	@ArgumentNames({ "locator", "message=NONE" })
-	public void elementShouldNotBeSelected(String locator, String message) {
+	public void elementShouldNotBeSelected(String locator, String...params) {
+        String message = robot.getParamsValue(params, 0, "");
 		logging.info(String.format("Verifying element '%s' is not selected.", locator));
 		boolean selected = isSelected(locator);
 
@@ -500,15 +326,15 @@ public class Element extends RunOnFailureKeywordsAdapter {
 	}
 
 	/**
-	 * Verify the element identified by <b>locator</b> is visible.<br>
-	 * <br>
+	 * Verify the element identified by ``locator`` is visible.
+	 * 
 	 * Herein, visible means that the element is logically visible, not
 	 * optically visible in the current browser viewport. For example, an
 	 * element that carries display:none is not logically visible, so using this
-	 * keyword on that element would fail.<br>
-	 * <br>
+	 * keyword on that element would fail.
+	 * 
 	 * Key attributes for arbitrary elements are id and name. See `Introduction`
-	 * for details about locators.<br>
+	 * for details about locators.
 	 * 
 	 * @param locator
 	 *            The locator to locate the element.
@@ -517,7 +343,8 @@ public class Element extends RunOnFailureKeywordsAdapter {
 	 */
 	@RobotKeyword
 	@ArgumentNames({ "locator", "message=NONE" })
-	public void elementShouldBeVisible(String locator, String message) {
+	public void elementShouldBeVisible(String locator, String...params) {
+        String message = robot.getParamsValue(params, 0, "");
 		logging.info(String.format("Verifying element '%s' is visible.", locator));
 		boolean visible = isVisible(locator);
 
@@ -535,15 +362,15 @@ public class Element extends RunOnFailureKeywordsAdapter {
 	}
 
 	/**
-	 * Verify the element identified by <b>locator</b> is not visible.<br>
-	 * <br>
+	 * Verify the element identified by ``locator`` is not visible.
+	 * 
 	 * Herein, visible means that the element is logically visible, not
 	 * optically visible in the current browser viewport. For example, an
 	 * element that carries display:none is not logically visible, so using this
-	 * keyword on that element would fail.<br>
-	 * <br>
+	 * keyword on that element would fail.
+	 * 
 	 * Key attributes for arbitrary elements are id and name. See `Introduction`
-	 * for details about locators.<br>
+	 * for details about locators.
 	 * 
 	 * @param locator
 	 *            The locator to locate the element.
@@ -570,10 +397,10 @@ public class Element extends RunOnFailureKeywordsAdapter {
 	}
 
 	/**
-	 * Verify the element identified by <b>locator</b> is clickable.<br>
-	 * <br>
+	 * Verify the element identified by ``locator`` is clickable.
+	 * 
 	 * Key attributes for arbitrary elements are id and name. See `Introduction`
-	 * for details about locators.<br>
+	 * for details about locators.
 	 * 
 	 * @param locator
 	 *            The locator to locate the element.
@@ -600,10 +427,10 @@ public class Element extends RunOnFailureKeywordsAdapter {
 	}
 
 	/**
-	 * Verify the element identified by <b>locator</b> is not clickable.<br>
-	 * <br>
+	 * Verify the element identified by ``locator`` is not clickable.
+	 * 
 	 * Key attributes for arbitrary elements are id and name. See `Introduction`
-	 * for details about locators.<br>
+	 * for details about locators.
 	 * 
 	 * @param locator
 	 *            The locator to locate the element.
@@ -612,7 +439,8 @@ public class Element extends RunOnFailureKeywordsAdapter {
 	 */
 	@RobotKeyword
 	@ArgumentNames({ "locator", "message=NONE" })
-	public void elementShouldNotBeClickable(String locator, String message) {
+	public void elementShouldNotBeClickable(String locator, String...params) {
+        String message = robot.getParamsValue(params, 0, "");
 		logging.info(String.format("Verifying element '%s' is not clickable.", locator));
 		boolean clickable = isClickable(locator);
 
@@ -630,15 +458,15 @@ public class Element extends RunOnFailureKeywordsAdapter {
 	}
 
 	/**
-	 * Verify the text of the element identified by <b>locator</b> is exactly
-	 * <b>text</b>.<br>
-	 * <br>
+	 * Verify the text of the element identified by ``locator`` is exactly
+	 * ``text``.
+	 * 
 	 * In contrast to `Element Should Contain`, this keyword does not try a
 	 * substring match but an exact match on the element identified by locator.
-	 * <br>
-	 * <br>
+	 * 
+	 * 
 	 * Key attributes for arbitrary elements are id and name. See `Introduction`
-	 * for details about locators.<br>
+	 * for details about locators.
 	 * 
 	 * @param locator
 	 *            The locator to locate the element.
@@ -649,7 +477,8 @@ public class Element extends RunOnFailureKeywordsAdapter {
 	 */
 	@RobotKeyword
 	@ArgumentNames({ "locator", "text", "message=NONE" })
-	public void elementTextShouldBe(String locator, String text, String message) {
+	public void elementTextShouldBe(String locator, String text, String...params) {
+        String message = robot.getParamsValue(params, 0, "");
 		List<WebElement> elements = elementFind(locator, true, true);
 		String actual = elements.get(0).getText();
 
@@ -668,15 +497,15 @@ public class Element extends RunOnFailureKeywordsAdapter {
 	}
 
 	/**
-	 * Verify the text of the element identified by <b>locator</b> is not
-	 * exactly <b>text</b>.<br>
-	 * <br>
+	 * Verify the text of the element identified by ``locator`` is not
+	 * exactly ``text``.
+	 * 
 	 * In contrast to `Element Should Not Contain`, this keyword does not try a
 	 * substring match but an exact match on the element identified by locator.
-	 * <br>
-	 * <br>
+	 * 
+	 * 
 	 * Key attributes for arbitrary elements are id and name. See `Introduction`
-	 * for details about locators.<br>
+	 * for details about locators.
 	 * 
 	 * @param locator
 	 *            The locator to locate the element.
@@ -687,7 +516,8 @@ public class Element extends RunOnFailureKeywordsAdapter {
 	 */
 	@RobotKeyword
 	@ArgumentNames({ "locator", "text", "message=NONE" })
-	public void elementTextShouldNotBe(String locator, String text, String message) {
+	public void elementTextShouldNotBe(String locator, String text, String...params) {
+        String message = robot.getParamsValue(params, 0, "");
 		List<WebElement> elements = elementFind(locator, true, true);
 		String actual = elements.get(0).getText();
 
@@ -701,13 +531,13 @@ public class Element extends RunOnFailureKeywordsAdapter {
 	}
 
 	/**
-	 * Returns the value of an element attribute.<br>
-	 * <br>
-	 * The <b>attribute_locator</b> consists of element locator followed by an @
-	 * sign and attribute name. Example: element_id@class<br>
-	 * <br>
+	 * Returns the value of an element attribute.
+	 * 
+	 * The ``attribute_locator`` consists of element locator followed by an @
+	 * sign and attribute name. Example: element_id@class
+	 * 
 	 * Key attributes for arbitrary elements are id and name. See `Introduction`
-	 * for details about locators.<br>
+	 * for details about locators.
 	 * 
 	 * @param attributeLocator
 	 *            The attribute locator.
@@ -728,19 +558,19 @@ public class Element extends RunOnFailureKeywordsAdapter {
 	}
 
 	/**
-	 * Clears the text from element identified by <b>locator</b>.<br>
-	 * <br>
+	 * Clears the text from element identified by ``locator``.
+	 * 
 	 * This keyword does not execute any checks on whether or not the clear
 	 * method has succeeded, so if any subsequent checks are needed, they should
-	 * be executed using method `Element Text Should Be`.<br>
-	 * <br>
+	 * be executed using method `Element Text Should Be`.
+	 * 
 	 * Also, this method will use WebDriver's internal _element.clear()_ method,
 	 * i.e. it will not send any keypresses, and it will not have any effect
 	 * whatsoever on elements other than input textfields or input textareas.
-	 * Clients relying on keypresses should implement their own methods.<br>
-	 * <br>
+	 * Clients relying on keypresses should implement their own methods.
+	 * 
 	 * Key attributes for arbitrary elements are id and name. See `Introduction`
-	 * for details about locators.<br>
+	 * for details about locators.
 	 * 
 	 * @param locator
 	 *            The locator to locate the element.
@@ -754,14 +584,14 @@ public class Element extends RunOnFailureKeywordsAdapter {
 	}
 
 	/**
-	 * Returns inner element id by index<b></b> of element identified by
-	 * <b>locator</b> which is matched by <b>matchid</b>.<br>
-	 * <br>
+	 * Returns inner element id by index```` of element identified by
+	 * ``locator`` which is matched by ``matchid``.
+	 * 
 	 * The position is returned in pixels off the left side of the page, as an
-	 * integer. Fails if the matching element is not found.<br>
-	 * <br>
+	 * integer. Fails if the matching element is not found.
+	 * 
 	 * Key attributes for arbitrary elements are id and name. See `Introduction`
-	 * for details about locators.<br>
+	 * for details about locators.
 	 *
 	 * @param locator
 	 *            The locator to locate the element.
@@ -796,13 +626,13 @@ public class Element extends RunOnFailureKeywordsAdapter {
 	}
 
 	/**
-	 * Returns horizontal position of element identified by <b>locator</b>.<br>
-	 * <br>
+	 * Returns horizontal position of element identified by ``locator``.
+	 * 
 	 * The position is returned in pixels off the left side of the page, as an
-	 * integer. Fails if the matching element is not found.<br>
-	 * <br>
+	 * integer. Fails if the matching element is not found.
+	 * 
 	 * Key attributes for arbitrary elements are id and name. See `Introduction`
-	 * for details about locators.<br>
+	 * for details about locators.
 	 * 
 	 * @param locator
 	 *            The locator to locate the element.
@@ -822,11 +652,11 @@ public class Element extends RunOnFailureKeywordsAdapter {
 	}
 
 	/**
-	 * Returns the value attribute of the element identified by <b>locator</b>.
-	 * <br>
-	 * <br>
+	 * Returns the value attribute of the element identified by ``locator``.
+	 * 
+	 * 
 	 * Key attributes for arbitrary elements are id and name. See `Introduction`
-	 * for details about locators.<br>
+	 * for details about locators.
 	 * 
 	 * @param locator
 	 *            The locator to locate the element.
@@ -849,10 +679,10 @@ public class Element extends RunOnFailureKeywordsAdapter {
 	}
 
 	/**
-	 * Returns the text of the element identified by <b>locator</b>.<br>
-	 * <br>
+	 * Returns the text of the element identified by ``locator``.
+	 * 
 	 * Key attributes for arbitrary elements are id and name. See `Introduction`
-	 * for details about locators.<br>
+	 * for details about locators.
 	 * 
 	 * @param locator
 	 *            The locator to locate the element.
@@ -871,13 +701,13 @@ public class Element extends RunOnFailureKeywordsAdapter {
 	}
 
 	/**
-	 * Returns vertical position of element identified by <b>locator</b>.<br>
-	 * <br>
+	 * Returns vertical position of element identified by ``locator``.
+	 * 
 	 * The position is returned in pixels off the top of the page, as an
-	 * integer. Fails if the matching element is not found.<br>
-	 * <br>
+	 * integer. Fails if the matching element is not found.
+	 * 
 	 * Key attributes for arbitrary elements are id and name. See `Introduction`
-	 * for details about locators.<br>
+	 * for details about locators.
 	 * 
 	 * @param locator
 	 *            The locator to locate the element.
@@ -901,10 +731,10 @@ public class Element extends RunOnFailureKeywordsAdapter {
 	// ##############################
 
 	/**
-	 * Click on the element identified by <b>locator</b>.<br>
-	 * <br>
+	 * Click on the element identified by ``locator``.
+	 * 
 	 * Key attributes for arbitrary elements are id and name. See `Introduction`
-	 * for details about locators.<br>
+	 * for details about locators.
 	 * 
 	 * @param locator
 	 *            The locator to locate the element.
@@ -919,16 +749,16 @@ public class Element extends RunOnFailureKeywordsAdapter {
 	}
 
 	/**
-	 * Click on the element identified by <b>locator</b> at the coordinates
-	 * <b>xOffset</b> and <b>yOffset</b>.<br>
-	 * <br>
+	 * Click on the element identified by ``locator`` at the coordinates
+	 * ``xOffset`` and ``yOffset``.
+	 * 
 	 * The cursor is moved at the center of the element and the to the given x/y
 	 * offset from that point. Both offsets are specified as negative (left/up)
-	 * or positive (right/down) number.<br>
-	 * <br>
+	 * or positive (right/down) number.
+	 * 
 	 * Key attributes for arbitrary elements are id and name. See `Introduction`
-	 * for details about locators.<br>
-	 * <br>
+	 * for details about locators.
+	 * 
 	 * 
 	 * @param locator
 	 *            The locator to locate the element.
@@ -951,10 +781,10 @@ public class Element extends RunOnFailureKeywordsAdapter {
 	}
 
 	/**
-	 * Double-Click on the element identified by <b>locator</b>.<br>
-	 * <br>
+	 * Double-Click on the element identified by ``locator``.
+	 * 
 	 * Key attributes for arbitrary elements are id and name. See `Introduction`
-	 * for details about locators.<br>
+	 * for details about locators.
 	 * 
 	 * @param locator
 	 *            The locator to locate the element.
@@ -971,10 +801,10 @@ public class Element extends RunOnFailureKeywordsAdapter {
 	}
 
 	/**
-	 * Set the focus to the element identified by <b>locator</b>.<br>
-	 * <br>
+	 * Set the focus to the element identified by ``locator``.
+	 * 
 	 * Key attributes for arbitrary elements are id and name. See `Introduction`
-	 * for details about locators.<br>
+	 * for details about locators.
 	 * 
 	 * @param locator
 	 *            The locator to locate the element.
@@ -988,12 +818,12 @@ public class Element extends RunOnFailureKeywordsAdapter {
 	}
 
 	/**
-	 * Drag the element identified by the locator <b>source</b> and move it on
-	 * top of the element identified by the locator <b>target</b>.<br>
-	 * <br>
+	 * Drag the element identified by the locator ``source`` and move it on
+	 * top of the element identified by the locator ``target``.
+	 * 
 	 * Key attributes for arbitrary elements are id and name. See `Introduction`
-	 * for details about locators.<br>
-	 * <br>
+	 * for details about locators.
+	 * 
 	 * Example:
 	 * <table border="1" cellspacing="0" summary="">
 	 * <tr>
@@ -1021,15 +851,15 @@ public class Element extends RunOnFailureKeywordsAdapter {
 	}
 
 	/**
-	 * Drag the element identified by the locator <b>source</b> and move it by
-	 * <b>xOffset</b> and <b>yOffset</b>.<br>
-	 * <br>
+	 * Drag the element identified by the locator ``source`` and move it by
+	 * ``xOffset`` and ``yOffset``.
+	 * 
 	 * Both offsets are specified as negative (left/up) or positive (right/down)
-	 * number.<br>
-	 * <br>
+	 * number.
+	 * 
 	 * Key attributes for arbitrary elements are id and name. See `Introduction`
-	 * for details about locators.<br>
-	 * <br>
+	 * for details about locators.
+	 * 
 	 * Example:
 	 * <table border="1" cellspacing="0" summary="">
 	 * <tr>
@@ -1061,12 +891,12 @@ public class Element extends RunOnFailureKeywordsAdapter {
 
 	/**
 	 * Simulates pressing the left mouse button on the element identified by
-	 * <b>locator</b>.<br>
-	 * <br>
-	 * The element is pressed without releasing the mouse button.<br>
-	 * <br>
+	 * ``locator``.
+	 * 
+	 * The element is pressed without releasing the mouse button.
+	 * 
 	 * Key attributes for arbitrary elements are id and name. See `Introduction`
-	 * for details about locators.<br>
+	 * for details about locators.
 	 * 
 	 * @param locator
 	 *            The locator to locate the element.
@@ -1089,10 +919,10 @@ public class Element extends RunOnFailureKeywordsAdapter {
 
 	/**
 	 * Simulates moving the mouse away from the element identified by
-	 * <b>locator</b>.<br>
-	 * <br>
+	 * ``locator``.
+	 * 
 	 * Key attributes for arbitrary elements are id and name. See `Introduction`
-	 * for details about locators.<br>
+	 * for details about locators.
 	 * 
 	 * @param locator
 	 *            The locator to locate the element.
@@ -1116,17 +946,9 @@ public class Element extends RunOnFailureKeywordsAdapter {
 		action.moveToElement(element).moveByOffset(offsetX, offsetY).perform();
 	}
 
-	/**
-	 * Simulates moving the mouse over the element identified by <b>locator</b>.
-	 * <br>
-	 * <br>
-	 * Key attributes for arbitrary elements are id and name. See `Introduction`
-	 * for details about locators.<br>
-	 * 
-	 * @param locator
-	 *            The locator to locate the element.
-	 */
-	@RobotKeyword
+	@RobotKeyword("Simulates moving the mouse over the element identified by ``locator``.\r\n" + 
+	        "\r\n" + 
+	        "Key attributes for arbitrary elements are id and name. See `Introduction` for details about locators.")
 	@ArgumentNames({ "locator" })
 	public void mouseOver(String locator) {
 		logging.info(String.format("Simulating Mouse Over on element '%s'.", locator));
@@ -1141,17 +963,9 @@ public class Element extends RunOnFailureKeywordsAdapter {
 		action.moveToElement(element).perform();
 	}
 
-	/**
-	 * Simulates releasing the left mouse button on the element identified by
-	 * <b>locator</b>.<br>
-	 * <br>
-	 * Key attributes for arbitrary elements are id and name. See `Introduction`
-	 * for details about locators.<br>
-	 * 
-	 * @param locator
-	 *            The locator to locate the element.
-	 */
-	@RobotKeyword
+	@RobotKeyword("Simulates releasing the left mouse button on the element identified by ``locator``.\r\n" + 
+	        "\r\n" + 
+	        "Key attributes for arbitrary elements are id and name. See `Introduction` for details about locators.")
 	@ArgumentNames({ "locator" })
 	public void mouseUp(String locator) {
 		logging.info(String.format("Simulating Mouse Up on element '%s'.", locator));
@@ -1166,16 +980,9 @@ public class Element extends RunOnFailureKeywordsAdapter {
 		action.release(element).perform();
 	}
 
-	/**
-	 * Opens the context menu on the element identified by <b>locator</b>.<br>
-	 * <br>
-	 * Key attributes for arbitrary elements are id and name. See `Introduction`
-	 * for details about locators.<br>
-	 * 
-	 * @param locator
-	 *            The locator to locate the element.
-	 */
-	@RobotKeyword
+	@RobotKeyword("Opens the context menu on the element identified by ``locator``.\r\n" + 
+	        "\r\n" + 
+	        "Key attributes for arbitrary elements are id and name. See `Introduction` for details about locators.")
 	@ArgumentNames({ "locator" })
 	public void openContextMenu(String locator) {
 		List<WebElement> elements = elementFind(locator, true, true);
@@ -1184,22 +991,11 @@ public class Element extends RunOnFailureKeywordsAdapter {
 		action.contextClick(elements.get(0)).perform();
 	}
 
-	/**
-	 * Simulates the given <b>event</b> on the element identified by
-	 * <b>locator</b>.<br>
-	 * <br>
-	 * This keyword is especially useful, when the element has an OnEvent
-	 * handler that needs to be explicitly invoked.<br>
-	 * <br>
-	 * Key attributes for arbitrary elements are id and name. See `Introduction`
-	 * for details about locators.<br>
-	 * 
-	 * @param locator
-	 *            The locator to locate the element.
-	 * @param event
-	 *            The event to invoke.
-	 */
-	@RobotKeyword
+	@RobotKeyword("Simulates the given ``event`` on the element identified by ``locator``.\r\n" + 
+	        "\r\n" + 
+	        "This keyword is especially useful, when the element has an OnEvent handler that needs to be explicitly invoked.\r\n" + 
+	        "\r\n" + 
+	        "Key attributes for arbitrary elements are id and name. See `Introduction` for details about locators.")
 	@ArgumentNames({ "locator", "event" })
 	public void simulate(String locator, String event) {
 		List<WebElement> elements = elementFind(locator, true, true);
@@ -1212,15 +1008,15 @@ public class Element extends RunOnFailureKeywordsAdapter {
 	}
 
 	/**
-	 * Simulates pressing <b>key</b> on the element identified by <b>locator</b>
-	 * .<br>
-	 * <br>
+	 * Simulates pressing ``key`` on the element identified by ``locator``
+	 * .
+	 * 
 	 * Key is either a single character, or a numerical ASCII code of the key
-	 * lead by '\\'.<br>
-	 * <br>
+	 * lead by '\\'.
+	 * 
 	 * Key attributes for arbitrary elements are id and name. See `Introduction`
-	 * for details about locators.<br>
-	 * <br>
+	 * for details about locators.
+	 * 
 	 * Example:
 	 * <table border="1" cellspacing="0" summary="">
 	 * <tr>
@@ -1256,16 +1052,10 @@ public class Element extends RunOnFailureKeywordsAdapter {
 	// Keywords - Links
 	// ##############################
 
-	/**
-	 * Click on the link identified by <b>locator</b>.<br>
-	 * <br>
-	 * Key attributes for links are id, name, href and link text. See
-	 * `Introduction` for details about locators.<br>
-	 * 
-	 * @param locator
-	 *            The locator to locate the link.
-	 */
-	@RobotKeyword
+
+	@RobotKeyword("Click on the link identified by ``locator``.\r\n" + 
+	        "\r\n" + 
+	        "Key attributes for links are id, name, href and link text. See `Introduction` for details about locators.")
 	@ArgumentNames({ "locator" })
 	public void clickLink(String locator) {
 		logging.info(String.format("Clicking link '%s'.", locator));
@@ -1274,14 +1064,9 @@ public class Element extends RunOnFailureKeywordsAdapter {
 		elements.get(0).click();
 	}
 
-	/**
-	 * Returns a list containing ids of all links found in current page.<br>
-	 * <br>
-	 * If a link has no id, an empty string will be in the list instead.<br>
-	 * 
-	 * @return The list of link ids.
-	 */
-	@RobotKeyword
+	@RobotKeyword("Returns a list containing ids of all links found in current page.\r\n" + 
+	        "\r\n" + 
+	        "If a link has no id, an empty string will be in the list instead.")
 	public ArrayList<String> getAllLinks() {
 		ArrayList<String> ret = new ArrayList<String>();
 
@@ -1293,21 +1078,12 @@ public class Element extends RunOnFailureKeywordsAdapter {
 		return ret;
 	}
 
-	/**
-	 * Simulates pressing the left mouse button on the link identified by
-	 * <b>locator</b>.<br>
-	 * <br>
-	 * The element is pressed without releasing the mouse button.<br>
-	 * <br>
-	 * Key attributes for links are id, name, href and link text. See
-	 * `Introduction` for details about locators.<br>
-	 * 
-	 * @param locator
-	 *            The locator to locate the element.
-	 * @see Element#mouseDown
-	 * @see Element#mouseDownOnImage
-	 */
-	@RobotKeyword
+	@RobotKeyword("Simulates pressing the left mouse button on the link identified by  ``locator``.\r\n" + 
+	        "\r\n" + 
+	        "The element is pressed without releasing the mouse button.\r\n" + 
+	        "\r\n" + 
+	        "Key attributes for links are id, name, href and link text. See `Introduction` for details about locators.\r\n" + 
+	        "\r\n")
 	@ArgumentNames({ "locator" })
 	public void mouseDownOnLink(String locator) {
 		List<WebElement> elements = elementFind(locator, true, true, "link");
@@ -1316,65 +1092,23 @@ public class Element extends RunOnFailureKeywordsAdapter {
 		action.clickAndHold(elements.get(0)).perform();
 	}
 
-	@RobotKeywordOverload
-	@ArgumentNames({ "locator" })
-	public void pageShouldContainLink(String locator) {
-		pageShouldContainLink(locator, "", "INFO");
-	}
-
-	@RobotKeywordOverload
-	@ArgumentNames({ "locator", "message=NONE" })
-	public void pageShouldContainLink(String locator, String message) {
-		pageShouldContainLink(locator, message, "INFO");
-	}
-
-	/**
-	 * Verify the link identified by <b>locator</b> is found on the current
-	 * page.<br>
-	 * <br>
-	 * Key attributes for links are id, name, href and link text. See
-	 * `Introduction` for details about log levels and locators.<br>
-	 * 
-	 * @param locator
-	 *            The locator to locate the link.
-	 * @param message
-	 *            Default=NONE. Optional custom error message.
-	 * @param logLevel
-	 *            Default=INFO. Optional log level.
-	 */
-	@RobotKeyword
+	@RobotKeyword("Verify the link identified by ``locator`` is found on the current page.\r\n" + 
+	        "\r\n" + 
+	        "Key attributes for links are id, name, href and link text. See `Introduction` for details about log levels and locators.")
 	@ArgumentNames({ "locator", "message=NONE", "logLevel=INFO" })
-	public void pageShouldContainLink(String locator, String message, String logLevel) {
+	public void pageShouldContainLink(String locator, String...params) {
+        String message = robot.getParamsValue(params, 0, "");
+        String logLevel = robot.getParamsValue(params, 1, "INFO");
 		pageShouldContainElement(locator, "link", message, logLevel);
 	}
 
-	@RobotKeywordOverload
-	public void pageShouldNotContainLink(String locator) {
-		pageShouldNotContainLink(locator, "", "INFO");
-	}
-
-	@RobotKeywordOverload
-	public void pageShouldNotContainLink(String locator, String message) {
-		pageShouldNotContainLink(locator, message, "INFO");
-	}
-
-	/**
-	 * Verify the link identified by <b>locator</b> is not found on the current
-	 * page.<br>
-	 * <br>
-	 * Key attributes for links are id, name, href and link text. See
-	 * `Introduction` for details about log levels and locators.<br>
-	 * 
-	 * @param locator
-	 *            The locator to locate the link.
-	 * @param message
-	 *            Default=NONE. Optional custom error message.
-	 * @param logLevel
-	 *            Default=INFO. Optional log level.
-	 */
-	@RobotKeyword
+	@RobotKeyword("Verify the link identified by ``locator`` is not found on the current page.\r\n" + 
+	        "\r\n" + 
+	        "Key attributes for links are id, name, href and link text. See `Introduction` for details about log levels and locators.")
 	@ArgumentNames({ "locator", "message=NONE", "logLevel=INFO" })
-	public void pageShouldNotContainLink(String locator, String message, String logLevel) {
+	public void pageShouldNotContainLink(String locator, String...params) {
+        String message = robot.getParamsValue(params, 0, "");
+        String logLevel = robot.getParamsValue(params, 1, "INFO");
 		pageShouldNotContainElement(locator, "link", message, logLevel);
 	}
 
@@ -1382,16 +1116,9 @@ public class Element extends RunOnFailureKeywordsAdapter {
 	// Keywords - Images
 	// ##############################
 
-	/**
-	 * Click on the image identified by <b>locator</b>.<br>
-	 * <br>
-	 * Key attributes for images are id, src and alt. See `Introduction` for
-	 * details about locators.<br>
-	 * 
-	 * @param locator
-	 *            The locator to locate the element.
-	 */
-	@RobotKeyword
+	@RobotKeyword("Click on the image identified by ``locator``.\r\n" + 
+	        "\r\n" + 
+	        "Key attributes for images are id, src and alt. See `Introduction` for details about locators.")
 	@ArgumentNames({ "locator" })
 	public void clickImage(String locator) {
 		logging.info(String.format("Clicking image '%s'.", locator));
@@ -1405,21 +1132,11 @@ public class Element extends RunOnFailureKeywordsAdapter {
 		element.click();
 	}
 
-	/**
-	 * Simulates pressing the left mouse button on the image identified by
-	 * <b>locator</b>.<br>
-	 * <br>
-	 * The element is pressed without releasing the mouse button.<br>
-	 * <br>
-	 * Key attributes for images are id, src and alt. See `Introduction` for
-	 * details about locators.<br>
-	 * 
-	 * @param locator
-	 *            The locator to locate the element.
-	 * @see Element#mouseDown
-	 * @see Element#mouseDownOnLink
-	 */
-	@RobotKeyword
+	@RobotKeyword("Simulates pressing the left mouse button on the image identified by ``locator``.\r\n" + 
+	        "\r\n" + 
+	        "The element is pressed without releasing the mouse button.\r\n" + 
+	        "\r\n" + 
+	        "Key attributes for images are id, src and alt. See `Introduction` for details about locators.")
 	@ArgumentNames({ "locator" })
 	public void mouseDownOnImage(String locator) {
 		List<WebElement> elements = elementFind(locator, true, true, "image");
@@ -1428,67 +1145,23 @@ public class Element extends RunOnFailureKeywordsAdapter {
 		action.clickAndHold(elements.get(0)).perform();
 	}
 
-	@RobotKeywordOverload
-	@ArgumentNames({ "locator" })
-	public void pageShouldContainImage(String locator) {
-		pageShouldContainImage(locator, "", "INFO");
-	}
-
-	@RobotKeywordOverload
-	@ArgumentNames({ "locator", "message=NONE" })
-	public void pageShouldContainImage(String locator, String message) {
-		pageShouldContainImage(locator, message, "INFO");
-	}
-
-	/**
-	 * Verify the image identified by <b>locator</b> is found on the current
-	 * page.<br>
-	 * <br>
-	 * Key attributes for images are id, src and alt. See `Introduction` for
-	 * details about log levels and locators.<br>
-	 * 
-	 * @param locator
-	 *            The locator to locate the link.
-	 * @param message
-	 *            Default=NONE. Optional custom error message.
-	 * @param logLevel
-	 *            Default=INFO. Optional log level.
-	 */
-	@RobotKeyword
+	@RobotKeyword("Verify the image identified by ``locator`` is found on the current page.\r\n" + 
+	        "\r\n" + 
+	        "Key attributes for images are id, src and alt. See `Introduction` for details about log levels and locators.")
 	@ArgumentNames({ "locator", "message=NONE", "logLevel=INFO" })
-	public void pageShouldContainImage(String locator, String message, String logLevel) {
+	public void pageShouldContainImage(String locator, String...params) {
+        String message = robot.getParamsValue(params, 0, "");
+        String logLevel = robot.getParamsValue(params, 1, "INFO");
 		pageShouldContainElement(locator, "image", message, logLevel);
 	}
 
-	@RobotKeywordOverload
-	@ArgumentNames({ "locator" })
-	public void pageShouldNotContainImage(String locator) {
-		pageShouldNotContainImage(locator, "", "INFO");
-	}
-
-	@RobotKeywordOverload
-	@ArgumentNames({ "locator", "message=NONE" })
-	public void pageShouldNotContainImage(String locator, String message) {
-		pageShouldNotContainImage(locator, message, "INFO");
-	}
-
-	/**
-	 * Verify the image identified by <b>locator</b> is not found on the current
-	 * page.<br>
-	 * <br>
-	 * Key attributes for images are id, src and alt. See `Introduction` for
-	 * details about log levels and locators.<br>
-	 * 
-	 * @param locator
-	 *            The locator to locate the link.
-	 * @param message
-	 *            Default=NONE. Optional custom error message.
-	 * @param logLevel
-	 *            Default=INFO. Optional log level.
-	 */
-	@RobotKeyword
+	@RobotKeyword("Verify the image identified by ``locator`` is not found on the current page.\r\n" + 
+	        "\r\n" + 
+	        "Key attributes for images are id, src and alt. See `Introduction` for details about log levels and locators.")
 	@ArgumentNames({ "locator", "message=NONE", "logLevel=INFO" })
-	public void pageShouldNotContainImage(String locator, String message, String logLevel) {
+	public void pageShouldNotContainImage(String locator, String...params) {
+        String message = robot.getParamsValue(params, 0, "");
+        String logLevel = robot.getParamsValue(params, 1, "INFO");
 		pageShouldNotContainElement(locator, "image", message, logLevel);
 	}
 
@@ -1496,17 +1169,9 @@ public class Element extends RunOnFailureKeywordsAdapter {
 	// Keywords - Xpath
 	// ##############################
 
-	/**
-	 * Returns the number of elements located the given <b>xpath</b>.<br>
-	 * <br>
-	 * If you wish to assert the number of located elements, use `Xpath Should
-	 * Match X Times`.<br>
-	 * 
-	 * @param xpath
-	 *            The XPath to match page elements
-	 * @return The number of located elements
-	 */
-	@RobotKeyword
+	@RobotKeyword("Returns the number of elements located the given ``xpath``.\r\n" + 
+	        " \r\n" + 
+	        "If you wish to assert the number of located elements, use `Xpath Should Match X Times`.")
 	@ArgumentNames({ "xpath" })
 	public int getMatchingXpathCount(String xpath) {
 		if (!xpath.startsWith("xpath=")) {
@@ -1517,34 +1182,11 @@ public class Element extends RunOnFailureKeywordsAdapter {
 		return elements.size();
 	}
 
-	@RobotKeywordOverload
-	@ArgumentNames({ "xpath", "expectedXpathCount" })
-	public void xpathShouldMatchXTimes(String xpath, int expectedXpathCount) {
-		xpathShouldMatchXTimes(xpath, expectedXpathCount, "");
-	}
-
-	@RobotKeywordOverload
-	@ArgumentNames({ "xpath", "expectedXpathCount", "message=NONE" })
-	public void xpathShouldMatchXTimes(String xpath, int expectedXpathCount, String message) {
-		xpathShouldMatchXTimes(xpath, expectedXpathCount, message, "INFO");
-	}
-
-	/**
-	 * Verify that the page contains the <b>expectedXpathCount</b> of elements
-	 * located by the given <b>xpath</b>.<br>
-	 * 
-	 * @param xpath
-	 *            The XPath to match page elements
-	 * @param expectedXpathCount
-	 *            The expected number of located elements
-	 * @param message
-	 *            Default=NONE. Optional custom error message.
-	 * @param logLevel
-	 *            Default=INFO. Optional log level.
-	 */
-	@RobotKeyword
+	@RobotKeyword("Verify that the page contains the ``expectedXpathCount`` of elements located by the given ``xpath``.")
 	@ArgumentNames({ "xpath", "expectedXpathCount", "message=NONE", "logLevel=INFO" })
-	public void xpathShouldMatchXTimes(String xpath, int expectedXpathCount, String message, String logLevel) {
+	public void xpathShouldMatchXTimes(String xpath, int expectedXpathCount, String...params) {
+        String message = robot.getParamsValue(params, 0, "");
+        String logLevel = robot.getParamsValue(params, 1, "INFO");
 		if (!xpath.startsWith("xpath=")) {
 			xpath = "xpath=" + xpath;
 		}
