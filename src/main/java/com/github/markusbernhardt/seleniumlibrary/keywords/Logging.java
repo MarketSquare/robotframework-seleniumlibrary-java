@@ -39,6 +39,9 @@ public class Logging extends RunOnFailureKeywordsAdapter {
      */
     @Autowired
     protected BrowserManagement browserManagement;
+    
+    @Autowired 
+    protected Window window;
 
     // ##############################
     // Keywords
@@ -62,7 +65,7 @@ public class Logging extends RunOnFailureKeywordsAdapter {
     @RobotKeyword
     @ArgumentNames({ "logLevel=INFO" })
     public List<String> logWindowIdentifiers(String logLevel) {
-        List<String> windowIdentifiers = browserManagement.getWindowIdentifiers();
+        List<String> windowIdentifiers = window.getWindowIdentifiers();
         for (String windowIdentifier : windowIdentifiers) {
             log(windowIdentifier, logLevel);
         }
@@ -89,7 +92,7 @@ public class Logging extends RunOnFailureKeywordsAdapter {
     @RobotKeyword
     @ArgumentNames({ "logLevel=INFO" })
     public List<String> logWindowNames(String logLevel) {
-        List<String> windowIdentifiers = browserManagement.getWindowNames();
+        List<String> windowIdentifiers = window.getWindowNames();
         for (String windowIdentifier : windowIdentifiers) {
             log(windowIdentifier, logLevel);
         }
@@ -116,7 +119,7 @@ public class Logging extends RunOnFailureKeywordsAdapter {
     @RobotKeyword
     @ArgumentNames({ "logLevel=INFO" })
     public List<String> logWindowTitles(String logLevel) {
-        List<String> windowIdentifiers = browserManagement.getWindowTitles();
+        List<String> windowIdentifiers = window.getWindowTitles();
         for (String windowIdentifier : windowIdentifiers) {
             log(windowIdentifier, logLevel);
         }
