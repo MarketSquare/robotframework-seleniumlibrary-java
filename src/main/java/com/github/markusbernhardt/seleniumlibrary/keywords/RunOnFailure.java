@@ -31,51 +31,18 @@ public class RunOnFailure extends RunOnFailureKeywordsAdapter {
 	// Keywords
 	// ##############################
 
-	/**
-	 * Sets the actual and returns the previous keyword to execute when a
-	 * SeleniumLibrary keyword fails.<br>
-	 * <br>
-	 * The <b>keyword</b> is the name of a keyword (from any available
-	 * libraries) that will be executed, if a SeleniumLibrary keyword fails. It
-	 * is not possible to use a keyword that requires arguments. Using the value
-	 * <b>Nothing</b> will disable this feature altogether.<br>
-	 * <br>
-	 * The initial keyword to use is set at importing the library and the
-	 * keyword that is used by default is `Capture Page Screenshot`. Taking a
-	 * screenshot when something failed is a very useful feature, but notice
-	 * that it can slow down the execution.<br>
-	 * <br>
-	 * This keyword returns the name of the previously registered failure
-	 * keyword. It can be used to restore the original value later.<br>
-	 * <br>
-	 * Example:
-	 * <table border="1" cellspacing="0" summary="">
-	 * <tr>
-	 * <td>Register Keyword To Run On Failure</td>
-	 * <td>Log Source</td>
-	 * <td></td>
-	 * <td># Run `Log Source` on failure.</td>
-	 * </tr>
-	 * <tr>
-	 * <td>${previous kw}=</td>
-	 * <td>Register Keyword To Run On Failure</td>
-	 * <td>Nothing</td>
-	 * <td># Disable run-on-failure functionality and stors the previous kw name
-	 * in a variable.</td>
-	 * </tr>
-	 * <tr>
-	 * <td>Register Keyword To Run On Failure</td>
-	 * <td>${previous kw}</td>
-	 * <td></td>
-	 * <td># Restore to the previous keyword.</td>
-	 * </tr>
-	 * </table>
-	 * 
-	 * @param keyword
-	 *            The keyword to execute on failure
-	 * @return The previous keyword
-	 */
-	@RobotKeyword
+	@RobotKeyword("Sets the actual and returns the previous keyword to execute when a SeleniumLibrary keyword fails.\r\n" + 
+	        "\r\n" + 
+	        "The keyword is the name of a keyword (from any available libraries) that will be executed, if a SeleniumLibrary keyword fails. It is not possible to use a keyword that requires arguments. Using the value *Nothing* will disable this feature altogether.\r\n" + 
+	        "\r\n" + 
+	        "The initial keyword to use is set at importing the library and the keyword that is used by default is `Capture Page Screenshot`. Taking a screenshot when something failed is a very useful feature, but notice that it can slow down the execution.\r\n" + 
+	        "\r\n" + 
+	        "This keyword returns the name of the previously registered failure keyword. It can be used to restore the original value later.\r\n" + 
+	        "\r\n" + 
+	        "Example:\r\n" + 
+	        " | Register Keyword To Run On Failure | Log Source |  | # Run Log Source on failure. | \r\n" + 
+	        " | ${previous kw}= | Register Keyword To Run On Failure | Nothing | # Disable run-on-failure functionality and stors the previous kw name in a variable. | \r\n" + 
+	        " | Register Keyword To Run On Failure | ${previous kw} |  | # Restore to the previous keyword. |")
 	@ArgumentNames({ "keyword" })
 	public String registerKeywordToRunOnFailure(String keyword) {
 		String oldKeyword = runOnFailureKeyword;
