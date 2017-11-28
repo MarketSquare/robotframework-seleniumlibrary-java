@@ -241,15 +241,6 @@ public class Element extends RunOnFailureKeywordsAdapter {
 				.executeScript(String.format("arguments[0].id = '%s';", id), elements.get(0));
 	}
 
-	/**
-	 * Verify the element identified by ``locator`` is enabled.
-	 * 
-	 * Key attributes for arbitrary elements are id and name. See `Introduction`
-	 * for details about locators.
-	 * 
-	 * @param locator
-	 *            The locator to locate the element.
-	 */
     @RobotKeyword("Verify the element identified by ``locator`` is found on the current page\r\n" + 
             "\r\n" + 
             "Key attributes for arbitrary elements are id and name. See `Introduction` for details about log levels and locators.")
@@ -270,11 +261,6 @@ public class Element extends RunOnFailureKeywordsAdapter {
 		}
 	}
 
-	@RobotKeywordOverload
-	public void elementShouldBeSelected(String locator) {
-		elementShouldBeSelected(locator, "");
-	}
-
 	@RobotKeyword("Verify the element identified by ``locator`` is selected.\r\n" + 
             "\r\n" + 
             "Key attributes for arbitrary elements are id and name. See `Introduction` for details about locators.")
@@ -292,18 +278,7 @@ public class Element extends RunOnFailureKeywordsAdapter {
 		}
 	}
 
-	/**
-	 * Verify the element identified by ``locator`` is not selected.
-	 * 
-	 * Key attributes for arbitrary elements are id and name. See `Introduction`
-	 * for details about locators.
-	 * 
-	 * @param locator
-	 *            The locator to locate the element.
-	 * @param message
-	 *            Default=NONE. Optional custom error message.
-	 */
-	@RobotKeyword("Verify the element identified by ``locator`` is found on the current page\r\n" + 
+	@RobotKeyword("Verify the element identified by ``locator`` is not selected.\r\n" + 
             "\r\n" + 
             "Key attributes for arbitrary elements are id and name. See `Introduction` for details about locators.")
 	@ArgumentNames({ "locator", "message=NONE" })
@@ -320,28 +295,11 @@ public class Element extends RunOnFailureKeywordsAdapter {
 		}
 	}
 
-	@RobotKeywordOverload
-	public void elementShouldBeVisible(String locator) {
-		elementShouldBeVisible(locator, "");
-	}
-
-	/**
-	 * Verify the element identified by ``locator`` is visible.
-	 * 
-	 * Herein, visible means that the element is logically visible, not
-	 * optically visible in the current browser viewport. For example, an
-	 * element that carries display:none is not logically visible, so using this
-	 * keyword on that element would fail.
-	 * 
-	 * Key attributes for arbitrary elements are id and name. See `Introduction`
-	 * for details about locators.
-	 * 
-	 * @param locator
-	 *            The locator to locate the element.
-	 * @param message
-	 *            Default=NONE. Optional custom error message.
-	 */
-	@RobotKeyword
+	@RobotKeyword("Verify the element identified by ``locator`` is visible.\r\n" + 
+	        "\r\n" + 
+	        "Herein, visible means that the element is logically visible, not optically visible in the current browser viewport. For example, an element that carries display:none is not logically visible, so using this keyword on that element would fail.\r\n" + 
+	        "\r\n" + 
+	        "Key attributes for arbitrary elements are id and name. See `Introduction` for details about locators.")
 	@ArgumentNames({ "locator", "message=NONE" })
 	public void elementShouldBeVisible(String locator, String...params) {
         String message = robot.getParamsValue(params, 0, "");
@@ -356,30 +314,14 @@ public class Element extends RunOnFailureKeywordsAdapter {
 		}
 	}
 
-	@RobotKeywordOverload
-	public void elementShouldNotBeVisible(String locator) {
-		elementShouldNotBeVisible(locator, "");
-	}
-
-	/**
-	 * Verify the element identified by ``locator`` is not visible.
-	 * 
-	 * Herein, visible means that the element is logically visible, not
-	 * optically visible in the current browser viewport. For example, an
-	 * element that carries display:none is not logically visible, so using this
-	 * keyword on that element would fail.
-	 * 
-	 * Key attributes for arbitrary elements are id and name. See `Introduction`
-	 * for details about locators.
-	 * 
-	 * @param locator
-	 *            The locator to locate the element.
-	 * @param message
-	 *            Default=NONE. Optional custom error message.
-	 */
-	@RobotKeyword
+    @RobotKeyword("Verify the element identified by ``locator`` is not visible.\r\n" + 
+            "\r\n" + 
+            "Herein, visible means that the element is logically visible, not optically visible in the current browser viewport. For example, an element that carries display:none is not logically visible, so using this keyword on that element would fail.\r\n" + 
+            "\r\n" + 
+            "Key attributes for arbitrary elements are id and name. See `Introduction` for details about locators.")
 	@ArgumentNames({ "locator", "message=NONE" })
-	public void elementShouldNotBeVisible(String locator, String message) {
+	public void elementShouldNotBeVisible(String locator, String...params) {
+        String message = robot.getParamsValue(params, 0, "");
 		logging.info(String.format("Verifying element '%s' is not visible.", locator));
 		boolean visible = isVisible(locator);
 
@@ -391,25 +333,12 @@ public class Element extends RunOnFailureKeywordsAdapter {
 		}
 	}
 
-	@RobotKeywordOverload
-	public void elementShouldBeClickable(String locator) {
-		elementShouldBeClickable(locator, "");
-	}
-
-	/**
-	 * Verify the element identified by ``locator`` is clickable.
-	 * 
-	 * Key attributes for arbitrary elements are id and name. See `Introduction`
-	 * for details about locators.
-	 * 
-	 * @param locator
-	 *            The locator to locate the element.
-	 * @param message
-	 *            Default=NONE. Optional custom error message.
-	 */
-	@RobotKeyword
+    @RobotKeyword("Verify the element identified by ``locator`` is clickable.\r\n" + 
+            "\r\n" +  
+            "Key attributes for arbitrary elements are id and name. See `Introduction` for details about locators.")
 	@ArgumentNames({ "locator", "message=NONE" })
-	public void elementShouldBeClickable(String locator, String message) {
+	public void elementShouldBeClickable(String locator, String...params) {
+        String message = robot.getParamsValue(params, 0, "");
 		logging.info(String.format("Verifying element '%s' is clickable.", locator));
 		boolean clickable = isClickable(locator);
 
@@ -421,23 +350,10 @@ public class Element extends RunOnFailureKeywordsAdapter {
 		}
 	}
 
-	@RobotKeywordOverload
-	public void elementShouldNotBeClickable(String locator) {
-		elementShouldNotBeClickable(locator, "");
-	}
 
-	/**
-	 * Verify the element identified by ``locator`` is not clickable.
-	 * 
-	 * Key attributes for arbitrary elements are id and name. See `Introduction`
-	 * for details about locators.
-	 * 
-	 * @param locator
-	 *            The locator to locate the element.
-	 * @param message
-	 *            Default=NONE. Optional custom error message.
-	 */
-	@RobotKeyword
+    @RobotKeyword("Verify the element identified by ``locator`` is not clickable.\r\n" + 
+            "\r\n" +  
+            "Key attributes for arbitrary elements are id and name. See `Introduction` for details about locators.")
 	@ArgumentNames({ "locator", "message=NONE" })
 	public void elementShouldNotBeClickable(String locator, String...params) {
         String message = robot.getParamsValue(params, 0, "");
@@ -452,30 +368,11 @@ public class Element extends RunOnFailureKeywordsAdapter {
 		}
 	}
 
-	@RobotKeywordOverload
-	public void elementTextShouldBe(String locator, String expected) {
-		elementTextShouldBe(locator, expected, "");
-	}
-
-	/**
-	 * Verify the text of the element identified by ``locator`` is exactly
-	 * ``text``.
-	 * 
-	 * In contrast to `Element Should Contain`, this keyword does not try a
-	 * substring match but an exact match on the element identified by locator.
-	 * 
-	 * 
-	 * Key attributes for arbitrary elements are id and name. See `Introduction`
-	 * for details about locators.
-	 * 
-	 * @param locator
-	 *            The locator to locate the element.
-	 * @param text
-	 *            The text to verify.
-	 * @param message
-	 *            Default=NONE. Optional custom error message.
-	 */
-	@RobotKeyword
+	@RobotKeyword("Verify the text of the element identified by ``locator`` is exactly ``text``.\r\n" + 
+	        "\r\n" + 
+	        "In contrast to `Element Should Contain`, this keyword does not try a substring match but an exact match on the element identified by locator.\r\n" + 
+	        "\r\n" + 
+	        "Key attributes for arbitrary elements are id and name. See `Introduction` for details about locators.")
 	@ArgumentNames({ "locator", "text", "message=NONE" })
 	public void elementTextShouldBe(String locator, String text, String...params) {
         String message = robot.getParamsValue(params, 0, "");
@@ -491,30 +388,12 @@ public class Element extends RunOnFailureKeywordsAdapter {
 		}
 	}
 
-	@RobotKeywordOverload
-	public void elementTextShouldNotBe(String locator, String expected) {
-		elementTextShouldNotBe(locator, expected, "");
-	}
 
-	/**
-	 * Verify the text of the element identified by ``locator`` is not
-	 * exactly ``text``.
-	 * 
-	 * In contrast to `Element Should Not Contain`, this keyword does not try a
-	 * substring match but an exact match on the element identified by locator.
-	 * 
-	 * 
-	 * Key attributes for arbitrary elements are id and name. See `Introduction`
-	 * for details about locators.
-	 * 
-	 * @param locator
-	 *            The locator to locate the element.
-	 * @param text
-	 *            The text to verify.
-	 * @param message
-	 *            Default=NONE. Optional custom error message.
-	 */
-	@RobotKeyword
+    @RobotKeyword("Verify the text of the element identified by ``locator`` is not exactly ``text``.\r\n" + 
+            "\r\n" + 
+            "In contrast to `Element Should Not Contain`, this keyword does not try a substring match but an exact match on the element identified by locator.\r\n" + 
+            "\r\n" + 
+            "Key attributes for arbitrary elements are id and name. See `Introduction` for details about locators.")
 	@ArgumentNames({ "locator", "text", "message=NONE" })
 	public void elementTextShouldNotBe(String locator, String text, String...params) {
         String message = robot.getParamsValue(params, 0, "");
@@ -530,20 +409,11 @@ public class Element extends RunOnFailureKeywordsAdapter {
 		}
 	}
 
-	/**
-	 * Returns the value of an element attribute.
-	 * 
-	 * The ``attribute_locator`` consists of element locator followed by an @
-	 * sign and attribute name. Example: element_id@class
-	 * 
-	 * Key attributes for arbitrary elements are id and name. See `Introduction`
-	 * for details about locators.
-	 * 
-	 * @param attributeLocator
-	 *            The attribute locator.
-	 * @return The attribute value.
-	 */
-	@RobotKeyword
+	@RobotKeyword("Returns the value of an element attribute.\r\n" + 
+	        "\r\n" + 
+	        "The ``attribute_locator`` consists of element locator followed by an @ sign and attribute name. Example: element_id@class\r\n" + 
+	        "\r\n" + 
+	        "Key attributes for arbitrary elements are id and name. See `Introduction` for details about locators.")
 	@ArgumentNames({ "attributeLocator" })
 	public String getElementAttribute(String attributeLocator) {
 		String[] parts = parseAttributeLocator(attributeLocator);
@@ -557,25 +427,13 @@ public class Element extends RunOnFailureKeywordsAdapter {
 		return elements.get(0).getAttribute(parts[1]);
 	}
 
-	/**
-	 * Clears the text from element identified by ``locator``.
-	 * 
-	 * This keyword does not execute any checks on whether or not the clear
-	 * method has succeeded, so if any subsequent checks are needed, they should
-	 * be executed using method `Element Text Should Be`.
-	 * 
-	 * Also, this method will use WebDriver's internal _element.clear()_ method,
-	 * i.e. it will not send any keypresses, and it will not have any effect
-	 * whatsoever on elements other than input textfields or input textareas.
-	 * Clients relying on keypresses should implement their own methods.
-	 * 
-	 * Key attributes for arbitrary elements are id and name. See `Introduction`
-	 * for details about locators.
-	 * 
-	 * @param locator
-	 *            The locator to locate the element.
-	 */
-	@RobotKeyword
+	@RobotKeyword("Clears the text from element identified by ``locator``.\r\n" + 
+	        "\r\n" + 
+	        "This keyword does not execute any checks on whether or not the clear method has succeeded, so if any subsequent checks are needed, they should be executed using method `Element Text Should Be`.\r\n" + 
+	        "\r\n" + 
+	        "Also, this method will use WebDriver's internal _element.clear()_ method, i.e. it will not send any keypresses, and it will not have any effect whatsoever on elements other than input textfields or input textareas. Clients relying on keypresses should implement their own methods.\r\n" + 
+	        "\r\n" + 
+	        "Key attributes for arbitrary elements are id and name. See `Introduction` for details about locators.")
 	@ArgumentNames({ "locator" })
 	public void clearElementText(String locator) {
 		List<WebElement> elements = elementFind(locator, true, true);
@@ -583,25 +441,9 @@ public class Element extends RunOnFailureKeywordsAdapter {
 		elements.get(0).clear();
 	}
 
-	/**
-	 * Returns inner element id by index```` of element identified by
-	 * ``locator`` which is matched by ``matchid``.
-	 * 
-	 * The position is returned in pixels off the left side of the page, as an
-	 * integer. Fails if the matching element is not found.
-	 * 
-	 * Key attributes for arbitrary elements are id and name. See `Introduction`
-	 * for details about locators.
-	 *
-	 * @param locator
-	 *            The locator to locate the element.
-	 * @param matchid
-	 *            partial inner element id to match
-	 * @param index
-	 *            position of the inner element to match
-	 * @return The element id
-	 */
-	@RobotKeyword
+	@RobotKeyword("Returns inner element id by index```` of element identified by ``locator`` which is matched by ``matchid``.\r\n"
+	        + "\r\n"
+	        + "Key attributes for arbitrary elements are id and name. See `Introduction` for details about locators.")
 	@ArgumentNames({ "locator", "matchid", "index" })
 	public String getInnerElementId(String locator, String matchid, int index) {
 		List<WebElement> elements = elementFind(locator, true, true);
@@ -625,20 +467,11 @@ public class Element extends RunOnFailureKeywordsAdapter {
 
 	}
 
-	/**
-	 * Returns horizontal position of element identified by ``locator``.
-	 * 
-	 * The position is returned in pixels off the left side of the page, as an
-	 * integer. Fails if the matching element is not found.
-	 * 
-	 * Key attributes for arbitrary elements are id and name. See `Introduction`
-	 * for details about locators.
-	 * 
-	 * @param locator
-	 *            The locator to locate the element.
-	 * @return The horizontal position
-	 */
-	@RobotKeyword
+	@RobotKeyword("Returns horizontal position of element identified by ``locator``.\r\n" + 
+	        "\r\n" + 
+	        "The position is returned in pixels off the left side of the page, as an integer. Fails if the matching element is not found.\r\n" + 
+	        "\r\n" + 
+	        "Key attributes for arbitrary elements are id and name. See `Introduction` for details about locators.")
 	@ArgumentNames({ "locator" })
 	public int getHorizontalPosition(String locator) {
 		List<WebElement> elements = elementFind(locator, true, false);
@@ -651,18 +484,9 @@ public class Element extends RunOnFailureKeywordsAdapter {
 		return elements.get(0).getLocation().getX();
 	}
 
-	/**
-	 * Returns the value attribute of the element identified by ``locator``.
-	 * 
-	 * 
-	 * Key attributes for arbitrary elements are id and name. See `Introduction`
-	 * for details about locators.
-	 * 
-	 * @param locator
-	 *            The locator to locate the element.
-	 * @return The value attribute of the element.
-	 */
-	@RobotKeyword
+    @RobotKeyword("Returns the value attribute of the element identified by ``locator``..\r\n" + 
+            "\r\n" + 
+            "Key attributes for arbitrary elements are id and name. See `Introduction` for details about locators.")
 	@ArgumentNames({ "locator" })
 	public String getValue(String locator) {
 		return getValue(locator, null);
@@ -678,17 +502,9 @@ public class Element extends RunOnFailureKeywordsAdapter {
 		return elements.get(0).getAttribute("value");
 	}
 
-	/**
-	 * Returns the text of the element identified by ``locator``.
-	 * 
-	 * Key attributes for arbitrary elements are id and name. See `Introduction`
-	 * for details about locators.
-	 * 
-	 * @param locator
-	 *            The locator to locate the element.
-	 * @return The text of the element.
-	 */
-	@RobotKeyword
+    @RobotKeyword("Returns the text of the element identified by ``locator``..\r\n" + 
+            "\r\n" + 
+            "Key attributes for arbitrary elements are id and name. See `Introduction` for details about locators.")
 	@ArgumentNames({ "locator" })
 	public String getText(String locator) {
 		List<WebElement> elements = elementFind(locator, true, true);
@@ -700,20 +516,11 @@ public class Element extends RunOnFailureKeywordsAdapter {
 		return elements.get(0).getText();
 	}
 
-	/**
-	 * Returns vertical position of element identified by ``locator``.
-	 * 
-	 * The position is returned in pixels off the top of the page, as an
-	 * integer. Fails if the matching element is not found.
-	 * 
-	 * Key attributes for arbitrary elements are id and name. See `Introduction`
-	 * for details about locators.
-	 * 
-	 * @param locator
-	 *            The locator to locate the element.
-	 * @return The vertical position
-	 */
-	@RobotKeyword
+    @RobotKeyword("Returns vertical position of element identified by ``locator``.\r\n" + 
+            "\r\n" + 
+            "The position is returned in pixels off the left side of the page, as an integer. Fails if the matching element is not found.\r\n" + 
+            "\r\n" + 
+            "Key attributes for arbitrary elements are id and name. See `Introduction` for details about locators.")
 	@ArgumentNames({ "locator" })
 	public int getVerticalPosition(String locator) {
 		List<WebElement> elements = elementFind(locator, true, false);
@@ -730,16 +537,9 @@ public class Element extends RunOnFailureKeywordsAdapter {
 	// Keywords - Mouse Input/Events
 	// ##############################
 
-	/**
-	 * Click on the element identified by ``locator``.
-	 * 
-	 * Key attributes for arbitrary elements are id and name. See `Introduction`
-	 * for details about locators.
-	 * 
-	 * @param locator
-	 *            The locator to locate the element.
-	 */
-	@RobotKeyword
+    @RobotKeyword("Click on the element identified by ``locator``.\r\n" + 
+            "\r\n" + 
+            "Key attributes for arbitrary elements are id and name. See `Introduction` for details about locators.")
 	@ArgumentNames({ "locator" })
 	public void clickElement(String locator) {
 		logging.info(String.format("Clicking element '%s'.", locator));
@@ -748,28 +548,11 @@ public class Element extends RunOnFailureKeywordsAdapter {
 		elements.get(0).click();
 	}
 
-	/**
-	 * Click on the element identified by ``locator`` at the coordinates
-	 * ``xOffset`` and ``yOffset``.
-	 * 
-	 * The cursor is moved at the center of the element and the to the given x/y
-	 * offset from that point. Both offsets are specified as negative (left/up)
-	 * or positive (right/down) number.
-	 * 
-	 * Key attributes for arbitrary elements are id and name. See `Introduction`
-	 * for details about locators.
-	 * 
-	 * 
-	 * @param locator
-	 *            The locator to locate the element.
-	 * @param xOffset
-	 *            The horizontal offset in pixel. Negative means left, positive
-	 *            right.
-	 * @param yOffset
-	 *            The vertical offset in pixel. Negative means up, positive
-	 *            down.
-	 */
-	@RobotKeyword
+    @RobotKeyword("Click on the element identified by locator at the coordinates ``xOffset`` and ``yOffset``.\r\n" + 
+            "\r\n" + 
+            "The cursor is moved at the center of the element and the to the given x/y offset from that point. Both offsets are specified as negative (left/up) or positive (right/down) number.\r\n" + 
+            "\r\n" + 
+            "Key attributes for arbitrary elements are id and name. See `Introduction` for details about locators.")
 	@ArgumentNames({ "locator", "xOffset", "yOffset" })
 	public void clickElementAtCoordinates(String locator, String xOffset, String yOffset) {
 		logging.info(String.format("Clicking element '%s'in coordinates '%s', '%s'.", locator, xOffset, yOffset));
@@ -780,16 +563,9 @@ public class Element extends RunOnFailureKeywordsAdapter {
 		action.moveToElement(element).moveByOffset(Integer.parseInt(xOffset), Integer.parseInt(yOffset)).perform();
 	}
 
-	/**
-	 * Double-Click on the element identified by ``locator``.
-	 * 
-	 * Key attributes for arbitrary elements are id and name. See `Introduction`
-	 * for details about locators.
-	 * 
-	 * @param locator
-	 *            The locator to locate the element.
-	 */
-	@RobotKeyword
+    @RobotKeyword("Double-Click on the element identified by ``locator``.\r\n" + 
+            "\r\n" + 
+            "Key attributes for arbitrary elements are id and name. See `Introduction` for details about locators.")
 	@ArgumentNames({ "locator" })
 	public void doubleClickElement(String locator) {
 		logging.info(String.format("Double clicking element '%s'.", locator));
@@ -800,16 +576,9 @@ public class Element extends RunOnFailureKeywordsAdapter {
 		action.doubleClick(elements.get(0)).perform();
 	}
 
-	/**
-	 * Set the focus to the element identified by ``locator``.
-	 * 
-	 * Key attributes for arbitrary elements are id and name. See `Introduction`
-	 * for details about locators.
-	 * 
-	 * @param locator
-	 *            The locator to locate the element.
-	 */
-	@RobotKeyword
+    @RobotKeyword("Set the focus to the element identified by ``locator``.\r\n" + 
+            "\r\n" + 
+            "Key attributes for arbitrary elements are id and name. See `Introduction` for details about locators.")
 	@ArgumentNames({ "locator" })
 	public void focus(String locator) {
 		List<WebElement> elements = elementFind(locator, true, true);
@@ -817,30 +586,12 @@ public class Element extends RunOnFailureKeywordsAdapter {
 				elements.get(0));
 	}
 
-	/**
-	 * Drag the element identified by the locator ``source`` and move it on
-	 * top of the element identified by the locator ``target``.
-	 * 
-	 * Key attributes for arbitrary elements are id and name. See `Introduction`
-	 * for details about locators.
-	 * 
-	 * Example:
-	 * <table border="1" cellspacing="0" summary="">
-	 * <tr>
-	 * <td>Drag And Drop</td>
-	 * <td>elem1</td>
-	 * <td>elem2</td>
-	 * <td># Move elem1 over elem2</td>
-	 * </tr>
-	 * </table>
-	 * 
-	 * @param source
-	 *            The locator to locate the element to drag.
-	 * @param target
-	 *            The locator to locate the element where to drop the dragged
-	 *            element.
-	 */
-	@RobotKeyword
+	@RobotKeyword("Drag the element identified by the locator ``source`` and move it on top of the element identified by the locator ``target``.\r\n" + 
+	        "\r\n" + 
+	        "Key attributes for arbitrary elements are id and name. See `Introduction` for details about locators.\r\n" + 
+	        "\r\n" + 
+	        "Example:\r\n" + 
+	        " | Drag And Drop | elem1 | elem2 | # Move elem1 over elem2 |")
 	@ArgumentNames({ "source", "target" })
 	public void dragAndDrop(String source, String target) {
 		List<WebElement> sourceElements = elementFind(source, true, true);
@@ -850,37 +601,14 @@ public class Element extends RunOnFailureKeywordsAdapter {
 		action.dragAndDrop(sourceElements.get(0), targetElements.get(0)).perform();
 	}
 
-	/**
-	 * Drag the element identified by the locator ``source`` and move it by
-	 * ``xOffset`` and ``yOffset``.
-	 * 
-	 * Both offsets are specified as negative (left/up) or positive (right/down)
-	 * number.
-	 * 
-	 * Key attributes for arbitrary elements are id and name. See `Introduction`
-	 * for details about locators.
-	 * 
-	 * Example:
-	 * <table border="1" cellspacing="0" summary="">
-	 * <tr>
-	 * <td>Drag And Drop By Offset</td>
-	 * <td>elem1</td>
-	 * <td>50</td>
-	 * <td>35</td>
-	 * <td># Move elem1 50px right and 35px down.</td>
-	 * </tr>
-	 * </table>
-	 * 
-	 * @param source
-	 *            The locator to locate the element to drag.
-	 * @param xOffset
-	 *            The horizontal offset in pixel. Negative means left, positive
-	 *            right.
-	 * @param yOffset
-	 *            The vertical offset in pixel. Negative means up, positive
-	 *            down.
-	 */
-	@RobotKeyword
+	@RobotKeyword("Drag the element identified by the locator ``source`` and move it on top of the element identified by the locator ``target``.\r\n" + 
+	        "\r\n" + 
+	        "Both offsets are specified as negative (left/up) or positive (right/down) number.\r\n" + 
+	        "\r\n" + 
+	        "Key attributes for arbitrary elements are id and name. See `Introduction` for details about locators.\r\n" + 
+	        "\r\n" + 
+	        "Example:\r\n" + 
+	        " | Drag And Drop By Offset | elem1 | 50 | 35 | # Move elem1 50px right and 35px down. |")
 	@ArgumentNames({ "source", "xOffset", "yOffset" })
 	public void dragAndDropByOffset(String source, int xOffset, int yOffset) {
 		List<WebElement> elements = elementFind(source, true, true);
@@ -889,21 +617,11 @@ public class Element extends RunOnFailureKeywordsAdapter {
 		action.dragAndDropBy(elements.get(0), xOffset, yOffset).perform();
 	}
 
-	/**
-	 * Simulates pressing the left mouse button on the element identified by
-	 * ``locator``.
-	 * 
-	 * The element is pressed without releasing the mouse button.
-	 * 
-	 * Key attributes for arbitrary elements are id and name. See `Introduction`
-	 * for details about locators.
-	 * 
-	 * @param locator
-	 *            The locator to locate the element.
-	 * @see Element#mouseDownOnImage
-	 * @see Element#mouseDownOnLink
-	 */
-	@RobotKeyword
+	@RobotKeyword("Simulates pressing the left mouse button on the element identified by ``locator``.\r\n" + 
+	        "\r\n" + 
+	        "The element is pressed without releasing the mouse button.\r\n" + 
+	        "\r\n" + 
+	        "Key attributes for arbitrary elements are id and name. See `Introduction` for details about locators.")
 	@ArgumentNames({ "locator" })
 	public void mouseDown(String locator) {
 		logging.info(String.format("Simulating Mouse Down on element '%s'.", locator));
@@ -917,17 +635,9 @@ public class Element extends RunOnFailureKeywordsAdapter {
 		action.clickAndHold(elements.get(0)).perform();
 	}
 
-	/**
-	 * Simulates moving the mouse away from the element identified by
-	 * ``locator``.
-	 * 
-	 * Key attributes for arbitrary elements are id and name. See `Introduction`
-	 * for details about locators.
-	 * 
-	 * @param locator
-	 *            The locator to locate the element.
-	 */
-	@RobotKeyword
+    @RobotKeyword("Simulates moving the mouse away from the element identified by ``locator``.\r\n" + 
+            "\r\n" + 
+            "Key attributes for arbitrary elements are id and name. See `Introduction` for details about locators.")
 	@ArgumentNames({ "locator" })
 	public void mouseOut(String locator) {
 		logging.info(String.format("Simulating Mouse Out on element '%s'.", locator));
@@ -1007,38 +717,15 @@ public class Element extends RunOnFailureKeywordsAdapter {
 		((JavascriptExecutor) browserManagement.getCurrentWebDriver()).executeScript(script, elements.get(0), event);
 	}
 
-	/**
-	 * Simulates pressing ``key`` on the element identified by ``locator``
-	 * .
-	 * 
-	 * Key is either a single character, or a numerical ASCII code of the key
-	 * lead by '\\'.
-	 * 
-	 * Key attributes for arbitrary elements are id and name. See `Introduction`
-	 * for details about locators.
-	 * 
-	 * Example:
-	 * <table border="1" cellspacing="0" summary="">
-	 * <tr>
-	 * <td>Press Key</td>
-	 * <td>text_field</td>
-	 * <td>q</td>
-	 * <td># Press 'q'</td>
-	 * </tr>
-	 * <tr>
-	 * <td>Press Key</td>
-	 * <td>login_button</td>
-	 * <td>\\13</td>
-	 * <td># ASCII code for enter key</td>
-	 * </tr>
-	 * </table>
-	 * 
-	 * @param locator
-	 *            The locator to locate the element.
-	 * @param key
-	 *            The key to press.
-	 */
-	@RobotKeyword
+	@RobotKeyword("Simulates pressing key on the element identified by ``locator``.\r\n" + 
+	        "\r\n" + 
+	        "Key is either a single character, or a numerical ASCII code of the key lead by '\\\\'.\r\n" + 
+	        "\r\n" + 
+	        "Key attributes for arbitrary elements are id and name. See `Introduction` for details about locators.\r\n" + 
+	        "\r\n" + 
+	        "Example:\r\n" + 
+	        " | Press Key | text_field | q | # Press 'q' | \r\n" + 
+	        " | Press Key | login_button | \\\\13 | # ASCII code for enter key |")
 	@ArgumentNames({ "locator", "key" })
 	public void pressKey(String locator, String key) {
 		if (key.startsWith("\\") && key.length() > 1) {

@@ -129,15 +129,6 @@ public class BrowserManagement extends RunOnFailureKeywordsAdapter {
         addLocationStrategy(strategyName, functionDefinition, null);
     }
 
-    /**
-     * 
-     * @param strategyName
-     *            Name of the location strategy.
-     * @param functionDefinition
-     *            The JavaScript function to register.
-     * @param delimiter
-     *            Default=NONE. The delimiter to split the given locator value
-     */
     @RobotKeyword("Registers a JavaScript function as locator with the specified strategy name.\r\n" + 
             "\r\n" + 
             "The registered function has to return a WebElement, a List of WebElements or null. Optionally a delimiter can be given to split the value of the locator in multiple arguments when executing the JavaScript function. \r\n" + 
@@ -304,25 +295,16 @@ public class BrowserManagement extends RunOnFailureKeywordsAdapter {
         return webDriverCache.getCurrent().getTitle();
     }
 
-    /**
-     * Returns the actually supported capabilities of the remote browser
-     * instance.<br>
-     * <br>
-     * Not all server implementations will support every WebDriver feature.
-     * Therefore, the client and server should use JSON objects with the properties
-     * listed below when describing which features a user requests that a session
-     * support. <b>If a session cannot support a capability that is requested in the
-     * desired capabilities, no error is thrown;</b> a read-only capabilities object
-     * is returned that indicates the capabilities the session actually supports.
-     * For more information see:
-     * <a href= "http://code.google.com/p/selenium/wiki/DesiredCapabilities" >
-     * DesiredCapabilities</a><br>
-     * 
-     * @return The capabilities of the remote node.
-     * 
-     * @see Logging#logRemoteCapabilities
-     */
-    @RobotKeyword
+    @RobotKeyword("     * Returns the actually supported capabilities of the remote browser instance.\r\n" + 
+            "     * \r\n" + 
+            "Not all server implementations will support every WebDriver feature. " + 
+            "Therefore, the client and server should use JSON objects with the properties " + 
+            "listed below when describing which features a user requests that a session " + 
+            "support. <b>If a session cannot support a capability that is requested in the " + 
+            "desired capabilities, no error is thrown;</b> a read-only capabilities object " + 
+            "is returned that indicates the capabilities the session actually supports. " + 
+            "For more information see:" + 
+            "[http://code.google.com/p/selenium/wiki/DesiredCapabilities|DesiredCapabilities]")
     public String getRemoteCapabilities() {
         // Null returned from jbrowserdriver
         if (getCurrentWebDriver() instanceof RemoteWebDriver
@@ -449,45 +431,16 @@ public class BrowserManagement extends RunOnFailureKeywordsAdapter {
         return Robotframework.secsToTimestr(timeout);
     }
 
-    /**
-     * Sets and returns the timeout in seconds that is used by various keywords.
-     * <br>
-     * <br>
-     * There are several Wait ... keywords that take a timeout as an argument. All
-     * of these timeout arguments are optional. The timeout used by all of them can
-     * be set globally using this keyword. See `Introduction` for more information
-     * about timeouts.<br>
-     * <br>
-     * The previous timeout value is returned by this keyword and can be used to set
-     * the old value back later. The default timeout is 5 seconds, but it can be
-     * altered in importing the library.<br>
-     * <br>
-     * Example:
-     * <table border="1" cellspacing="0" summary="">
-     * <tr>
-     * <td>${orig timeout} =</td>
-     * <td>Set Selenium Timeout</td>
-     * <td>15 seconds</td>
-     * </tr>
-     * <tr>
-     * <td># Open page that loads slowly</td>
-     * <td></td>
-     * <td></td>
-     * </tr>
-     * <tr>
-     * <td>Set Selenium Timeout</td>
-     * <td>${orig timeout}</td>
-     * <td># Reset to old value</td>
-     * </tr>
-     * </table>
-     * 
-     * @param timestr
-     *            The timeout in seconds.
-     * @return The previous timeout in seconds.
-     * 
-     * @see BrowserManagement#getSeleniumTimeout
-     */
-    @RobotKeyword
+    @RobotKeyword("Sets and returns the timeout in seconds that is used by various keywords.\r\n" + 
+            "\r\n" + 
+            "There are several Wait ... keywords that take a timeout as an argument. All of these timeout arguments are optional. The timeout used by all of them can be set globally using this keyword. See `Introduction` for more information about timeouts.\r\n" + 
+            "\r\n" + 
+            "The previous timeout value is returned by this keyword and can be used to set the old value back later. The default timeout is 5 seconds, but it can be altered in importing the library.\r\n" + 
+            "\r\n" + 
+            "Example:\r\n" + 
+            " | ${orig timeout} = | Set Selenium Timeout | 15 seconds | \r\n" + 
+            " | # Open page that loads slowly |  |  | \r\n" + 
+            " | Set Selenium Timeout | ${orig timeout} | # Reset to old value |")
     @ArgumentNames({ "timestr" })
     public String setSeleniumTimeout(String timestr) {
         String oldWait = getSeleniumTimeout();
@@ -505,42 +458,14 @@ public class BrowserManagement extends RunOnFailureKeywordsAdapter {
         return Robotframework.secsToTimestr(implicitWait);
     }
 
-    /**
-     * Sets and returns the implicit wait time in seconds that is used by all
-     * Selenium 2 WebDriver instances. This affects all currently open and from now
-     * on opened instances.<br>
-     * <br>
-     * From selenium 2 function: <i>Sets a sticky timeout to implicitly wait for an
-     * element to be found, or a command to complete. This method only needs to be
-     * called one time per session.</i><br>
-     * <br>
-     * Example:
-     * <table border="1" cellspacing="0" summary="">
-     * <tr>
-     * <td>${orig wait} =</td>
-     * <td>Set Selenium Implicit Wait</td>
-     * <td>10 seconds</td>
-     * </tr>
-     * <tr>
-     * <td># Perform AJAX call that is slow</td>
-     * <td></td>
-     * <td></td>
-     * </tr>
-     * <tr>
-     * <td>Set Selenium Implicit Wait</td>
-     * <td>${orig wait}</td>
-     * <td># Reset to old value</td>
-     * </tr>
-     * </table>
-     * 
-     * @param timestr
-     *            The implicit wait time in seconds.
-     * @return The previous implicit wait time in seconds.
-     * 
-     * @see BrowserManagement#setBrowserImplicitWait
-     * @see BrowserManagement#getSeleniumImplicitWait
-     */
-    @RobotKeyword
+    @RobotKeyword("Sets and returns the implicit wait time in seconds that is used by all Selenium 2 WebDriver instances. This affects all currently open and from now on opened instances.\r\n" + 
+            "\r\n" + 
+            "From selenium 2 function: _Sets a sticky timeout to implicitly wait for an element to be found, or a command to complete. This method only needs to be called one time per session._\r\n" + 
+            "\r\n" + 
+            "Example:\r\n" + 
+            " | ${orig wait} = | Set Selenium Implicit Wait | 10 seconds | \r\n" + 
+            " | # Perform AJAX call that is slow |  |  | \r\n" + 
+            " | Set Selenium Implicit Wait | ${orig wait} | # Reset to old value |")
     @ArgumentNames({ "timestr" })
     public String setSeleniumImplicitWait(String timestr) {
         String oldWait = getSeleniumTimeout();
@@ -553,40 +478,14 @@ public class BrowserManagement extends RunOnFailureKeywordsAdapter {
         return oldWait;
     }
 
-    /**
-     * Sets and returns the implicit wait time in seconds that is used by the
-     * current Selenium 2 WebDriver instance.<br>
-     * <br>
-     * From selenium 2 function: <i>Sets a sticky timeout to implicitly wait for an
-     * element to be found, or a command to complete. This method only needs to be
-     * called one time per session.</i><br>
-     * <br>
-     * Example:
-     * <table border="1" cellspacing="0" summary="">
-     * <tr>
-     * <td>${orig wait} =</td>
-     * <td>Set Browser Implicit Wait</td>
-     * <td>10 seconds</td>
-     * </tr>
-     * <tr>
-     * <td># Perform AJAX call that is slow</td>
-     * <td></td>
-     * <td></td>
-     * </tr>
-     * <tr>
-     * <td>Set Browser Implicit Wait</td>
-     * <td>${orig wait}</td>
-     * <td># Reset to old value</td>
-     * </tr>
-     * </table>
-     * 
-     * @param timestr
-     *            The implicit wait time in seconds.
-     * @return The previous implicit wait time in seconds.
-     * 
-     * @see BrowserManagement#setSeleniumImplicitWait
-     */
-    @RobotKeyword
+    @RobotKeyword("Sets and returns the implicit wait time in seconds that is used by the current Selenium 2 WebDriver instance.\r\n" + 
+            "\r\n" + 
+            "From selenium 2 function: _Sets a sticky timeout to implicitly wait for an element to be found, or a command to complete. This method only needs to be called one time per session._\r\n" + 
+            "\r\n" + 
+            "Example:\r\n" + 
+            " | ${orig wait} = | Set Browser Implicit Wait | 10 seconds | \r\n" + 
+            " | # Perform AJAX call that is slow |  |  | \r\n" + 
+            " | Set Browser Implicit Wait | ${orig wait} | # Reset to old value |")
     @ArgumentNames({ "timestr" })
     public String setBrowserImplicitWait(String timestr) {
         String oldWait = getSeleniumTimeout();
@@ -596,48 +495,18 @@ public class BrowserManagement extends RunOnFailureKeywordsAdapter {
         return oldWait;
     }
 
-    /**
-     * Configures proxy handling for remote WebDriver instances.<br>
-     * <br>
-     * This is needed to connect to an external Selenium 2 WebDriver rid through a
-     * local HTTP proxy. This implementation handles BASIC, DIGEST and NTLM based
-     * authentication schemes correctly.<br>
-     * <br>
-     * The given configuration will be used for all subsequent calls of `Open
-     * Browser`. To remove the proxy call:<br>
-     * Set Remote Web Driver Proxy | ${EMPTY} | ${EMPTY}<br>
-     * <br>
-     * Some additional info:
-     * <ul>
-     * <li>If no <b>username</b> is provided, it looks for a username at the Java
-     * property http.proxyUser and the environment variables HTTP_PROXY and
-     * http_proxy. If a username is found, it is only used, if the host and port
-     * also match.</li>
-     * <li>If no <b>password</b> is provided, it looks for a password at the Java
-     * property http.proxyUser and the environment variables HTTP_PROXY and
-     * http_proxy. If a password is found, it is only used, if the host, port and
-     * username also match.</li>
-     * <li>If a <b>domain</b> is provided, NTLM based authentication is used</li>
-     * <li>If no <b>workstation</b> is provided and NTLM based authentication is
-     * used, the hostname is used as workstation name.</li>
-     * </ul>
-     * 
-     * @param host
-     *            The hostname of the proxy
-     * @param port
-     *            The port of the proxy
-     * @param args
-     *            Contains optional arguments. If value is not set, default value is used. 
-     *            username
-     *            Default=NONE. The usename
-     *            password
-     *            Default=NONE. The password of the user   
-     *            domain
-     *            Default=NONE. The NTLM domain name
-     *            workstation
-     *            Default=NONE. The name of the workstation
-     */
-    @RobotKeyword
+    @RobotKeyword("Configures proxy handling for remote WebDriver instances.\r\n" + 
+            "\r\n" + 
+            "This is needed to connect to an external Selenium 2 WebDriver rid through a local HTTP proxy. This implementation handles BASIC, DIGEST and NTLM based authentication schemes correctly.\r\n" + 
+            "\r\n" + 
+            "The given configuration will be used for all subsequent calls of `Open Browser`. To remove the proxy call:\r\n" + 
+            "| Set Remote Web Driver Proxy | ${EMPTY} | ${EMPTY} |\r\n" + 
+            "\r\n" + 
+            "Some additional info:\r\n" + 
+            " - If no ``username`` is provided, it looks for a username at the Java property http.proxyUser and the environment variables HTTP_PROXY and http_proxy. If a username is found, it is only used, if the host and port also match.\r\n" + 
+            " - If no ``password`` is provided, it looks for a password at the Java property http.proxyUser and the environment variables HTTP_PROXY and http_proxy. If a password is found, it is only used, if the host, port and username also match.\r\n" + 
+            " - If a ``domain`` is provided, NTLM based authentication is used\r\n" + 
+            " - If no ``workstation`` is provided and NTLM based authentication is used, the hostname is used as workstation name.")
     @ArgumentNames({ "host", "port", "username=None", "password=None", "domain=None", "workstation=None" })
     public void setRemoteWebDriverProxy(String host, String port, String... args) {
         String username = robot.getParamsValue(args, 0, "");
