@@ -33,6 +33,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
+import org.openqa.selenium.edge.EdgeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.firefox.FirefoxProfile;
 import org.openqa.selenium.htmlunit.HtmlUnitDriver;
@@ -128,66 +129,23 @@ public class BrowserManagement extends RunOnFailureKeywordsAdapter {
         addLocationStrategy(strategyName, functionDefinition, null);
     }
 
-    /**
-     * Registers a JavaScript function as locator with the specified strategy
-     * name.<br>
-     * <br>
-     * The registered function has to return a WebElement, a List of WebElements or
-     * null. Optionally a delimiter can be given to split the value of the locator
-     * in multiple arguments when executing the JavaScript function. <br>
-     * <br>
-     * Example:
-     * <table border="1" cellspacing="0" summary="">
-     * <tr>
-     * <td>Add Location Strategy</td>
-     * <td>byId</td>
-     * <td>return window.document.getElementById(arguments[0]);</td>
-     * </tr>
-     * <tr>
-     * <td>Input Text</td>
-     * <td>byId=firstName</td>
-     * <td>Max</td>
-     * </tr>
-     * </table>
-     * <br>
-     * Example with delimiter:
-     * <table border="1" cellspacing="0" summary="">
-     * <tr>
-     * <td>Add Location Strategy</td>
-     * <td>byClassname</td>
-     * <td>return
-     * window.document.getElementsByClassName(arguments[0])[arguments[1]];</td>
-     * <td>,</td>
-     * </tr>
-     * <tr>
-     * <td>Input Text</td>
-     * <td>byClassname=input,3</td>
-     * <td>Max</td>
-     * <td></td>
-     * </tr>
-     * </table>
-     * 
-     * @param strategyName
-     *            Name of the location strategy.
-     * @param functionDefinition
-     *            The JavaScript function to register.
-     * @param delimiter
-     *            Default=NONE. The delimiter to split the given locator value
-     */
-    @RobotKeyword
+    @RobotKeyword("Registers a JavaScript function as locator with the specified strategy name.\r\n" + 
+            "\r\n" + 
+            "The registered function has to return a WebElement, a List of WebElements or null. Optionally a delimiter can be given to split the value of the locator in multiple arguments when executing the JavaScript function. \r\n" + 
+            "\r\n" + 
+            "Example:\r\n" + 
+            " | Add Location Strategy | byId | return window.document.getElementById(arguments[0]); | \r\n" + 
+            " | Input Text | byId=firstName | Max |\r\n" + 
+            "\r\n" + 
+            "Example with delimiter:\r\n" + 
+            " | Add Location Strategy | byClassname | return window.document.getElementsByClassName(arguments[0])[arguments[1]]; | , | \r\n" + 
+            " | Input Text | byClassname=input,3 | Max | ")
     @ArgumentNames({ "strategyName", "functionDefinition", "delimiter=NONE" })
     public void addLocationStrategy(String strategyName, String functionDefinition, String delimiter) {
         ElementFinder.addLocationStrategy(strategyName, functionDefinition, delimiter);
     }
 
-    /**
-     * Closes the current browser instance.<br>
-     * 
-     * @see BrowserManagement#closeAllBrowsers
-     * @see BrowserManagement#openBrowser
-     * @see BrowserManagement#switchBrowser
-     */
-    @RobotKeyword
+    @RobotKeyword("Closes the current browser instance.")
     public void closeBrowser() {
         if (webDriverCache.getCurrentSessionId() != null) {
             logging.debug(String.format("Closing browser with session id %s", webDriverCache.getCurrentSessionId()));
@@ -195,171 +153,37 @@ public class BrowserManagement extends RunOnFailureKeywordsAdapter {
         }
     }
 
-    /**
-     * Opens a new browser instance to given URL.<br>
-     * <br>
-     * Possible values for browser are as follows:
-     * <table border="1" cellspacing="0" summary="">
-     * <tr>
-     * <td>firefox</td>
-     * <td>FireFox</td>
-     * </tr>
-     * <tr>
-     * <td>ff</td>
-     * <td>FireFox</td>
-     * </tr>
-     * <tr>
-     * <td>internetexplorer</td>
-     * <td>Internet Explorer</td>
-     * </tr>
-     * <tr>
-     * <td>ie</td>
-     * <td>Internet Explorer</td>
-     * </tr>
-     * <tr>
-     * <td>googlechrome</td>
-     * <td>Google Chrome</td>
-     * </tr>
-     * <tr>
-     * <td>gc</td>
-     * <td>Google Chrome</td>
-     * </tr>
-     * <tr>
-     * <td>chrome</td>
-     * <td>Google Chrome</td>
-     * </tr>
-     * <tr>
-     * <td>opera</td>
-     * <td>Opera</td>
-     * </tr>
-     * <tr>
-     * <td>phantomjs</td>
-     * <td>PhantomJS</td>
-     * </tr>
-     * <tr>
-     * <td>htmlunitwithjs</td>
-     * <td>HTMLUnit with Javascipt support</td>
-     * </tr>
-     * <tr>
-     * <td>safari</td>
-     * <td>Safari</td>
-     * </tr>
-     * <tr>
-     * <td>ipad</td>
-     * <td>iPad</td>
-     * </tr>
-     * <tr>
-     * <td>iphone</td>
-     * <td>iPhone</td>
-     * </tr>
-     * <tr>
-     * <td>android</td>
-     * <td>Android</td>
-     * </tr>
-     * <tr>
-     * <td>htmlunit</td>
-     * <td>HTMLUnit</td>
-     * </tr>
-     * </table>
-     * <br>
-     * Returns the index of the newly created browser instance which can be used
-     * later to switch back to it. Index starts from 1 and is reset back to it when
-     * the `Close All Browsers` keyword is used.<br>
-     * <br>
-     * <b>DesiredCapabilities</b><br>
-     * The DesiredCapabilities can be specified in a simple key:value format or as a
-     * JSON object. With the JSON format more complex parameters, like the proxy,
-     * can be configured.<br>
-     * <br>
-     * Example of desiredCapabilities as simple string:<br>
-     * <table border="1" cellspacing="0" summary="">
-     * <tr>
-     * <td>platform:Windows 8,browserName:firefox,version:25</td>
-     * </tr>
-     * </table>
-     * <br>
-     * Example of desiredCapabilities as JSON object:<br>
-     * <table border="1" cellspacing="0" summary="">
-     * <tr>
-     * <td>{<br>
-     * &emsp;"platform":"Windows 8",<br>
-     * &emsp;"browserName":"firefox",<br>
-     * &emsp;"version":"25",<br>
-     * &emsp;"proxy":<br>
-     * &emsp;{<br>
-     * &emsp;&emsp;"proxyType":"manual",<br>
-     * &emsp;&emsp;"httpProxy":"localhost:8118"<br>
-     * &emsp;}<br>
-     * }<br>
-     * </td>
-     * </tr>
-     * </table>
-     * <br>
-     * <b>BrowserOptions</b><br>
-     * The BrowserOptions can be specified as JSON object to set more complex
-     * browser specific parameters. At the moment only the following browsers with
-     * the listed options are implemented.<br>
-     * <br>
-     * Firefox:
-     * <table border="1" cellspacing="0" summary="">
-     * <tr>
-     * <td>{<br>
-     * &emsp;"preferences":<br>
-     * &emsp;{<br>
-     * &emsp;&emsp;"extensions.firebug.currentVersion":"1.8.1",<br>
-     * &emsp;&emsp;"extensions.firebug.addonBarOpened":true,<br>
-     * &emsp;&emsp;"extensions.firebug.enableSites":true<br>
-     * &emsp;}<br>
-     * &emsp;"extensions":<br>
-     * &emsp;[<br>
-     * &emsp;&emsp;"firebug-1.8.1.xpi",<br>
-     * &emsp;&emsp;"modify_headers-0.7.1.1-fx.xpi"<br>
-     * &emsp;]<br>
-     * }<br>
-     * </td>
-     * </tr>
-     * </table>
-     * <br>
-     * <b>Internet Explorer</b><br>
-     * Note, that you will encounter strange behavior, if you open multiple Internet
-     * Explorer browser instances. That is also why `Switch Browser` only works with
-     * one IE browser at most. For more information see: <a href=
-     * "http://selenium-grid.seleniumhq.org/faq.html#i_get_some_strange_errors_when_i_run_multiple_internet_explorer_instances_on_the_same_machine"
-     * >Strange errors with multiple IE instances</a><br>
-     * 
-     * @param url
-     *            The URL to open in the newly created browser instance.
-     * @param args 
-     *            Contains optional arguments. If value is not set, default value is used. 
-     *            browserName
-     *            Default=firefox. Optional name of the browser to start.
-     *            alias
-     *            Default=NONE. Optional alias for the newly created browser
-     *            instance. The alias can be used later for switching between
-     *            browsers instances, just as returned index.
-     *            remoteUrl
-     *            Default=False. Optional remote grid URL. When specified no local
-     *            WebDriver instance is created, but a network connection to a
-     *            Selenium 2 WebDriver Grid Hub at the given URL is opened.
-     *            desiredCapabilities
-     *            Default=NONE. Optional desired capabilities of the newly created
-     *            remote browser instances can be specified in a simple
-     *            key1:val1,key2:val2 format or as a JSON object (see examples
-     *            above). Used to communicate to the remote grid, which kind of
-     *            browser, etc. should be used. For more information see: <a href=
-     *            "http://code.google.com/p/selenium/wiki/DesiredCapabilities" >
-     *            DesiredCapabilities</a>
-     *            browserOptions
-     *            Default=NONE. Extended browser options as JSON structure.
-     * @return The index of the newly created browser instance.
-     * @throws Throwable
-     *             - if anything goes wrong
-     * 
-     * @see BrowserManagement#closeAllBrowsers
-     * @see BrowserManagement#closeBrowser
-     * @see BrowserManagement#switchBrowser
-     */
-    @RobotKeyword
+    @RobotKeyword("Opens a new browser instance to the given ``url``.\r\n" + 
+            "\r\n" + 
+            "The ``browser`` argument specifies which browser to use, and the supported browser are listed in the table below. The browser names are case-insensitive and some browsers have multiple supported names.\r\n" + 
+            "|    = Browser =    | = Name(s) =       |\r\n" + 
+            "| Firefox   | firefox, ff      |\r\n" + 
+            "| Google Chrome     | googlechrome, chrome, gc |\r\n" + 
+            "| Internet Explorer | internetexplorer, ie     |\r\n" + 
+            "| Edge      | edge      |\r\n" + 
+            "| Safari    | safari    |\r\n" + 
+            "| Opera     | opera     |\r\n" + 
+            "| Android   | android   |\r\n" + 
+            "| Iphone    | iphone    |\r\n" + 
+            "| PhantomJS | phantomjs |\r\n" + 
+            "| HTMLUnit  | htmlunit  |\r\n" + 
+            "| HTMLUnit with Javascript | htmlunitwithjs    |\r\n" + 
+            "| JBrowser  | jbrowser  |\r\n" + 
+            "\r\n" + 
+            "To be able to actually use one of these browsers, you need to have a matching Selenium browser driver available. See the [https://github.com/Hi-Fi/robotframework-seleniumlibrary-java#browser-drivers|project documentation] for more details.\r\n" + 
+            "\r\n" + 
+            "Optional ``alias`` is an alias given for this browser instance and it can be used for switching between browsers. An alternative approach for switching is using an index returned by this keyword. These indices start from 1, are incremented when new browsers are opened, and reset back to 1 when `Close All Browsers` is called. See `Switch Browser` for more information and examples.\r\n" + 
+            "\r\n" + 
+            "Optional ``remote_url`` is the URL for a remote Selenium server. If you specify a value for a remote, you can also specify ``desired_capabilities`` to configure, for example, a proxy server for Internet Explorer or a browser and operating system when using [http://saucelabs.com|Sauce Labs]. Desired capabilities can be given as a dictionary. [https://github.com/SeleniumHQ/selenium/wiki/DesiredCapabilities| Selenium documentation] lists possible capabilities that can be enabled.\r\n" + 
+            "\r\n" + 
+            "Optional ``ff_profile_dir`` is the path to the Firefox profile directory if you wish to overwrite the default profile Selenium uses. Notice that prior to SeleniumLibrary 3.0, the library contained its own profile that was used by default.\r\n" + 
+            "\r\n" + 
+            "Examples:\r\n" + 
+            "| `Open Browser` | http://example.com | Chrome  |\r\n" + 
+            "| `Open Browser` | http://example.com | Firefox | alias=Firefox |\r\n" + 
+            "| `Open Browser` | http://example.com | Edge    | remote_url=http://127.0.0.1:4444/wd/hub |\r\n" + 
+            "\r\n" + 
+            "If the provided configuration options are not enough, it is possible to use `Create Webdriver` to customize browser initialization even more.")
     @ArgumentNames({ "url", "browserName=firefox", "alias=None", "remoteUrl=None", "desiredCapabilities=None",
             "browserOptions=None" })
     public String openBrowser(String url, String... args) throws Throwable {
@@ -388,100 +212,27 @@ public class BrowserManagement extends RunOnFailureKeywordsAdapter {
         }
     }
 
-    /**
-     * "Switches between active browser instances using an <b>index</b> or an
-     * <b>alias</b>.<br>
-     * <br>
-     * The index is returned from `Open Browser` and an alias can be given to
-     * it.<br>
-     * <br>
-     * Example:
-     * <table border="1" cellspacing="0" summary="">
-     * <tr>
-     * <td>Open Browser</td>
-     * <td>http://google.com</td>
-     * <td>ff</td>
-     * <td></td>
-     * </tr>
-     * <tr>
-     * <td>Location Should Be</td>
-     * <td>http://google.com</td>
-     * <td></td>
-     * <td></td>
-     * </tr>
-     * <tr>
-     * <td>Open Browser</td>
-     * <td>http://yahoo.com</td>
-     * <td>ie</td>
-     * <td>2nd conn</td>
-     * </tr>
-     * <tr>
-     * <td>Location Should Be</td>
-     * <td>http://yahoo.com</td>
-     * <td></td>
-     * <td></td>
-     * </tr>
-     * <tr>
-     * <td>Switch Browser</td>
-     * <td>1</td>
-     * <td># index</td>
-     * <td></td>
-     * </tr>
-     * <tr>
-     * <td>Page Should Contain</td>
-     * <td>I'm feeling lucky</td>
-     * <td></td>
-     * <td></td>
-     * </tr>
-     * <tr>
-     * <td>Switch Browser</td>
-     * <td>2nd conn</td>
-     * <td># alias</td>
-     * <td></td>
-     * </tr>
-     * <tr>
-     * <td>Page Should Contain</td>
-     * <td>More Yahoo!</td>
-     * <td></td>
-     * <td></td>
-     * </tr>
-     * <tr>
-     * <td>Close All Browsers</td>
-     * <td></td>
-     * <td></td>
-     * <td></td>
-     * </tr>
-     * </table>
-     * <br>
-     * The above example expects that there was no other open browsers when opening
-     * the first one because it used index '1' when switching to it later. If you
-     * aren't sure about that you can store the index into a variable as below.
-     * <table border="1" cellspacing="0" summary="">
-     * <tr>
-     * <td>${id} =</td>
-     * <td>Open Browser</td>
-     * <td>http://google.com</td>
-     * </tr>
-     * <tr>
-     * <td># Do something ...</td>
-     * <td></td>
-     * <td></td>
-     * </tr>
-     * <tr>
-     * <td>Switch Browser</td>
-     * <td>${id}</td>
-     * <td></td>
-     * </tr>
-     * </table>
-     * 
-     * @param indexOrAlias
-     *            the index or alias of the browser instance to switch to
-     * 
-     * @see BrowserManagement#closeAllBrowsers
-     * @see BrowserManagement#closeBrowser
-     * @see BrowserManagement#openBrowser
-     */
-    @RobotKeyword
+    @RobotKeyword("Switches between active browser instances using an index or an alias.\r\n" + 
+            "\r\n" + 
+            "The index is returned from Open Browser and an alias can be given to it.\r\n" + 
+            "\r\n" + 
+            "Example:\r\n" + 
+            "\r\n" + 
+            " | Open Browser | http://google.com | ff |  | \r\n" + 
+            " | Location Should Be | http://google.com |  |  | \r\n" + 
+            " | Open Browser | http://yahoo.com | ie | 2nd conn | \r\n" + 
+            " | Location Should Be | http://yahoo.com |  |  | \r\n" + 
+            " | Switch Browser | 1 | # index |  | \r\n" + 
+            " | Page Should Contain | I'm feeling lucky |  |  | \r\n" + 
+            " | Switch Browser | 2nd conn | # alias |  | \r\n" + 
+            " | Page Should Contain | More Yahoo! |  |  | \r\n" + 
+            " | Close All Browsers |  |  | \r\n" + 
+            "\r\n" + 
+            "The above example expects that there was no other open browsers when opening the first one because it used index '1' when switching to it later. If you aren't sure about that you can store the index into a variable as below.\r\n" + 
+            "\r\n" + 
+            " | ${id} = | Open Browser | http://google.com | \r\n" + 
+            " | # Do something ... |  |  | \r\n" + 
+            " | Switch Browser | ${id} |")
     @ArgumentNames({ "indexOrAlias" })
     public void switchBrowser(String indexOrAlias) {
         try {
@@ -494,150 +245,29 @@ public class BrowserManagement extends RunOnFailureKeywordsAdapter {
         }
     }
 
-    /**
-     * Closes all open browser instances and resets the browser cache.<br>
-     * <br>
-     * After this keyword new indexes returned from `Open Browser` keyword are reset
-     * to 1. This keyword should be used in test or suite teardown to make sure all
-     * browsers are closed.<br>
-     * 
-     * @see BrowserManagement#closeBrowser
-     * @see BrowserManagement#openBrowser
-     * @see BrowserManagement#switchBrowser
-     */
-    @RobotKeyword
+    @RobotKeyword("Closes all open browsers and resets the browser cache.\r\n" + 
+            "\r\n" + 
+            "After this keyword new indexes returned from `Open Browser` keyword are reset to 1.\r\n" + 
+            "\r\n" + 
+            "This keyword should be used in test or suite teardown to make sure all browsers are closed.")
     public void closeAllBrowsers() {
         logging.debug("Closing all browsers");
         webDriverCache.closeAll();
     }
 
-    /**
-     * Closes the currently open pop-up window.
-     */
-    @RobotKeyword
-    public void closeWindow() {
-        webDriverCache.getCurrent().close();
-    }
 
-    /**
-     * Returns the id attributes of all windows known to the current browser
-     * instance.<br>
-     * 
-     * @return List of window id attributes
-     * 
-     * @see Logging#logWindowIdentifiers
-     */
-    @RobotKeyword
-    public List<String> getWindowIdentifiers() {
-        return toList(WindowManager.getWindowIds(webDriverCache.getCurrent()), "Window Id");
-    }
-
-    /**
-     * Returns the names of all windows known to the current browser instance. <br>
-     * 
-     * @return List of window names
-     * 
-     * @see Logging#logWindowNames
-     */
-    @RobotKeyword
-    public List<String> getWindowNames() {
-        List<String> windowNames = WindowManager.getWindowNames(webDriverCache.getCurrent());
-        if (windowNames.size() != 0 && windowNames.get(0).equals("undefined")) {
-            windowNames.set(0, "selenium_main_app_window");
-        }
-        return toList(windowNames, "Window Name");
-    }
-
-    /**
-     * Returns the titles of all windows known to the current browser instance. <br>
-     * 
-     * @return List of window titles
-     * 
-     * @see Logging#logWindowTitles
-     */
-    @RobotKeyword
-    public List<String> getWindowTitles() {
-        return toList(WindowManager.getWindowTitles(webDriverCache.getCurrent()), "Window Title");
-    }
-
-    /**
-     * Maximizes current browser window.<br>
-     */
-    @RobotKeyword
-    public void maximizeBrowserWindow() {
-        webDriverCache.getCurrent().manage().window().maximize();
-    }
-
-    /**
-     * Returns current window size as <b>width</b> then <b>height</b>.<br>
-     * <br>
-     * Example:
-     * <table border="1" cellspacing="0" summary="">
-     * <tr>
-     * <td>${width}</td>
-     * <td>${height}=</td>
-     * <td>Get Window Size</td>
-     * </tr>
-     * </table>
-     * 
-     * @return The window <b>width</b> and <b>height</b> in px.
-     */
-    @RobotKeyword
-    public Object[] getWindowSize() {
-        Dimension size = getCurrentWebDriver().manage().window().getSize();
-        return new Object[] { Integer.toString(size.width), Integer.toString(size.height) };
-    }
-
-    /**
-     * Sets the <b>width</b> and <b>height</b> of the current window to the
-     * specified values.<br>
-     * <br>
-     * Example:
-     * <table border="1" cellspacing="0" summary="">
-     * <tr>
-     * <td>Set Window Size</td>
-     * <td>800</td>
-     * <td>600</td>
-     * </tr>
-     * <tr>
-     * <td>${width}</td>
-     * <td>${height}=</td>
-     * <td>Get Window Size</td>
-     * </tr>
-     * <tr>
-     * <td>Should Be Equal</td>
-     * <td>${width}</td>
-     * <td>800</td>
-     * </tr>
-     * <tr>
-     * <td>Should Be Equal</td>
-     * <td>${height}</td>
-     * <td>600</td>
-     * </tr>
-     * </table>
-     * 
-     * @param width
-     *            The window width to set in px.
-     * @param height
-     *            The window height to set in px.
-     */
-    @RobotKeyword
-    @ArgumentNames({ "width", "height" })
-    public void setWindowSize(String width, String height) {
-        getCurrentWebDriver().manage().window()
-                .setSize(new Dimension(Integer.parseInt(width), Integer.parseInt(height)));
-    }
-
-    /**
-     * Selects the frame identified by <b>locator</b> as current frame.<br>
-     * <br>
-     * Key attributes for frames are <b>id</b> and <b>name</b>. See `Introduction`
-     * for details about locators.<br>
-     * 
-     * @param locator
-     *            The locator to locate the frame
-     */
-    @RobotKeyword
+    @RobotKeyword("Sets frame identified by ``locator`` as the current frame.\r\n" + 
+            "\r\n" + 
+            "See the `Locating elements` section for details about the locator syntax.\r\n" + 
+            "\r\n" + 
+            "Works both with frames and iframes. Use `Unselect Frame` to cancel the frame selection and return to the main frame.\r\n" + 
+            "\r\n" + 
+            "Example:\r\n" + 
+            "\r\n" + 
+            " | Select Frame | top-frame | # Select frame with id or name 'top-frame' | \r\n" + 
+            " | Click Link | example | # Click link 'example' in the selected frame | \r\n" + 
+            " | Unselect Frame |  | # Back to main frame. | \r\n" + 
+            " | Select Frame | //iframe[@name='xxx'] | # Select frame using xpath | ")
     @ArgumentNames({ "locator" })
     public void selectFrame(String locator) {
         logging.info(String.format("Selecting frame '%s'.", locator));
@@ -645,147 +275,36 @@ public class BrowserManagement extends RunOnFailureKeywordsAdapter {
         webDriverCache.getCurrent().switchTo().frame(elements.get(0));
     }
 
-    @RobotKeywordOverload
-    public void selectWindow() {
-        selectWindow(null);
-    }
-
-    /**
-     * Selects the window identified by <b>locator</b> as the context of
-     * actions.<br>
-     * <br>
-     * If the window is found, all subsequent commands use that window, until this
-     * keyword is used again. If the window is not found, this keyword fails.<br>
-     * <br>
-     * By default, when a locator value is provided, it is matched against the title
-     * of the window and the javascript name of the window. If multiple windows with
-     * same identifier are found, the first one is selected.<br>
-     * <br>
-     * The special locator main (default) can be used to select the main window.
-     * <br>
-     * <br>
-     * Example:
-     * <table border="1" cellspacing="0" summary="">
-     * <tr>
-     * <td>Click Link</td>
-     * <td>popup_link</td>
-     * <td># opens new window</td>
-     * </tr>
-     * <tr>
-     * <td>Select Window</td>
-     * <td>popupName</td>
-     * <td></td>
-     * </tr>
-     * <tr>
-     * <td>Title Should Be</td>
-     * <td>Popup Title</td>
-     * <td></td>
-     * </tr>
-     * <tr>
-     * <td>Select Window</td>
-     * <td></td>
-     * <td># Chooses the main window again</td>
-     * </tr>
-     * </table>
-     * <br>
-     * It is also possible to specify the approach SeleniumLibrary should take to
-     * find a window by specifying a locator strategy. See `Introduction` for
-     * details about locators:
-     * <table border="1" cellspacing="0" summary="">
-     * <tr>
-     * <td><b>Strategy</b></td>
-     * <td><b>Example</b></td>
-     * <td><b>Description</b></td>
-     * </tr>
-     * <tr>
-     * <td>title</td>
-     * <td>Select Window | title=My Document</td>
-     * <td>Matches by window title</td>
-     * </tr>
-     * <tr>
-     * <td>name</td>
-     * <td>Select Window | name=${name}</td>
-     * <td>Matches by window javascript name</td>
-     * </tr>
-     * <tr>
-     * <td>url</td>
-     * <td>Select Window | url=http://google.com</td>
-     * <td>Matches by window's current URL</td>
-     * </tr>
-     * </table>
-     * 
-     * @param locator
-     *            The locator to locate the window
-     */
-    @RobotKeyword
-    @ArgumentNames({ "locator=NONE" })
-    public void selectWindow(String locator) {
-        WindowManager.select(webDriverCache.getCurrent(), locator);
-    }
-
-    /**
-     * Selects the top frame as the current frame.
-     */
-    @RobotKeyword
+    @RobotKeyword("Selects the top frame as the current frame.")
     public void unselectFrame() {
         webDriverCache.getCurrent().switchTo().defaultContent();
     }
 
-    /**
-     * Returns the current location.
-     * 
-     * @return The current location.
-     * 
-     * @see Logging#logLocation
-     */
-    @RobotKeyword
+    @RobotKeyword("Returns the current browser URL.")
     public String getLocation() {
         return webDriverCache.getCurrent().getCurrentUrl();
     }
 
-    /**
-     * Returns the entire HTML source of the current page or frame.
-     * 
-     * @return The HTML source.
-     * 
-     * @see Logging#logSource
-     */
-    @RobotKeyword
+    @RobotKeyword("Returns the entire HTML source of the current page or frame.")
     public String getSource() {
         return webDriverCache.getCurrent().getPageSource();
     }
 
-    /**
-     * Returns the title of current page.
-     * 
-     * @return The title.
-     * 
-     * @see Logging#logTitle
-     */
-    @RobotKeyword
+    @RobotKeyword("Returns the title of current page.")
     public String getTitle() {
         return webDriverCache.getCurrent().getTitle();
     }
 
-    /**
-     * Returns the actually supported capabilities of the remote browser
-     * instance.<br>
-     * <br>
-     * Not all server implementations will support every WebDriver feature.
-     * Therefore, the client and server should use JSON objects with the properties
-     * listed below when describing which features a user requests that a session
-     * support. <b>If a session cannot support a capability that is requested in the
-     * desired capabilities, no error is thrown;</b> a read-only capabilities object
-     * is returned that indicates the capabilities the session actually supports.
-     * For more information see:
-     * <a href= "http://code.google.com/p/selenium/wiki/DesiredCapabilities" >
-     * DesiredCapabilities</a><br>
-     * 
-     * @return The capabilities of the remote node.
-     * 
-     * @see Logging#logRemoteCapabilities
-     */
-    @RobotKeyword
+    @RobotKeyword("     * Returns the actually supported capabilities of the remote browser instance.\r\n" + 
+            "     * \r\n" + 
+            "Not all server implementations will support every WebDriver feature. " + 
+            "Therefore, the client and server should use JSON objects with the properties " + 
+            "listed below when describing which features a user requests that a session " + 
+            "support. <b>If a session cannot support a capability that is requested in the " + 
+            "desired capabilities, no error is thrown;</b> a read-only capabilities object " + 
+            "is returned that indicates the capabilities the session actually supports. " + 
+            "For more information see:" + 
+            "[http://code.google.com/p/selenium/wiki/DesiredCapabilities|DesiredCapabilities]")
     public String getRemoteCapabilities() {
         // Null returned from jbrowserdriver
         if (getCurrentWebDriver() instanceof RemoteWebDriver
@@ -797,14 +316,7 @@ public class BrowserManagement extends RunOnFailureKeywordsAdapter {
         }
     }
 
-    /**
-     * Returns the session id of the remote browser instance.<br>
-     * 
-     * @return The remote session id.
-     * 
-     * @see Logging#logRemoteSessionId
-     */
-    @RobotKeyword
+    @RobotKeyword("Returns the session id of the remote browser instance.")
     public String getRemoteSessionId() {
         if (getCurrentWebDriver() instanceof RemoteWebDriver) {
             return ((RemoteWebDriver) getCurrentWebDriver()).getSessionId().toString();
@@ -813,29 +325,14 @@ public class BrowserManagement extends RunOnFailureKeywordsAdapter {
         }
     }
 
-    /**
-     * Returns basic system information about the execution environment.<br>
-     * 
-     * @return System information.
-     * 
-     * @see Logging#logSystemInfo
-     */
-    @RobotKeyword
+    @RobotKeyword("Returns basic system information about the execution environment.")
     public String getSystemInfo() {
         return String.format("      os.name: '%s'\n      os.arch: '%s'\n   os.version: '%s'\n java.version: '%s'",
                 System.getProperty("os.name"), System.getProperty("os.arch"), System.getProperty("os.version"),
                 System.getProperty("java.version"));
     }
 
-    /**
-     * Verify the current page URL is exactly <b>url</b>.<br>
-     * 
-     * @param url
-     *            The URL to verify.
-     * 
-     * @see BrowserManagement#locationShouldContain
-     */
-    @RobotKeyword
+    @RobotKeyword("Verify the current page URL is exactly ``url``.")
     @ArgumentNames({ "url" })
     public void locationShouldBe(String url) {
         String actual = getLocation();
@@ -846,15 +343,7 @@ public class BrowserManagement extends RunOnFailureKeywordsAdapter {
         logging.info(String.format("Current location is '%s'.", url));
     }
 
-    /**
-     * Verify the current page URL contains <b>url</b>.<br>
-     * 
-     * @param url
-     *            The URL to verify.
-     * 
-     * @see BrowserManagement#locationShouldBe
-     */
-    @RobotKeyword
+    @RobotKeyword(" Verify the current page URL contains ``url``")
     @ArgumentNames({ "url" })
     public void locationShouldContain(String url) {
         String actual = getLocation();
@@ -865,17 +354,7 @@ public class BrowserManagement extends RunOnFailureKeywordsAdapter {
         logging.info(String.format("Current location is '%s'.", url));
     }
 
-    /**
-     * Verify the current page title is exactly <b>title</b>.<br>
-     * 
-     * @param title
-     *            The title to verify.
-     * 
-     * @see BrowserManagement#titleShouldNotBe
-     * @see BrowserManagement#titleShouldContain
-     * @see BrowserManagement#titleShouldNotContain
-     */
-    @RobotKeyword
+    @RobotKeyword("Verify the current page title is exactly ``title``")
     @ArgumentNames({ "title" })
     public void titleShouldBe(String title) {
         String actual = getTitle();
@@ -886,17 +365,7 @@ public class BrowserManagement extends RunOnFailureKeywordsAdapter {
         logging.info(String.format("Page title is '%s'.", title));
     }
 
-    /**
-     * Verify the current page title is not exactly <b>title</b>.<br>
-     * 
-     * @param title
-     *            The title to verify.
-     * 
-     * @see BrowserManagement#titleShouldBe
-     * @see BrowserManagement#titleShouldContain
-     * @see BrowserManagement#titleShouldNotContain
-     */
-    @RobotKeyword
+    @RobotKeyword("Verify the current page title is not exactly ``title``.")
     @ArgumentNames({ "title" })
     public void titleShouldNotBe(String title) {
         String actual = getTitle();
@@ -907,17 +376,7 @@ public class BrowserManagement extends RunOnFailureKeywordsAdapter {
         logging.info(String.format("Page title is '%s'.", title));
     }
 
-    /**
-     * Verify the current page title contains <b>title</b>.<br>
-     * 
-     * @param title
-     *            The title to verify.
-     * 
-     * @see BrowserManagement#titleShouldBe
-     * @see BrowserManagement#titleShouldNotBe
-     * @see BrowserManagement#titleShouldNotContain
-     */
-    @RobotKeyword
+    @RobotKeyword("Verify the current page title contains ``title``.")
     @ArgumentNames({ "title" })
     public void titleShouldContain(String title) {
         String actual = getTitle();
@@ -928,17 +387,7 @@ public class BrowserManagement extends RunOnFailureKeywordsAdapter {
         logging.info(String.format("Page title is '%s'.", title));
     }
 
-    /**
-     * Verify the current page title does not contain <b>title</b>.<br>
-     * 
-     * @param title
-     *            The title to verify.
-     * 
-     * @see BrowserManagement#titleShouldBe
-     * @see BrowserManagement#titleShouldNotBe
-     * @see BrowserManagement#titleShouldContain
-     */
-    @RobotKeyword
+    @RobotKeyword("Verify the current page title does not contain ``title``.")
     @ArgumentNames({ "title" })
     public void titleShouldNotContain(String title) {
         String actual = getTitle();
@@ -949,115 +398,49 @@ public class BrowserManagement extends RunOnFailureKeywordsAdapter {
         logging.info(String.format("Page title is '%s'.", title));
     }
 
-    /**
-     * Simulates the user clicking the "back" button on their browser.<br>
-     */
-    @RobotKeyword
+    @RobotKeyword("Simulates the user clicking the \"back\" button on their browser.")
     public void goBack() {
         webDriverCache.getCurrent().navigate().back();
     }
 
-    /**
-     * Navigates the active browser instance to the provided URL.<br>
-     * 
-     * @param url
-     *            The URL to open.
-     */
-    @RobotKeyword
+    @RobotKeyword("Navigates the active browser instance to the provided URL.")
     @ArgumentNames({ "url" })
     public void goTo(String url) {
         logging.info(String.format("Opening url '%s'", url));
         webDriverCache.getCurrent().get(url);
     }
 
-    /**
-     * Simulates user reloading page.<br>
-     */
-    @RobotKeyword
+    @RobotKeyword("Simulates user reloading page.")
     public void reloadPage() {
         webDriverCache.getCurrent().navigate().refresh();
     }
 
-    /**
-     * <b>(NOT IMPLEMENTED)</b> Returns the delay in seconds that is waited after
-     * each Selenium command.<br>
-     * 
-     * @return The delay in seconds.
-     * 
-     * @see BrowserManagement#setSeleniumSpeed
-     */
-    @RobotKeyword
+    @RobotKeyword("*(NOT IMPLEMENTED)*\r\n\r\nReturns the delay in seconds that is waited after each Selenium command.")
     public String getSeleniumSpeed() {
         return Robotframework.secsToTimestr(0);
     }
 
-    /**
-     * <b>(NOT IMPLEMENTED)</b> Sets and returns the delay in seconds that is waited
-     * after each Selenium command.<br>
-     * 
-     * @param timestr
-     *            The delay in seconds.
-     * @return The previous delay in seconds.
-     * 
-     * @see BrowserManagement#getSeleniumSpeed
-     */
-    @RobotKeyword("(NOT IMPLEMENTED)\n\nSets the delay in seconds that is waited after each " + "Selenium command.\n")
+    @RobotKeyword("*(NOT IMPLEMENTED)* \r\n\r\nSets the delay in seconds that is waited after each Selenium command.")
     @ArgumentNames({ "timestr" })
     public String setSeleniumSpeed(String timestr) {
         return "0s";
     }
 
-    /**
-     * Returns the timeout in seconds that is used by various keywords.<br>
-     * 
-     * @return The timeout in seconds.
-     * 
-     * @see BrowserManagement#setSeleniumTimeout
-     */
-    @RobotKeyword
+    @RobotKeyword("Returns the timeout in seconds that is used by various keywords.")
     public String getSeleniumTimeout() {
         return Robotframework.secsToTimestr(timeout);
     }
 
-    /**
-     * Sets and returns the timeout in seconds that is used by various keywords.
-     * <br>
-     * <br>
-     * There are several Wait ... keywords that take a timeout as an argument. All
-     * of these timeout arguments are optional. The timeout used by all of them can
-     * be set globally using this keyword. See `Introduction` for more information
-     * about timeouts.<br>
-     * <br>
-     * The previous timeout value is returned by this keyword and can be used to set
-     * the old value back later. The default timeout is 5 seconds, but it can be
-     * altered in importing the library.<br>
-     * <br>
-     * Example:
-     * <table border="1" cellspacing="0" summary="">
-     * <tr>
-     * <td>${orig timeout} =</td>
-     * <td>Set Selenium Timeout</td>
-     * <td>15 seconds</td>
-     * </tr>
-     * <tr>
-     * <td># Open page that loads slowly</td>
-     * <td></td>
-     * <td></td>
-     * </tr>
-     * <tr>
-     * <td>Set Selenium Timeout</td>
-     * <td>${orig timeout}</td>
-     * <td># Reset to old value</td>
-     * </tr>
-     * </table>
-     * 
-     * @param timestr
-     *            The timeout in seconds.
-     * @return The previous timeout in seconds.
-     * 
-     * @see BrowserManagement#getSeleniumTimeout
-     */
-    @RobotKeyword
+    @RobotKeyword("Sets and returns the timeout in seconds that is used by various keywords.\r\n" + 
+            "\r\n" + 
+            "There are several Wait ... keywords that take a timeout as an argument. All of these timeout arguments are optional. The timeout used by all of them can be set globally using this keyword. See `Introduction` for more information about timeouts.\r\n" + 
+            "\r\n" + 
+            "The previous timeout value is returned by this keyword and can be used to set the old value back later. The default timeout is 5 seconds, but it can be altered in importing the library.\r\n" + 
+            "\r\n" + 
+            "Example:\r\n" + 
+            " | ${orig timeout} = | Set Selenium Timeout | 15 seconds | \r\n" + 
+            " | # Open page that loads slowly |  |  | \r\n" + 
+            " | Set Selenium Timeout | ${orig timeout} | # Reset to old value |")
     @ArgumentNames({ "timestr" })
     public String setSeleniumTimeout(String timestr) {
         String oldWait = getSeleniumTimeout();
@@ -1070,54 +453,19 @@ public class BrowserManagement extends RunOnFailureKeywordsAdapter {
         return oldWait;
     }
 
-    /**
-     * Returns the implicit wait time in seconds that is used by Selenium.<br>
-     * 
-     * @return The implicit wait time in seconds.
-     * 
-     * @see BrowserManagement#setSeleniumImplicitWait
-     */
-    @RobotKeyword
+    @RobotKeyword("Returns the implicit wait time in seconds that is used by Selenium.")
     public String getSeleniumImplicitWait() {
         return Robotframework.secsToTimestr(implicitWait);
     }
 
-    /**
-     * Sets and returns the implicit wait time in seconds that is used by all
-     * Selenium 2 WebDriver instances. This affects all currently open and from now
-     * on opened instances.<br>
-     * <br>
-     * From selenium 2 function: <i>Sets a sticky timeout to implicitly wait for an
-     * element to be found, or a command to complete. This method only needs to be
-     * called one time per session.</i><br>
-     * <br>
-     * Example:
-     * <table border="1" cellspacing="0" summary="">
-     * <tr>
-     * <td>${orig wait} =</td>
-     * <td>Set Selenium Implicit Wait</td>
-     * <td>10 seconds</td>
-     * </tr>
-     * <tr>
-     * <td># Perform AJAX call that is slow</td>
-     * <td></td>
-     * <td></td>
-     * </tr>
-     * <tr>
-     * <td>Set Selenium Implicit Wait</td>
-     * <td>${orig wait}</td>
-     * <td># Reset to old value</td>
-     * </tr>
-     * </table>
-     * 
-     * @param timestr
-     *            The implicit wait time in seconds.
-     * @return The previous implicit wait time in seconds.
-     * 
-     * @see BrowserManagement#setBrowserImplicitWait
-     * @see BrowserManagement#getSeleniumImplicitWait
-     */
-    @RobotKeyword
+    @RobotKeyword("Sets and returns the implicit wait time in seconds that is used by all Selenium 2 WebDriver instances. This affects all currently open and from now on opened instances.\r\n" + 
+            "\r\n" + 
+            "From selenium 2 function: _Sets a sticky timeout to implicitly wait for an element to be found, or a command to complete. This method only needs to be called one time per session._\r\n" + 
+            "\r\n" + 
+            "Example:\r\n" + 
+            " | ${orig wait} = | Set Selenium Implicit Wait | 10 seconds | \r\n" + 
+            " | # Perform AJAX call that is slow |  |  | \r\n" + 
+            " | Set Selenium Implicit Wait | ${orig wait} | # Reset to old value |")
     @ArgumentNames({ "timestr" })
     public String setSeleniumImplicitWait(String timestr) {
         String oldWait = getSeleniumTimeout();
@@ -1130,40 +478,14 @@ public class BrowserManagement extends RunOnFailureKeywordsAdapter {
         return oldWait;
     }
 
-    /**
-     * Sets and returns the implicit wait time in seconds that is used by the
-     * current Selenium 2 WebDriver instance.<br>
-     * <br>
-     * From selenium 2 function: <i>Sets a sticky timeout to implicitly wait for an
-     * element to be found, or a command to complete. This method only needs to be
-     * called one time per session.</i><br>
-     * <br>
-     * Example:
-     * <table border="1" cellspacing="0" summary="">
-     * <tr>
-     * <td>${orig wait} =</td>
-     * <td>Set Browser Implicit Wait</td>
-     * <td>10 seconds</td>
-     * </tr>
-     * <tr>
-     * <td># Perform AJAX call that is slow</td>
-     * <td></td>
-     * <td></td>
-     * </tr>
-     * <tr>
-     * <td>Set Browser Implicit Wait</td>
-     * <td>${orig wait}</td>
-     * <td># Reset to old value</td>
-     * </tr>
-     * </table>
-     * 
-     * @param timestr
-     *            The implicit wait time in seconds.
-     * @return The previous implicit wait time in seconds.
-     * 
-     * @see BrowserManagement#setSeleniumImplicitWait
-     */
-    @RobotKeyword
+    @RobotKeyword("Sets and returns the implicit wait time in seconds that is used by the current Selenium 2 WebDriver instance.\r\n" + 
+            "\r\n" + 
+            "From selenium 2 function: _Sets a sticky timeout to implicitly wait for an element to be found, or a command to complete. This method only needs to be called one time per session._\r\n" + 
+            "\r\n" + 
+            "Example:\r\n" + 
+            " | ${orig wait} = | Set Browser Implicit Wait | 10 seconds | \r\n" + 
+            " | # Perform AJAX call that is slow |  |  | \r\n" + 
+            " | Set Browser Implicit Wait | ${orig wait} | # Reset to old value |")
     @ArgumentNames({ "timestr" })
     public String setBrowserImplicitWait(String timestr) {
         String oldWait = getSeleniumTimeout();
@@ -1173,48 +495,18 @@ public class BrowserManagement extends RunOnFailureKeywordsAdapter {
         return oldWait;
     }
 
-    /**
-     * Configures proxy handling for remote WebDriver instances.<br>
-     * <br>
-     * This is needed to connect to an external Selenium 2 WebDriver rid through a
-     * local HTTP proxy. This implementation handles BASIC, DIGEST and NTLM based
-     * authentication schemes correctly.<br>
-     * <br>
-     * The given configuration will be used for all subsequent calls of `Open
-     * Browser`. To remove the proxy call:<br>
-     * Set Remote Web Driver Proxy | ${EMPTY} | ${EMPTY}<br>
-     * <br>
-     * Some additional info:
-     * <ul>
-     * <li>If no <b>username</b> is provided, it looks for a username at the Java
-     * property http.proxyUser and the environment variables HTTP_PROXY and
-     * http_proxy. If a username is found, it is only used, if the host and port
-     * also match.</li>
-     * <li>If no <b>password</b> is provided, it looks for a password at the Java
-     * property http.proxyUser and the environment variables HTTP_PROXY and
-     * http_proxy. If a password is found, it is only used, if the host, port and
-     * username also match.</li>
-     * <li>If a <b>domain</b> is provided, NTLM based authentication is used</li>
-     * <li>If no <b>workstation</b> is provided and NTLM based authentication is
-     * used, the hostname is used as workstation name.</li>
-     * </ul>
-     * 
-     * @param host
-     *            The hostname of the proxy
-     * @param port
-     *            The port of the proxy
-     * @param args
-     *            Contains optional arguments. If value is not set, default value is used. 
-     *            username
-     *            Default=NONE. The usename
-     *            password
-     *            Default=NONE. The password of the user   
-     *            domain
-     *            Default=NONE. The NTLM domain name
-     *            workstation
-     *            Default=NONE. The name of the workstation
-     */
-    @RobotKeyword
+    @RobotKeyword("Configures proxy handling for remote WebDriver instances.\r\n" + 
+            "\r\n" + 
+            "This is needed to connect to an external Selenium 2 WebDriver rid through a local HTTP proxy. This implementation handles BASIC, DIGEST and NTLM based authentication schemes correctly.\r\n" + 
+            "\r\n" + 
+            "The given configuration will be used for all subsequent calls of `Open Browser`. To remove the proxy call:\r\n" + 
+            "| Set Remote Web Driver Proxy | ${EMPTY} | ${EMPTY} |\r\n" + 
+            "\r\n" + 
+            "Some additional info:\r\n" + 
+            " - If no ``username`` is provided, it looks for a username at the Java property http.proxyUser and the environment variables HTTP_PROXY and http_proxy. If a username is found, it is only used, if the host and port also match.\r\n" + 
+            " - If no ``password`` is provided, it looks for a password at the Java property http.proxyUser and the environment variables HTTP_PROXY and http_proxy. If a password is found, it is only used, if the host, port and username also match.\r\n" + 
+            " - If a ``domain`` is provided, NTLM based authentication is used\r\n" + 
+            " - If no ``workstation`` is provided and NTLM based authentication is used, the hostname is used as workstation name.")
     @ArgumentNames({ "host", "port", "username=None", "password=None", "domain=None", "workstation=None" })
     public void setRemoteWebDriverProxy(String host, String port, String... args) {
         String username = robot.getParamsValue(args, 0, "");
@@ -1341,42 +633,50 @@ public class BrowserManagement extends RunOnFailureKeywordsAdapter {
     }
 
     protected WebDriver createLocalWebDriver(String browserName, DesiredCapabilities desiredCapabilities) {
-        System.out.println(browserName);
-        if ("ff".equals(browserName) || "firefox".equals(browserName)) {
-            return new FirefoxDriver(desiredCapabilities);
-        } else if ("ie".equals(browserName) || "internetexplorer".equals(browserName)) {
-            return new InternetExplorerDriver(desiredCapabilities);
-        } else if ("gc".equals(browserName) || "chrome".equals(browserName) || "googlechrome".equals(browserName)) {
-            return new ChromeDriver(desiredCapabilities);
-        } else if ("opera".equals(browserName)) {
-            return new OperaDriver(desiredCapabilities);
-        } else if ("phantomjs".equals(browserName)) {
-            return new PhantomJSDriver(desiredCapabilities);
-        } else if ("safari".equals(browserName)) {
-            return new SafariDriver(desiredCapabilities);
-        } else if ("htmlunit".equals(browserName)) {
-            return new HtmlUnitDriver(desiredCapabilities);
-        } else if ("htmlunitwithjs".equals(browserName)) {
-            HtmlUnitDriver driver = new HtmlUnitDriver(desiredCapabilities);
-            driver.setJavascriptEnabled(true);
-            return driver;
-        } else if ("iphone".equals(browserName) || "ipad".equals(browserName)) {
-            try {
-                return new IOSDriver<WebElement>(new URL(""), desiredCapabilities);
-            } catch (Exception e) {
-                throw new SeleniumLibraryFatalException("Creating " + browserName + " instance failed.", e);
-            }
-        } else if ("android".equals(browserName)) {
-            try {
-                return new SelendroidDriver(desiredCapabilities);
-            } catch (Exception e) {
-                throw new SeleniumLibraryFatalException(e);
-            }
-        } else if ("jbrowser".equals(browserName)) {
-            return new JBrowserDriver(Settings.builder().build());
+        switch (browserName.toLowerCase()) {
+            case "ff":
+            case "firefox":
+                return new FirefoxDriver(desiredCapabilities);
+            case "ie":
+            case "internetexplorer":
+                return new InternetExplorerDriver(desiredCapabilities);
+            case "edge":
+                return new EdgeDriver(desiredCapabilities);
+            case "gc":
+            case "chrome":
+            case "googlechrome":
+                return new ChromeDriver(desiredCapabilities);
+            case "opera":
+                return new OperaDriver(desiredCapabilities);
+            case "phantomjs":
+                return new PhantomJSDriver(desiredCapabilities);
+            case "safari":
+                return new SafariDriver(desiredCapabilities);
+            case "htmlunit":
+                return new HtmlUnitDriver(desiredCapabilities);
+            case "htmlunitwithjs":
+                HtmlUnitDriver driver = new HtmlUnitDriver(desiredCapabilities);
+                driver.setJavascriptEnabled(true);
+                return driver;
+            case "jbrowser":
+                return new JBrowserDriver(Settings.builder().build());
+            case "android":
+                try {
+                    return new SelendroidDriver(desiredCapabilities);
+                } catch (Exception e) {
+                    throw new SeleniumLibraryFatalException(e);
+                }
+            case "ipad":
+            case "iphone":
+                try {
+                    return new IOSDriver<WebElement>(new URL(""), desiredCapabilities);
+                } catch (Exception e) {
+                    throw new SeleniumLibraryFatalException("Creating " + browserName + " instance failed.", e);
+                }
+            default:
+                throw new SeleniumLibraryFatalException(browserName + " is not a supported browser.");
+            
         }
-
-        throw new SeleniumLibraryFatalException(browserName + " is not a supported browser.");
     }
 
     protected WebDriver createRemoteWebDriver(DesiredCapabilities desiredCapabilities, URL remoteUrl) {
@@ -1557,18 +857,5 @@ public class BrowserManagement extends RunOnFailureKeywordsAdapter {
             throw new SeleniumLibraryFatalException(
                     String.format("The %s field does not contain a %s.", fieldName, className));
         }
-    }
-
-    protected List<String> toList(List<String> items) {
-        return toList(items, "item");
-    }
-
-    protected List<String> toList(List<String> items, String what) {
-        List<String> msg = new ArrayList<String>();
-        msg.add(String.format("Altogether %d %s%s.\n", items.size(), what, items.size() == 1 ? "" : "s"));
-        for (int index = 0; index < items.size(); index++) {
-            msg.add(String.format("%d: %s", index + 1, items.get(index)));
-        }
-        return items;
     }
 }
