@@ -38,7 +38,6 @@ import org.openqa.selenium.htmlunit.HtmlUnitDriver;
 import org.openqa.selenium.ie.InternetExplorerDriver;
 import org.openqa.selenium.opera.OperaDriver;
 
-import org.openqa.selenium.phantomjs.PhantomJSDriver;
 import org.openqa.selenium.remote.Augmenter;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.remote.HttpCommandExecutor;
@@ -645,8 +644,6 @@ public class BrowserManagement extends RunOnFailureKeywordsAdapter {
                 return new ChromeDriver(desiredCapabilities);
             case "opera":
                 return new OperaDriver(desiredCapabilities);
-            case "phantomjs":
-                return new PhantomJSDriver(desiredCapabilities);
             case "safari":
                 return new SafariDriver(desiredCapabilities);
             case "htmlunit":
