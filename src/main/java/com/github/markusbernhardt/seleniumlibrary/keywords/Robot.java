@@ -27,7 +27,7 @@ public class Robot {
 		if (givenValue != null && !givenValue.equals("None") && givenValue.length() > 0) {
 			if (defaultValue instanceof Map) {
 				value = (T) parseRobotDictionary(givenValue);
-			} else if (defaultValue instanceof String) {
+			} else if (defaultValue instanceof String || defaultValue == null) {
 				value = (T) givenValue;
 			} else if (defaultValue instanceof List) {
 				value = (T) parseRobotList(givenValue);
