@@ -9,7 +9,6 @@ import java.net.InetAddress;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.UnknownHostException;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -27,7 +26,6 @@ import org.apache.http.impl.conn.DefaultHttpRoutePlanner;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.JSONValue;
-import org.openqa.selenium.Dimension;
 import org.openqa.selenium.Platform;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -56,7 +54,6 @@ import com.github.markusbernhardt.seleniumlibrary.RunOnFailureKeywordsAdapter;
 import com.github.markusbernhardt.seleniumlibrary.SeleniumLibraryFatalException;
 import com.github.markusbernhardt.seleniumlibrary.SeleniumLibraryNonFatalException;
 import com.github.markusbernhardt.seleniumlibrary.locators.ElementFinder;
-import com.github.markusbernhardt.seleniumlibrary.locators.WindowManager;
 import com.github.markusbernhardt.seleniumlibrary.utils.Robotframework;
 import com.github.markusbernhardt.seleniumlibrary.utils.WebDriverCache;
 import com.github.markusbernhardt.seleniumlibrary.utils.WebDriverCache.SessionIdAliasWebDriverTuple;
@@ -675,7 +672,6 @@ public class BrowserManagement extends RunOnFailureKeywordsAdapter {
                 }
             default:
                 throw new SeleniumLibraryFatalException(browserName + " is not a supported browser.");
-            
         }
     }
 
@@ -688,32 +684,42 @@ public class BrowserManagement extends RunOnFailureKeywordsAdapter {
     protected DesiredCapabilities createDesiredCapabilities(String browserName, String desiredCapabilitiesString,
             String browserOptions) {
         DesiredCapabilities desiredCapabilities;
-        if ("ff".equals(browserName) || "firefox".equals(browserName)) {
+        switch (browserName.toLowerCase()) {
+        case "ff":
+        case "firefox":
             desiredCapabilities = DesiredCapabilities.firefox();
             parseBrowserOptionsFirefox(browserOptions, desiredCapabilities);
-        } else if ("ie".equals(browserName) || "internetexplorer".equals(browserName)) {
+            break;
+        case "ie":
+        case "internetexplorer":
             desiredCapabilities = DesiredCapabilities.internetExplorer();
-        } else if ("gc".equals(browserName) || "chrome".equals(browserName) || "googlechrome".equals(browserName)) {
+            break;
+        case "edge":
+            desiredCapabilities = DesiredCapabilities.edge();
+            break;
+        case "gc":
+        case "chrome":
+        case "googlechrome":
             desiredCapabilities = DesiredCapabilities.chrome();
             logging.debug("Parsing chrome options: "+browserOptions);
             parseBrowserOptionsChrome(browserOptions, desiredCapabilities);
-        } else if ("opera".equals(browserName)) {
+            break;
+        case "opera":
             desiredCapabilities = DesiredCapabilities.opera();
-        } else if ("phantomjs".equals(browserName)) {
+            break;
+        case "phantomjs":
             desiredCapabilities = DesiredCapabilities.phantomjs();
-        } else if ("safari".equals(browserName)) {
+            break;
+        case "safari":
             desiredCapabilities = DesiredCapabilities.safari();
-        } else if ("ipad".equals(browserName)) {
-            desiredCapabilities = DesiredCapabilities.ipad();
-        } else if ("iphone".equals(browserName)) {
-            desiredCapabilities = DesiredCapabilities.iphone();
-        } else if ("android".equals(browserName)) {
-            desiredCapabilities = DesiredCapabilities.android();
-        } else if ("htmlunit".equals(browserName) || "htmlunitwithjs".equals(browserName)) {
+            break;
+        case "htmlunit":
+        case "htmlunitwithjs":
             desiredCapabilities = DesiredCapabilities.htmlUnit();
-        } else if ("jbrowser".equals(browserName)) {
+        case "jbrowser":
             desiredCapabilities = new DesiredCapabilities("jbrowser", "1", Platform.ANY);
-        } else {
+            break;
+        default:
             throw new SeleniumLibraryFatalException(browserName + " is not a supported browser.");
         }
 
