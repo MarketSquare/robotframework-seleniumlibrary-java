@@ -45,18 +45,18 @@ your pom.xml:
     <dependency>
         <groupId>com.github.hi-fi</groupId>
         <artifactId>robotframework-seleniumlibrary</artifactId>
-        <version>3.7.1.1</version>
+        <version>3.7.1.2</version>
         <scope>test</scope>
     </dependency>
 
 If you cannot use the robotframework-maven-plugin you can use the
-[jar-with-dependencies](http://search.maven.org/remotecontent?filepath=com/github/hi-fi/robotframework-seleniumlibrary/3.7.1.1/robotframework-seleniumlibrary-3.7.1.1-jar-with-dependencies.jar),
+[jar-with-dependencies](http://search.maven.org/remotecontent?filepath=com/github/hi-fi/robotframework-seleniumlibrary/3.7.1.2/robotframework-seleniumlibrary-3.7.1.2-jar-with-dependencies.jar),
 which contains all required libraries.
 
 * More information about this library can be found in the
-  [Keyword Documentation](http://search.maven.org/remotecontent?filepath=com/github/hi-fi/robotframework-seleniumlibrary/3.7.1.1/robotframework-seleniumlibrary-3.7.1.1.html).
+  [Keyword Documentation](http://search.maven.org/remotecontent?filepath=com/github/hi-fi/robotframework-seleniumlibrary/3.7.1.2/robotframework-seleniumlibrary-3.7.1.2.html).
 * For keyword completion in RIDE you can download this
-  [Library Specs](http://search.maven.org/remotecontent?filepath=com/github/hi-fi/robotframework-seleniumlibrary/3.7.1.1/robotframework-seleniumlibrary-3.7.1.1.xml)
+  [Library Specs](http://search.maven.org/remotecontent?filepath=com/github/hi-fi/robotframework-seleniumlibrary/3.7.1.2/robotframework-seleniumlibrary-3.7.1.2.xml)
   and place it in your PYTHONPATH.
 
 Differences
