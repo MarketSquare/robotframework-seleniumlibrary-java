@@ -309,7 +309,7 @@ public class BrowserManagement extends RunOnFailureKeywordsAdapter {
             "desired capabilities, no error is thrown;</b> a read-only capabilities object " + 
             "is returned that indicates the capabilities the session actually supports. " + 
             "For more information see:" + 
-            "[http://code.google.com/p/selenium/wiki/Capabilities|Capabilities]")
+            "[http://code.google.com/p/selenium/wiki/DesiredCapabilities|DesiredCapabilities]")
     public String getRemoteCapabilities() {
         // Null returned from jbrowserdriver
         if (getCurrentWebDriver() instanceof RemoteWebDriver
