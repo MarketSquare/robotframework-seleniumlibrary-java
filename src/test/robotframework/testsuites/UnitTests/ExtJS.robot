@@ -1,7 +1,7 @@
 *** Settings ***
 Suite Setup       Open Page
 Suite Teardown    Close Browser
-Resource          ../../settings/Settings.txt
+Resource          ../../settings/Settings.robot
 
 *** Variables ***
 ${URL Application}     http://examples.sencha.com/extjs/6.5.0/examples/classic/ticket-app/index.html

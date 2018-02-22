@@ -1,6 +1,6 @@
 *** Settings ***
 Suite Teardown    Close All Browsers
-Resource          ../../settings/Settings.txt
+Resource          ../../settings/Settings.robot
 
 *** Variables ***
 ${URL Application}    http://www.w3schools.com

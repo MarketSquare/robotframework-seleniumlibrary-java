@@ -2,9 +2,9 @@
 Suite Setup       Google.Site.Open
 Suite Teardown    Google.Site.Close
 Test Setup        Google.Site.Init
-Resource          ../../settings/Settings.txt
+Resource          ../../settings/Settings.robot
 Resource          ../../imports/Google.txt
-Default Tags      phantomjs
+Default Tags      phantomjs    htmlunit    htmlunitwithjs
 
 *** Testcases ***
 Open And Close Google Site
