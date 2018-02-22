@@ -422,6 +422,24 @@
 				</plugins>
 			</build>
 		</profile>
+		      <profile>
+            <id>firefoxheadless</id>
+            <properties>
+                <browser>firefoxheadless</browser>
+            </properties>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>com.lazerycode.selenium</groupId>
+                        <artifactId>driver-binary-downloader-maven-plugin</artifactId>
+                    </plugin>
+                    <plugin>
+                        <groupId>org.robotframework</groupId>
+                        <artifactId>robotframework-maven-plugin</artifactId>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
 		<profile>
 			<id>phantomjs</id>
 			<properties>
@@ -458,6 +476,24 @@
 				</plugins>
 			</build>
 		</profile>
+		<profile>
+            <id>googlechromeheadless</id>
+            <properties>
+                <browser>googlechromeheadless</browser>
+            </properties>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>com.lazerycode.selenium</groupId>
+                        <artifactId>driver-binary-downloader-maven-plugin</artifactId>
+                    </plugin>
+                    <plugin>
+                        <groupId>org.robotframework</groupId>
+                        <artifactId>robotframework-maven-plugin</artifactId>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
 		<profile>
 			<id>htmlunitwithjs</id>
 			<properties>

@@ -26,23 +26,30 @@ import org.apache.http.impl.conn.DefaultHttpRoutePlanner;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.JSONValue;
+import org.openqa.selenium.Capabilities;
+import org.openqa.selenium.MutableCapabilities;
 import org.openqa.selenium.Platform;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.edge.EdgeDriver;
+import org.openqa.selenium.edge.EdgeOptions;
 import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.selenium.firefox.FirefoxOptions;
 import org.openqa.selenium.firefox.FirefoxProfile;
 import org.openqa.selenium.htmlunit.HtmlUnitDriver;
 import org.openqa.selenium.ie.InternetExplorerDriver;
+import org.openqa.selenium.ie.InternetExplorerOptions;
 import org.openqa.selenium.opera.OperaDriver;
+import org.openqa.selenium.opera.OperaOptions;
 import org.openqa.selenium.phantomjs.PhantomJSDriver;
 import org.openqa.selenium.remote.Augmenter;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.remote.HttpCommandExecutor;
 import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.safari.SafariDriver;
+import org.openqa.selenium.safari.SafariOptions;
 import org.robotframework.javalib.annotation.ArgumentNames;
 import org.robotframework.javalib.annotation.Autowired;
 import org.robotframework.javalib.annotation.RobotKeyword;
@@ -154,7 +161,9 @@ public class BrowserManagement extends RunOnFailureKeywordsAdapter {
             "The ``browser`` argument specifies which browser to use, and the supported browser are listed in the table below. The browser names are case-insensitive and some browsers have multiple supported names.\r\n" + 
             "|    = Browser =    | = Name(s) =       |\r\n" + 
             "| Firefox   | firefox, ff      |\r\n" + 
-            "| Google Chrome     | googlechrome, chrome, gc |\r\n" + 
+            "| Firefox (headless)   | firefoxheadless, ffheadless      |\r\n" + 
+            "| Google Chrome     | googlechrome, chrome, gc |\r\n" +
+            "| Google Chrome (headless)    | googlechromeheadless, chromeheadless, gcheadless |\r\n" + 
             "| Internet Explorer | internetexplorer, ie     |\r\n" + 
             "| Edge      | edge      |\r\n" + 
             "| Safari    | safari    |\r\n" + 
@@ -170,7 +179,7 @@ public class BrowserManagement extends RunOnFailureKeywordsAdapter {
             "\r\n" + 
             "Optional ``alias`` is an alias given for this browser instance and it can be used for switching between browsers. An alternative approach for switching is using an index returned by this keyword. These indices start from 1, are incremented when new browsers are opened, and reset back to 1 when `Close All Browsers` is called. See `Switch Browser` for more information and examples.\r\n" + 
             "\r\n" + 
-            "Optional ``remote_url`` is the URL for a remote Selenium server. If you specify a value for a remote, you can also specify ``desired_capabilities`` to configure, for example, a proxy server for Internet Explorer or a browser and operating system when using [http://saucelabs.com|Sauce Labs]. Desired capabilities can be given as a dictionary. [https://github.com/SeleniumHQ/selenium/wiki/DesiredCapabilities| Selenium documentation] lists possible capabilities that can be enabled.\r\n" + 
+            "Optional ``remote_url`` is the URL for a remote Selenium server. If you specify a value for a remote, you can also specify ``desired_capabilities`` to configure, for example, a proxy server for Internet Explorer or a browser and operating system when using [http://saucelabs.com|Sauce Labs]. Desired capabilities can be given as a dictionary. [https://github.com/SeleniumHQ/selenium/wiki/Capabilities| Selenium documentation] lists possible capabilities that can be enabled.\r\n" + 
             "\r\n" + 
             "Optional ``ff_profile_dir`` is the path to the Firefox profile directory if you wish to overwrite the default profile Selenium uses. Notice that prior to SeleniumLibrary 3.0, the library contained its own profile that was used by default.\r\n" + 
             "\r\n" + 
@@ -300,7 +309,7 @@ public class BrowserManagement extends RunOnFailureKeywordsAdapter {
             "desired capabilities, no error is thrown;</b> a read-only capabilities object " + 
             "is returned that indicates the capabilities the session actually supports. " + 
             "For more information see:" + 
-            "[http://code.google.com/p/selenium/wiki/DesiredCapabilities|DesiredCapabilities]")
+            "[http://code.google.com/p/selenium/wiki/Capabilities|Capabilities]")
     public String getRemoteCapabilities() {
         // Null returned from jbrowserdriver
         if (getCurrentWebDriver() instanceof RemoteWebDriver
@@ -609,7 +618,7 @@ public class BrowserManagement extends RunOnFailureKeywordsAdapter {
     protected WebDriver createWebDriver(String browserName, String desiredCapabilitiesString, String remoteUrlString,
             String browserOptions) throws MalformedURLException {
         browserName = browserName.toLowerCase().replace(" ", "");
-        DesiredCapabilities desiredCapabilities = createDesiredCapabilities(browserName, desiredCapabilitiesString,
+        Capabilities desiredCapabilities = createCapabilities(browserName, desiredCapabilitiesString,
                 browserOptions);
 
         WebDriver webDriver;
@@ -628,31 +637,34 @@ public class BrowserManagement extends RunOnFailureKeywordsAdapter {
         return webDriver;
     }
 
-    protected WebDriver createLocalWebDriver(String browserName, DesiredCapabilities desiredCapabilities) {
+    protected WebDriver createLocalWebDriver(String browserName, Capabilities desiredCapabilities) {
         switch (browserName.toLowerCase()) {
             case "ff":
             case "firefox":
-                return new FirefoxDriver(desiredCapabilities);
+            case "ffheadless":
+            case "firefoxheadless":
+                return new FirefoxDriver((FirefoxOptions)desiredCapabilities);
             case "ie":
             case "internetexplorer":
-                return new InternetExplorerDriver(desiredCapabilities);
+                return new InternetExplorerDriver((InternetExplorerOptions)desiredCapabilities);
             case "edge":
-                return new EdgeDriver(desiredCapabilities);
+                return new EdgeDriver((EdgeOptions)desiredCapabilities);
             case "gc":
             case "chrome":
             case "googlechrome":
-                return new ChromeDriver(desiredCapabilities);
+            case "gcheadless":
+            case "chromeheadless":
+            case "googlechromeheadless":
+                return new ChromeDriver((ChromeOptions)desiredCapabilities);
             case "opera":
-                return new OperaDriver(desiredCapabilities);
+                return new OperaDriver(new OperaOptions().merge(desiredCapabilities));
             case "phantomjs":
                 return new PhantomJSDriver(desiredCapabilities);
             case "safari":
-                return new SafariDriver(desiredCapabilities);
+                return new SafariDriver(new SafariOptions().merge(desiredCapabilities));
             case "htmlunit":
-                desiredCapabilities.setBrowserName("htmlunit");
                 return new HtmlUnitDriver(desiredCapabilities);
             case "htmlunitwithjs":
-                desiredCapabilities.setBrowserName("htmlunit");
                 HtmlUnitDriver driver = new HtmlUnitDriver(desiredCapabilities);
                 driver.setJavascriptEnabled(true);
                 return driver;
@@ -676,47 +688,62 @@ public class BrowserManagement extends RunOnFailureKeywordsAdapter {
         }
     }
 
-    protected WebDriver createRemoteWebDriver(DesiredCapabilities desiredCapabilities, URL remoteUrl) {
+    protected WebDriver createRemoteWebDriver(Capabilities desiredCapabilities, URL remoteUrl) {
         HttpCommandExecutor httpCommandExecutor = new HttpCommandExecutor(remoteUrl);
         setRemoteWebDriverProxy(httpCommandExecutor);
         return new Augmenter().augment(new RemoteWebDriver(httpCommandExecutor, desiredCapabilities));
     }
 
-    protected DesiredCapabilities createDesiredCapabilities(String browserName, String desiredCapabilitiesString,
+    protected Capabilities createCapabilities(String browserName, String desiredCapabilitiesString,
             String browserOptions) {
-        DesiredCapabilities desiredCapabilities;
+        Capabilities desiredCapabilities;
         switch (browserName.toLowerCase()) {
         case "ff":
         case "firefox":
-            desiredCapabilities = DesiredCapabilities.firefox();
+            desiredCapabilities = new FirefoxOptions();
             parseBrowserOptionsFirefox(browserOptions, desiredCapabilities);
+            break;
+        case "ffheadless":
+        case "firefoxheadless":
+            desiredCapabilities = new FirefoxOptions();
+            parseBrowserOptionsFirefox(browserOptions, desiredCapabilities);
+            ((FirefoxOptions)desiredCapabilities).setHeadless(true);
             break;
         case "ie":
         case "internetexplorer":
-            desiredCapabilities = DesiredCapabilities.internetExplorer();
+            desiredCapabilities = new InternetExplorerOptions();
             break;
         case "edge":
-            desiredCapabilities = DesiredCapabilities.edge();
+            desiredCapabilities = new EdgeOptions();
             break;
         case "gc":
         case "chrome":
         case "googlechrome":
-            desiredCapabilities = DesiredCapabilities.chrome();
+            desiredCapabilities = new ChromeOptions();
             logging.debug("Parsing chrome options: "+browserOptions);
             parseBrowserOptionsChrome(browserOptions, desiredCapabilities);
             break;
+        case "gcheadless":
+        case "chromeheadless":
+        case "googlechromeheadless":
+            desiredCapabilities = new ChromeOptions();
+            logging.debug("Parsing chrome options: "+browserOptions);
+            parseBrowserOptionsChrome(browserOptions, desiredCapabilities);
+            ((ChromeOptions)desiredCapabilities).setHeadless(true);
+            break;
         case "opera":
-            desiredCapabilities = DesiredCapabilities.opera();
+            desiredCapabilities = new OperaOptions();
             break;
         case "phantomjs":
             desiredCapabilities = DesiredCapabilities.phantomjs();
             break;
         case "safari":
-            desiredCapabilities = DesiredCapabilities.safari();
+            desiredCapabilities = new SafariOptions();
             break;
         case "htmlunit":
         case "htmlunitwithjs":
             desiredCapabilities = DesiredCapabilities.htmlUnit();
+            ((DesiredCapabilities) desiredCapabilities).setBrowserName("htmlunit");
         case "jbrowser":
             desiredCapabilities = new DesiredCapabilities("jbrowser", "1", Platform.ANY);
             break;
@@ -731,14 +758,14 @@ public class BrowserManagement extends RunOnFailureKeywordsAdapter {
                 Iterator<?> iterator = jsonObject.entrySet().iterator();
                 while (iterator.hasNext()) {
                     Entry<?, ?> entry = (Entry<?, ?>) iterator.next();
-                    desiredCapabilities.setCapability(entry.getKey().toString(), entry.getValue());
+                    ((MutableCapabilities) desiredCapabilities).setCapability(entry.getKey().toString(), entry.getValue());
                 }
             } else {
                 // Invalid JSON. Old style key-value pairs
                 for (String capability : desiredCapabilitiesString.split(",")) {
                     String[] keyValue = capability.split(":");
                     if (keyValue.length == 2) {
-                        desiredCapabilities.setCapability(keyValue[0], keyValue[1]);
+                        ((MutableCapabilities) desiredCapabilities).setCapability(keyValue[0], keyValue[1]);
                     } else {
                         logging.warn("Invalid desiredCapabilities: " + desiredCapabilitiesString);
                     }
@@ -748,7 +775,7 @@ public class BrowserManagement extends RunOnFailureKeywordsAdapter {
         return desiredCapabilities;
     }
 
-    protected void parseBrowserOptionsChrome(String browserOptions, DesiredCapabilities desiredCapabilities) {
+    protected void parseBrowserOptionsChrome(String browserOptions, Capabilities desiredCapabilities) {
         if (browserOptions != null && !"NONE".equalsIgnoreCase(browserOptions)) {
             JSONObject jsonObject = (JSONObject) JSONValue.parse(browserOptions);
             if (jsonObject != null) {
@@ -761,14 +788,14 @@ public class BrowserManagement extends RunOnFailureKeywordsAdapter {
                             key.toString(), entry.getValue(), entry.getValue().getClass()));
                     chromeOptions.put(key, entry.getValue());
                 }
-                desiredCapabilities.setCapability(ChromeOptions.CAPABILITY, chromeOptions);
+                ((ChromeOptions) desiredCapabilities).setCapability(ChromeOptions.CAPABILITY, chromeOptions);
             } else {
                 logging.warn("Invalid browserOptions: " + browserOptions);
             }
         }
     }
 
-    protected void parseBrowserOptionsFirefox(String browserOptions, DesiredCapabilities desiredCapabilities) {
+    protected void parseBrowserOptionsFirefox(String browserOptions, Capabilities desiredCapabilities) {
         if (browserOptions != null && !"NONE".equalsIgnoreCase(browserOptions)) {
             JSONObject jsonObject = (JSONObject) JSONValue.parse(browserOptions);
             if (jsonObject != null) {
@@ -809,7 +836,7 @@ public class BrowserManagement extends RunOnFailureKeywordsAdapter {
                         logging.warn("Unknown browserOption: " + key + ":" + entry.getValue());
                     }
                 }
-                desiredCapabilities.setCapability(FirefoxDriver.PROFILE, firefoxProfile);
+                ((FirefoxOptions) desiredCapabilities).setCapability(FirefoxDriver.PROFILE, firefoxProfile);
             } else {
                 logging.warn("Invalid browserOptions: " + browserOptions);
             }
