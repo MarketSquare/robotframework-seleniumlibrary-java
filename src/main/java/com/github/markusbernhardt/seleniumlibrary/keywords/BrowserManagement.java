@@ -649,8 +649,10 @@ public class BrowserManagement extends RunOnFailureKeywordsAdapter {
             case "safari":
                 return new SafariDriver(desiredCapabilities);
             case "htmlunit":
+                desiredCapabilities.setBrowserName("htmlunit");
                 return new HtmlUnitDriver(desiredCapabilities);
             case "htmlunitwithjs":
+                desiredCapabilities.setBrowserName("htmlunit");
                 HtmlUnitDriver driver = new HtmlUnitDriver(desiredCapabilities);
                 driver.setJavascriptEnabled(true);
                 return driver;
