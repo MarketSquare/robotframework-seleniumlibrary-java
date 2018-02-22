@@ -744,6 +744,7 @@ public class BrowserManagement extends RunOnFailureKeywordsAdapter {
         case "htmlunitwithjs":
             desiredCapabilities = DesiredCapabilities.htmlUnit();
             ((DesiredCapabilities) desiredCapabilities).setBrowserName("htmlunit");
+            break;
         case "jbrowser":
             desiredCapabilities = new DesiredCapabilities("jbrowser", "1", Platform.ANY);
             break;
