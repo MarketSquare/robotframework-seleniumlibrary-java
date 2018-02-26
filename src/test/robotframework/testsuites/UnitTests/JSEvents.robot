@@ -1,7 +1,7 @@
 *** Settings ***
 Suite Setup       Open Page
 Suite Teardown    Close All Browsers
-Resource          ../../settings/Settings.txt
+Resource          ../../settings/Settings.robot
 
 *** Variables ***
 ${URL Application}     http://fiddle.jshell.net/ShPVX/show/

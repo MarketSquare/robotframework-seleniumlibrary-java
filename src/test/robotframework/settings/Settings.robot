@@ -9,3 +9,7 @@ ${browser}    jbrowser
 ${Selenium.Browser.Name}    ${browser}
 ${Selenium.Browser.Version}    17
 ${Selenium.Timeout}        30.0
+
+*** Keywords ***
+Test
+    Op

@@ -1,5 +1,5 @@
 *** Settings ***
-Resource          ../../settings/Settings.txt
+Resource          ../../settings/Settings.robot
 Default Tags      phantomjs
 
 *** Test Cases ***

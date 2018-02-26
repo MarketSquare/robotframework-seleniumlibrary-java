@@ -6,7 +6,10 @@ env:
   - PROFILE=build
   - PROFILE=build,googlechrome
   - PROFILE=build,firefox
+  - PROFILE=build,googlechromeheadless
+  - PROFILE=build,firefoxheadless
   - PROFILE=build,phantomjs
+  - PROFILE=build,htmlunitwithjs
   
 stages:
   - test
