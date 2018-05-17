@@ -10,10 +10,10 @@ Select
     [Tags]    phantomjs
     Open Browser    https://developer.mozilla.org/en/docs/Web/HTML/Element/select#Examples    ${browser}    mainbrowser
     Wait Until Page Contains Element    xpath=//select
-    Select From List    xpath=//select    Value 3
+    Select From List    xpath=//select    Third Value
     ${label}    Get Selected List Label    xpath=//select
-    Should Be Equal    ${label}    Value 3
-    List Selection Should Be    xpath=//select    Value 3
+    Should Be Equal    ${label}    Third Value
+    List Selection Should Be    xpath=//select    Third Value
     
 Multiple Browsers
     Open Browser    ${URL Application}    ${browser}    mainbrowser1
