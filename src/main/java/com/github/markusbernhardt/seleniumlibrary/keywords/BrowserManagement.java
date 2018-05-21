@@ -790,6 +790,9 @@ public class BrowserManagement extends RunOnFailureKeywordsAdapter {
                     chromeOptions.put(key, entry.getValue());
                 }
                 ((ChromeOptions) desiredCapabilities).setCapability(ChromeOptions.CAPABILITY, chromeOptions);
+				if (browserOptions.contains("disable-extensions") {
+					((ChromeOptions) desiredCapabilities).setExperimentalOption("useAutomationExtension", false);
+				}
             } else {
                 logging.warn("Invalid browserOptions: " + browserOptions);
             }
