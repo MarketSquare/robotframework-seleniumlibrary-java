@@ -9,6 +9,7 @@ import java.net.InetAddress;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.UnknownHostException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -780,19 +781,20 @@ public class BrowserManagement extends RunOnFailureKeywordsAdapter {
         if (browserOptions != null && !"NONE".equalsIgnoreCase(browserOptions)) {
             JSONObject jsonObject = (JSONObject) JSONValue.parse(browserOptions);
             if (jsonObject != null) {
-                Map<String, Object> chromeOptions = new HashMap<String, Object>();
-                Iterator<?> iterator = jsonObject.entrySet().iterator();
-                while (iterator.hasNext()) {
-                    Entry<?, ?> entry = (Entry<?, ?>) iterator.next();
-                    String key = entry.getKey().toString();
-                    logging.debug(String.format("Adding property: %s with value: %s (type: %s)",
-                            key.toString(), entry.getValue(), entry.getValue().getClass()));
-                    chromeOptions.put(key, entry.getValue());
+                List<String> args = new ArrayList<>();
+                for (Object arg : (JSONArray)jsonObject.get("args")) {
+                    args.add("--"+arg.toString().replace("--", ""));
                 }
-                ((ChromeOptions) desiredCapabilities).setCapability(ChromeOptions.CAPABILITY, chromeOptions);
-		if (browserOptions.contains("disable-extensions")) {
-			((ChromeOptions) desiredCapabilities).setExperimentalOption("useAutomationExtension", false);
-		}
+                ((ChromeOptions) desiredCapabilities).addArguments(args);
+                List<File> extensions = new ArrayList<>();
+                for (Object extension : (JSONArray)jsonObject.get("extensions")) {
+                    extensions.add(new File(extension.toString().toString().replace('/', File.separatorChar)));
+                }
+                ((ChromeOptions) desiredCapabilities).addExtensions(extensions);
+                ((ChromeOptions) desiredCapabilities).setExperimentalOption("prefs", jsonObject.get("prefs"));
+        		if (browserOptions.contains("disable-extensions")) {
+        			((ChromeOptions) desiredCapabilities).setExperimentalOption("useAutomationExtension", false);
+        		}
             } else {
                 logging.warn("Invalid browserOptions: " + browserOptions);
             }

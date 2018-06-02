@@ -71,8 +71,20 @@ public class BrowserManagementTest {
     @Test
     public void parseChromeBrowserOptions() {
         ChromeOptions chromeOptions = new ChromeOptions();
-        String browserOptions = "{\"args\":[\"start-maximized\"],\"extensions\":[],\"prefs\":{\"intl.accept_languages\":\"de-AT\"}}";
+        String browserOptions = "{\"args\":[\"start-maximized\"],\"extensions\":[],\"prefs\":{\"intl.accept_languages\":\"de-AT\", \"intl.charset_default\":\"UTF-8\"}}";
         bm.parseBrowserOptionsChrome(browserOptions, chromeOptions);
-        assertTrue(chromeOptions.getCapability("goog:chromeOptions").toString().contains("de-AT"));
+        assertTrue(chromeOptions.asMap().toString().contains("--start-maximized"));
+        assertTrue(chromeOptions.asMap().toString().contains("UTF-8"));
+    }
+    
+    @Test
+    public void parseChromeCapabilities() {
+        ChromeOptions chromeOptions = new ChromeOptions();
+        String browserName = "googlechromeheadless";
+        String browserOptions = "{\"args\":[\"start-maximized\"],\"extensions\":[],\"prefs\":{\"intl.accept_languages\":\"de-AT\"}}";
+        String desiredCapabilitiesString = "{}";
+        Capabilities cap = bm.createCapabilities(browserName, desiredCapabilitiesString, browserOptions);
+        assertTrue(cap.asMap().toString().contains("--start-maximized"));
+        assertTrue(cap.asMap().toString().contains("--headless"));
     }
 }
