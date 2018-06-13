@@ -59,7 +59,7 @@ public class Screenshot extends RunOnFailureKeywordsAdapter {
 		"if ``filename`` contains marker {index}, it will be automatically replaced with unique running index preventing files to be overwritten. Indices start from 1.\r\n" +
 		"\r\n" + 
 	        "A CSS can be used to modify how the screenshot is taken. By default the background color is changed to avoid possible problems with background leaking when the page layout is somehow broken.")
-	@ArgumentNames({ "filename=NONE" })
+	@ArgumentNames({ "filename=selenium-screenshot-{index}.png" })
 	public void capturePageScreenshot(String...params) {
 	    String filename = robot.getParamsValue(params, 0, null);
 		File logdir = screenshotDir != null ? screenshotDir : logging.getLogDir();
