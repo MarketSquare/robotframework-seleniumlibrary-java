@@ -114,6 +114,10 @@ public class Screenshot extends RunOnFailureKeywordsAdapter {
 		if (filename == null) {
 			screenshotIndex++;
 			filename = String.format("selenium-screenshot-%d.png", screenshotIndex);
+		} else if(filename.contains("{index}")) {
+			screenshotIndex++;
+			filename = filename.replace("{index}", "%d");
+			filename = String.format(filename, screenshotIndex);
 		} else {
 			filename = filename.replace('/', File.separatorChar);
 		}
