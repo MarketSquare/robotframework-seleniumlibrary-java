@@ -14,7 +14,7 @@ env:
 stages:
   - test
   - name: deploySnapshot
-    if: branch = master
+    if: branch = develop
   - name: deployRelease
     if: tag IS present
         
@@ -46,7 +46,7 @@ jobs:
         skip_cleanup: true
         on:
           repo: Hi-Fi/robotframework-seleniumlibrary-java
-          branch: master
+          branch: develop
     - stage: deployRelease
       addons: skip
       install: skip
