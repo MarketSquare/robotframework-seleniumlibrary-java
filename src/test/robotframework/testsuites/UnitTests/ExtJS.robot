@@ -5,8 +5,8 @@ Resource          ../../settings/Settings.robot
 
 *** Variables ***
 ${URL Application}     http://examples.sencha.com/extjs/6.5.0/examples/classic/ticket-app/index.html
-${login}                 extJsButton=button[text='Login']
-${inputfield password}    extJsTextfield=textfield[name='password']
+${login}                 extJsButton:button[text='Login']
+${inputfield password}    extJsTextfield:textfield[name='password']
 
 *** Keywords ***
 Open Page

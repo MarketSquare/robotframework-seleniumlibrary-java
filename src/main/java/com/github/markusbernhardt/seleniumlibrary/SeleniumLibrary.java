@@ -116,16 +116,16 @@ public class SeleniumLibrary extends AnnotationLibrary {
                     "Supported strategies are:\r\n" + 
                     "\r\n" + 
                     " | = Strategy = | = Example = | = Description = | \r\n" + 
-                    " | identifier | Click Element | identifier=my_element | Matches by @id or @name attribute | \r\n" + 
-                    " | id | Click Element | id=my_element | Matches by @id attribute | \r\n" + 
-                    " | name | Click Element | name=my_element | Matches by @name attribute | \r\n" + 
-                    " | xpath | Click Element | xpath=//div[@id='my_element'] | Matches by arbitrary XPath expression | \r\n" + 
-                    " | dom | Click Element | dom=document.images[56] | Matches by arbitrary DOM expression | \r\n" + 
-                    " | link | Click Element | link=My Link | Matches by the link text | \r\n" + 
-                    " | css | Click Element | css=div.my_class | Matches by CSS selector | \r\n" + 
-                    " | jquery | Click Element | jquery=div.my_class | Matches by jQuery/sizzle selector | \r\n" + 
-                    " | sizzle | Click Element | sizzle=div.my_class | Matches by jQuery/sizzle selector | \r\n" + 
-                    " | tag | Click Element | tag=div | Matches by HTML tag name | \r\n" + 
+                    " | identifier | Click Element | identifier:my_element | Matches by @id or @name attribute | \r\n" + 
+                    " | id | Click Element | id:my_element | Matches by @id attribute | \r\n" + 
+                    " | name | Click Element | name:my_element | Matches by @name attribute | \r\n" + 
+                    " | xpath | Click Element | xpath://div[@id='my_element'] | Matches by arbitrary XPath expression | \r\n" + 
+                    " | dom | Click Element | dom:document.images[56] | Matches by arbitrary DOM expression | \r\n" + 
+                    " | link | Click Element | link:My Link | Matches by the link text | \r\n" + 
+                    " | css | Click Element | css:div.my_class | Matches by CSS selector | \r\n" + 
+                    " | jquery | Click Element | jquery:div.my_class | Matches by jQuery/sizzle selector | \r\n" + 
+                    " | sizzle | Click Element | sizzle:div.my_class | Matches by jQuery/sizzle selector | \r\n" + 
+                    " | tag | Click Element | tag:div | Matches by HTML tag name | \r\n" + 
                     " \r\n" + 
                     "== Locating tables ==\r\n" + 
                     "\r\n" + 
@@ -138,8 +138,8 @@ public class SeleniumLibrary extends AnnotationLibrary {
                     "More complex table locator strategies:\r\n" + 
                     "\r\n" + 
                     " | = Strategy = | = Example = | = Description = | \r\n" + 
-                    " | xpath | Table Should Contain | xpath=//table/[@name=\"my_table\"] | text | Matches by arbitrary XPath expression | \r\n" + 
-                    " | css | Table Should Contain | css=table.my_class | text | Matches by CSS selector | \r\n" + 
+                    " | xpath | Table Should Contain | xpath://table/[@name=\"my_table\"] | text | Matches by arbitrary XPath expression | \r\n" + 
+                    " | css | Table Should Contain | css:table.my_class | text | Matches by CSS selector | \r\n" + 
                     "\r\n" + 
                     "== Custom location strategies ==\r\n" + 
                     "\r\n" + 
