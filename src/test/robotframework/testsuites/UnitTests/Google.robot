@@ -20,21 +20,17 @@ Search Robotframework Selenium2Library
     Google.Search.Search String    Robotframework Selenium2Library Java
     
 Search With JavaScript Locator
-    SeleniumLibrary.Add Location Strategy    elementById    return window.document.getElementById(arguments[0]);
-    Input Text    elementById:lst-ib    Robotframework Selenium2Library Java
-    Press Key    elementById:lst-ib    \\13
+    SeleniumLibrary.Add Location Strategy    elementByName    return window.document.getElementsByName(arguments[0])[0];
+    Input Text    elementByName:q    Robotframework Selenium2Library Java
+    Press Key    elementByName:q    \\13
     Wait Until Element Is Visible    xpath://a[contains(.,'MarkusBernhardt')]
     Capture Page Screenshot
-   
-Search With JavaScript Locator Text
-    SeleniumLibrary.Add Location Strategy    text    return window.document.evaluate("//*[contains(@value,'" + arguments[0] + "')]", window.document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue;
-    Wait Until Element Is Visible    text:Google
 
 Search Without Locator Type
-    Input Text    lst-ib    Robotframework Selenium2Library Java
-    Press Key    lst-ib    \\13
+    Input Text    q    Robotframework Selenium2Library Java
+    Press Key    q    \\13
     Wait Until Element Is Visible    //a[contains(.,'MarkusBernhardt')]
     
-Get Id Of Active Element With JavaScript
-    Input Text    lst-ib    Robotframework Selenium2Library
-    ${activeElementId}=    Execute JavaScript    return window.document.activeElement.id;
+Get Name Of Active Element With JavaScript
+    Input Text    q    Robotframework Selenium2Library
+    ${activeElementId}=    Execute JavaScript    return window.document.activeElement.name;

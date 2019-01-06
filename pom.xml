@@ -260,7 +260,7 @@
 								<goal>run</goal>
 							</goals>
 							<configuration>
-								<logLevel>debug</logLevel>
+								<logLevel>TRACE:INFO</logLevel>
 								<testCasesDirectory>${project.basedir}/src/test/robotframework/testsuites</testCasesDirectory>
 								<variables>
 									<variable>browser:${browser}</variable>
