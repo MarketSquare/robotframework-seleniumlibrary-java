@@ -154,7 +154,7 @@
 		<dependency>
 			<groupId>com.machinepublishers</groupId>
 			<artifactId>jbrowserdriver</artifactId>
-			<version>1.0.0-RC1</version>
+			<version>1.0.0</version>
 		</dependency>
 		<dependency>
 			<groupId>org.mockito</groupId>
@@ -272,13 +272,6 @@
 								<nonCriticalTags>
 									<nonCriticalTag>${browser}</nonCriticalTag>
 								</nonCriticalTags>
-								<externalRunner>
-									<jvmArgs>
-										<jvmArg>-Dphantomjs.binary.path=${phantomjs.binary.path}</jvmArg>
-										<jvmArg>-Dwebdriver.gecko.driver=${webdriver.gecko.driver}</jvmArg>
-										<jvmArg>-Dwebdriver.chrome.driver=${webdriver.chrome.driver}</jvmArg>
-									</jvmArgs>
-								</externalRunner>
 							</configuration>
 						</execution>
 						<execution>
@@ -418,6 +411,13 @@
 					<plugin>
 						<groupId>org.robotframework</groupId>
 						<artifactId>robotframework-maven-plugin</artifactId>
+						<configuration>
+	                              <externalRunner>
+                                    <jvmArgs>
+                                        <jvmArg>-Dwebdriver.gecko.driver=${webdriver.gecko.driver}</jvmArg>
+                                    </jvmArgs>
+                                </externalRunner>
+						</configuration>
 					</plugin>
 				</plugins>
 			</build>
@@ -436,6 +436,13 @@
                     <plugin>
                         <groupId>org.robotframework</groupId>
                         <artifactId>robotframework-maven-plugin</artifactId>
+                        <configuration>
+                                  <externalRunner>
+                                    <jvmArgs>
+                                        <jvmArg>-Dwebdriver.gecko.driver=${webdriver.gecko.driver}</jvmArg>
+                                    </jvmArgs>
+                                </externalRunner>
+                        </configuration>
                     </plugin>
                 </plugins>
             </build>
@@ -454,6 +461,13 @@
 					<plugin>
 						<groupId>org.robotframework</groupId>
 						<artifactId>robotframework-maven-plugin</artifactId>
+                        <configuration>
+                                  <externalRunner>
+                                    <jvmArgs>
+                                        <jvmArg>-Dphantomjs.binary.path=${phantomjs.binary.path}</jvmArg>
+                                    </jvmArgs>
+                                </externalRunner>
+                        </configuration>
 					</plugin>
 				</plugins>
 			</build>
@@ -472,6 +486,13 @@
 					<plugin>
 						<groupId>org.robotframework</groupId>
 						<artifactId>robotframework-maven-plugin</artifactId>
+                        <configuration>
+                                  <externalRunner>
+                                    <jvmArgs>
+                                        <jvmArg>-Dwebdriver.chrome.driver=${webdriver.chrome.driver}</jvmArg>
+                                    </jvmArgs>
+                                </externalRunner>
+                        </configuration>
 					</plugin>
 				</plugins>
 			</build>
@@ -490,6 +511,13 @@
                     <plugin>
                         <groupId>org.robotframework</groupId>
                         <artifactId>robotframework-maven-plugin</artifactId>
+                        <configuration>
+                                  <externalRunner>
+                                    <jvmArgs>
+                                        <jvmArg>-Dwebdriver.chrome.driver=${webdriver.chrome.driver}</jvmArg>
+                                    </jvmArgs>
+                                </externalRunner>
+                        </configuration>
                     </plugin>
                 </plugins>
             </build>

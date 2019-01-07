@@ -20,7 +20,7 @@ Open Page
 
 *** Test Cases ***
 Buy Ticket
-    Wait Until Page Contains Element    ${inputfield password}
+    Wait Until Page Contains Element    ${inputfield password}    10
     Input Text    ${inputfield password}    password
     Capture Page Screenshot    images${/}screenshot1.png
     Click Element    ${login}
