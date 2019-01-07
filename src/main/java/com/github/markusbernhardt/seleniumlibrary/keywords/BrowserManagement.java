@@ -660,6 +660,7 @@ public class BrowserManagement extends RunOnFailureKeywordsAdapter {
             case "opera":
                 return new OperaDriver(new OperaOptions().merge(desiredCapabilities));
             case "phantomjs":
+                logging.warn("Phantomjs going to be removed as it's development is suspended. Should move to some other browser" );
                 return new PhantomJSDriver(desiredCapabilities);
             case "safari":
                 return new SafariDriver(new SafariOptions().merge(desiredCapabilities));
@@ -738,6 +739,7 @@ public class BrowserManagement extends RunOnFailureKeywordsAdapter {
             desiredCapabilities = new OperaOptions();
             break;
         case "phantomjs":
+            logging.warn("Phantomjs going to be removed as it's development is suspended. Should move to some other browser" );
             desiredCapabilities = DesiredCapabilities.phantomjs();
             break;
         case "safari":

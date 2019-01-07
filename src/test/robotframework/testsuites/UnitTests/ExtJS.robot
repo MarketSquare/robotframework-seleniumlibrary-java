@@ -2,7 +2,7 @@
 Suite Setup       Open Page
 Suite Teardown    Close Browser
 Resource          ../../settings/Settings.robot
-Default Tags      htmlunit    htmlunitwithjs
+Default Tags      phantomjs    htmlunit    htmlunitwithjs
 
 *** Variables ***
 ${URL Application}     http://examples.sencha.com/extjs/6.5.0/examples/classic/ticket-app/index.html
