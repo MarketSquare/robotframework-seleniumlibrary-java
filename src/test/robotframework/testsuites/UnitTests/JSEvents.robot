@@ -2,6 +2,7 @@
 Suite Setup       Open Page
 Suite Teardown    Close All Browsers
 Resource          ../../settings/Settings.robot
+Default Tags      htmlunit    htmlunitwithjs
 
 *** Variables ***
 ${URL Application}     http://fiddle.jshell.net/ShPVX/show/

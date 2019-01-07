@@ -2,6 +2,7 @@
 Suite Setup       Open Page
 Suite Teardown    Close Browser
 Resource          ../../settings/Settings.robot
+Default Tags      htmlunit    htmlunitwithjs
 
 *** Variables ***
 ${URL Application}     http://examples.sencha.com/extjs/6.5.0/examples/classic/ticket-app/index.html
@@ -20,7 +21,7 @@ Open Page
 
 *** Test Cases ***
 Buy Ticket
-    Select Frame    examples-iframe
+    Run Keyword Unless    "${browser}"=="phantomjs"    Select Frame    examples-iframe
     Wait Until Page Contains Element    ${inputfield password}    10
     Input Text    ${inputfield password}    password
     Capture Page Screenshot    images${/}screenshot1.png
