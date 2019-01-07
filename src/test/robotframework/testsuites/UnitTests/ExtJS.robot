@@ -20,6 +20,7 @@ Open Page
 
 *** Test Cases ***
 Buy Ticket
+    Select Frame    examples-iframe
     Wait Until Page Contains Element    ${inputfield password}    10
     Input Text    ${inputfield password}    password
     Capture Page Screenshot    images${/}screenshot1.png
