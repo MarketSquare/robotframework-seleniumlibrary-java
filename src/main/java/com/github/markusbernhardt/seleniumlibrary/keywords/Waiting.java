@@ -1,5 +1,6 @@
 package com.github.markusbernhardt.seleniumlibrary.keywords;
 
+import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.openqa.selenium.JavascriptExecutor;
 import org.robotframework.javalib.annotation.ArgumentNames;
 import org.robotframework.javalib.annotation.Autowired;
@@ -25,6 +26,9 @@ public class Waiting extends RunOnFailureKeywordsAdapter {
 	 */
 	@Autowired
 	protected Element element;
+	
+	@Autowired
+	protected Logging logging;
 	
 	@Autowired
 	protected Robot robot;
@@ -411,14 +415,17 @@ public class Waiting extends RunOnFailureKeywordsAdapter {
 		double timeout = timestr != null ? Robotframework.timestrToSecs(timestr) : browserManagement.getTimeout();
 		message = message.replace("<TIMEOUT>", Robotframework.secsToTimestr(timeout));
 		long maxtime = System.currentTimeMillis() + (long) (timeout * 1000);
+		Throwable exception = new Throwable();
 		for (;;) {
 			try {
 				if (function.isFinished()) {
 					break;
 				}
 			} catch (Throwable t) {
+			    exception = t;
 			}
 			if (System.currentTimeMillis() > maxtime) {
+			    logging.trace(ExceptionUtils.getStackTrace(exception));
 				throw new SeleniumLibraryNonFatalException(message);
 			}
 			try {

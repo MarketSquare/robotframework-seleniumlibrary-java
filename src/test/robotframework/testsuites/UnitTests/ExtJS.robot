@@ -2,11 +2,12 @@
 Suite Setup       Open Page
 Suite Teardown    Close Browser
 Resource          ../../settings/Settings.robot
+Default Tags      phantomjs    htmlunit    htmlunitwithjs
 
 *** Variables ***
 ${URL Application}     http://examples.sencha.com/extjs/6.5.0/examples/classic/ticket-app/index.html
-${login}                 extJsButton=button[text='Login']
-${inputfield password}    extJsTextfield=textfield[name='password']
+${login}                 extJsButton:button[text='Login']
+${inputfield password}    extJsTextfield:textfield[name='password']
 
 *** Keywords ***
 Open Page
@@ -20,7 +21,8 @@ Open Page
 
 *** Test Cases ***
 Buy Ticket
-    Wait Until Page Contains Element    ${inputfield password}
+    Run Keyword Unless    "${browser}"=="phantomjs"    Select Frame    examples-iframe
+    Wait Until Page Contains Element    ${inputfield password}    10
     Input Text    ${inputfield password}    password
     Capture Page Screenshot    images${/}screenshot1.png
     Click Element    ${login}

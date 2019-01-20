@@ -38,12 +38,12 @@ public class Window extends RunOnFailureKeywordsAdapter {
             " | Title Should Be | Popup Title |  | \r\n" + 
             " | Select Window |  | # Chooses the main window again |\r\n" + 
             "\r\n" + 
-            "It is also possible to specify the approach Selenium2Library should take to find a window by specifying a locator strategy. See Introduction for details about locators:\r\n" + 
+            "It is also possible to specify the approach SeleniumLibrary should take to find a window by specifying a locator strategy. See Introduction for details about locators:\r\n" + 
             "\r\n" + 
             " | = Strategy = | = Example = | = Description = | \r\n" + 
-            " | title | Select Window | title=My Document | Matches by window title | \r\n" + 
-            " | name | Select Window | name=${name} | Matches by window javascript name | \r\n" + 
-            " | url | Select Window | url=http://google.com | Matches by window's current URL |")
+            " | title | Select Window | title:My Document | Matches by window title | \r\n" + 
+            " | name | Select Window | name:${name} | Matches by window javascript name | \r\n" + 
+            " | url | Select Window | url:http://google.com | Matches by window's current URL |")
     @ArgumentNames({ "locator=MAIN" })
     public void selectWindow(String locator) {
         WindowManager.select(browserManagement.getWebDriverCache().getCurrent(), locator);

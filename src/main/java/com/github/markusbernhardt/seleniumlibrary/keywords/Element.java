@@ -230,7 +230,7 @@ public class Element extends RunOnFailureKeywordsAdapter {
 	        "This is mainly useful, when the locator is a complicated and slow XPath expression. The identifier expires when the page is reloaded.\r\n" + 
 	        "\r\n" + 
 	        "Example:\r\n" + 
-	        " | Assign ID to Element | xpath=//div[@id=\\\"first_div\\\"] | my id | \r\n" + 
+	        " | Assign ID to Element | xpath://div[@id=\\\"first_div\\\"] | my id | \r\n" + 
 	        " | Page Should Contain Element | my id |")
 	@ArgumentNames({ "locator", "id" })
 	public void assignIdToElement(String locator, String id) {

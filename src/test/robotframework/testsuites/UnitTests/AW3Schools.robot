@@ -7,13 +7,13 @@ ${URL Application}    http://www.w3schools.com
 
 *** Test Cases *** 
 Select
-    [Tags]    phantomjs
+    [Tags]    phantomjs    htmlunit    htmlunitwithjs
     Open Browser    https://developer.mozilla.org/en/docs/Web/HTML/Element/select#Examples    ${browser}    mainbrowser
-    Wait Until Page Contains Element    xpath=//select
-    Select From List    xpath=//select    Third Value
-    ${label}    Get Selected List Label    xpath=//select
+    Wait Until Page Contains Element    xpath://select
+    Select From List    xpath://select    Third Value
+    ${label}    Get Selected List Label    xpath://select
     Should Be Equal    ${label}    Third Value
-    List Selection Should Be    xpath=//select    Third Value
+    List Selection Should Be    xpath://select    Third Value
     
 Multiple Browsers
     Open Browser    ${URL Application}    ${browser}    mainbrowser1
