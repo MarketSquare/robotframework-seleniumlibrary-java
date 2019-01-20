@@ -45,18 +45,18 @@ your pom.xml:
     <dependency>
         <groupId>com.github.hi-fi</groupId>
         <artifactId>robotframework-seleniumlibrary</artifactId>
-        <version>3.14.0.0</version>
+        <version>3.141.59.0</version>
         <scope>test</scope>
     </dependency>
 
 If you cannot use the robotframework-maven-plugin you can use the
-[jar-with-dependencies](http://central.maven.org/maven2/com/github/hi-fi/robotframework-seleniumlibrary/3.14.0.0/robotframework-seleniumlibrary-3.14.0.0-jar-with-dependencies.jar),
+[jar-with-dependencies](http://central.maven.org/maven2/com/github/hi-fi/robotframework-seleniumlibrary/3.141.59.0/robotframework-seleniumlibrary-3.141.59.0-jar-with-dependencies.jar),
 which contains all required libraries.
 
 * More information about this library can be found in the
-  [Keyword Documentation](http://central.maven.org/maven2/com/github/hi-fi/robotframework-seleniumlibrary/3.14.0.0/robotframework-seleniumlibrary-3.14.0.0.html).
+  [Keyword Documentation](http://central.maven.org/maven2/com/github/hi-fi/robotframework-seleniumlibrary/3.141.59.0/robotframework-seleniumlibrary-3.141.59.0.html).
 * For keyword completion in RIDE you can download this
-  [Library Specs](http://central.maven.org/maven2/com/github/hi-fi/robotframework-seleniumlibrary/3.14.0.0/robotframework-seleniumlibrary-3.14.0.0.xml)
+  [Library Specs](http://central.maven.org/maven2/com/github/hi-fi/robotframework-seleniumlibrary/3.141.59.0/robotframework-seleniumlibrary-3.141.59.0.xml)
   and place it in your PYTHONPATH.
 
 Differences

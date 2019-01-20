@@ -39,12 +39,10 @@ import org.openqa.selenium.edge.EdgeOptions;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.firefox.FirefoxOptions;
 import org.openqa.selenium.firefox.FirefoxProfile;
-import org.openqa.selenium.htmlunit.HtmlUnitDriver;
 import org.openqa.selenium.ie.InternetExplorerDriver;
 import org.openqa.selenium.ie.InternetExplorerOptions;
 import org.openqa.selenium.opera.OperaDriver;
 import org.openqa.selenium.opera.OperaOptions;
-import org.openqa.selenium.phantomjs.PhantomJSDriver;
 import org.openqa.selenium.remote.Augmenter;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.remote.HttpCommandExecutor;
@@ -171,9 +169,6 @@ public class BrowserManagement extends RunOnFailureKeywordsAdapter {
             "| Opera     | opera     |\r\n" + 
             "| Android   | android   |\r\n" + 
             "| Iphone    | iphone    |\r\n" + 
-            "| PhantomJS | phantomjs |\r\n" + 
-            "| HTMLUnit  | htmlunit  |\r\n" + 
-            "| HTMLUnit with Javascript | htmlunitwithjs    |\r\n" + 
             "| JBrowser  | jbrowser  |\r\n" + 
             "\r\n" + 
             "To be able to actually use one of these browsers, you need to have a matching Selenium browser driver available. See the [https://github.com/Hi-Fi/robotframework-seleniumlibrary-java#browser-drivers|project documentation] for more details.\r\n" + 
@@ -659,19 +654,8 @@ public class BrowserManagement extends RunOnFailureKeywordsAdapter {
                 return new ChromeDriver((ChromeOptions)desiredCapabilities);
             case "opera":
                 return new OperaDriver(new OperaOptions().merge(desiredCapabilities));
-            case "phantomjs":
-                logging.warn("Phantomjs going to be removed as it's development is suspended. Should move to some other browser" );
-                return new PhantomJSDriver(desiredCapabilities);
             case "safari":
                 return new SafariDriver(new SafariOptions().merge(desiredCapabilities));
-            case "htmlunit":
-                logging.warn("HTMLUnit-driver going to be removed from Selenium. Should move to some other browser" );
-                return new HtmlUnitDriver(desiredCapabilities);
-            case "htmlunitwithjs":
-                logging.warn("HTMLUnit-driver going to be removed from Selenium. Should move to some other browser" );
-                HtmlUnitDriver driver = new HtmlUnitDriver(desiredCapabilities);
-                driver.setJavascriptEnabled(true);
-                return driver;
             case "jbrowser":
                 return new JBrowserDriver(Settings.builder().build());
             case "android":
@@ -738,18 +722,8 @@ public class BrowserManagement extends RunOnFailureKeywordsAdapter {
         case "opera":
             desiredCapabilities = new OperaOptions();
             break;
-        case "phantomjs":
-            logging.warn("Phantomjs going to be removed as it's development is suspended. Should move to some other browser" );
-            desiredCapabilities = DesiredCapabilities.phantomjs();
-            break;
         case "safari":
             desiredCapabilities = new SafariOptions();
-            break;
-        case "htmlunit":
-        case "htmlunitwithjs":
-            logging.warn("HTMLUnit-driver going to be removed from Selenium. Should move to some other browser" );
-            desiredCapabilities = DesiredCapabilities.htmlUnit();
-            ((DesiredCapabilities) desiredCapabilities).setBrowserName("htmlunit");
             break;
         case "jbrowser":
             desiredCapabilities = new DesiredCapabilities("jbrowser", "1", Platform.ANY);

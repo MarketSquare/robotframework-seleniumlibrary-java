@@ -1,10 +1,11 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
 	<groupId>com.github.hi-fi</groupId>
 	<artifactId>robotframework-seleniumlibrary</artifactId>
-	<version>3.14.0.1-SNAPSHOT</version>
+	<version>3.141.59.0-SNAPSHOT</version>
 	<packaging>jar</packaging>
 
 	<name>Robot Framework :: SeleniumLibrary</name>
@@ -67,10 +68,9 @@
 		<downloadSources>true</downloadSources>
 		<downloadJavadocs>true</downloadJavadocs>
 		<aspectj.version>1.9.1</aspectj.version>
-		<java.version>1.7</java.version>
-		<robotframework.version>3.0.4</robotframework.version>
-		<robotframework.maven.plugin.version>1.4.7</robotframework.maven.plugin.version>
-		<selenium.version>3.14.0</selenium.version>
+		<java.version>1.8</java.version>
+		<robotframework.maven.plugin.version>1.5.1</robotframework.maven.plugin.version>
+		<selenium.version>3.141.59</selenium.version>
 		<keywords.class>SeleniumLibrary</keywords.class>
 		<browser>jbrowser</browser>
 	</properties>
@@ -82,14 +82,14 @@
 			<version>1.2.1</version>
 		</dependency>
 		<dependency>
+			<groupId>org.robotframework</groupId>
+			<artifactId>robotframework</artifactId>
+			<version>3.1.1</version>
+		</dependency>
+		<dependency>
 			<groupId>org.seleniumhq.selenium</groupId>
 			<artifactId>selenium-server</artifactId>
 			<version>${selenium.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>org.robotframework</groupId>
-			<artifactId>robotframework</artifactId>
-			<version>${robotframework.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.aspectj</groupId>
@@ -115,21 +115,7 @@
 		<dependency>
 			<groupId>io.appium</groupId>
 			<artifactId>java-client</artifactId>
-			<version>5.0.4</version>
-			<exclusions>
-				<exclusion>
-					<groupId>org.seleniumhq.selenium</groupId>
-					<artifactId>selenium-java</artifactId>
-				</exclusion>
-				<exclusion>
-					<groupId>org.seleniumhq.selenium</groupId>
-					<artifactId>selenium-support</artifactId>
-				</exclusion>
-				<exclusion>
-					<groupId>org.seleniumhq.selenium</groupId>
-					<artifactId>selenium-api</artifactId>
-				</exclusion>
-			</exclusions>
+			<version>7.0.0</version>
 		</dependency>
 		<dependency>
 			<groupId>org.apache.commons</groupId>
@@ -137,24 +123,9 @@
 			<version>1.3</version>
 		</dependency>
 		<dependency>
-			<groupId>com.codeborne</groupId>
-			<artifactId>phantomjsdriver</artifactId>
-			<version>1.4.4</version>
-			<exclusions>
-				<exclusion>
-					<groupId>org.seleniumhq.selenium</groupId>
-					<artifactId>selenium-api</artifactId>
-				</exclusion>
-				<exclusion>
-					<groupId>org.seleniumhq.selenium</groupId>
-					<artifactId>selenium-remote-driver</artifactId>
-				</exclusion>
-			</exclusions>
-		</dependency>
-		<dependency>
 			<groupId>com.machinepublishers</groupId>
 			<artifactId>jbrowserdriver</artifactId>
-			<version>1.0.0</version>
+			<version>1.0.1</version>
 		</dependency>
 		<dependency>
 			<groupId>org.mockito</groupId>
@@ -412,45 +383,20 @@
 						<groupId>org.robotframework</groupId>
 						<artifactId>robotframework-maven-plugin</artifactId>
 						<configuration>
-	                              <externalRunner>
-                                    <jvmArgs>
-                                        <jvmArg>-Dwebdriver.gecko.driver=${webdriver.gecko.driver}</jvmArg>
-                                    </jvmArgs>
-                                </externalRunner>
+							<externalRunner>
+								<jvmArgs>
+									<jvmArg>-Dwebdriver.gecko.driver=${webdriver.gecko.driver}</jvmArg>
+								</jvmArgs>
+							</externalRunner>
 						</configuration>
 					</plugin>
 				</plugins>
 			</build>
 		</profile>
-		      <profile>
-            <id>firefoxheadless</id>
-            <properties>
-                <browser>firefoxheadless</browser>
-            </properties>
-            <build>
-                <plugins>
-                    <plugin>
-                        <groupId>com.lazerycode.selenium</groupId>
-                        <artifactId>driver-binary-downloader-maven-plugin</artifactId>
-                    </plugin>
-                    <plugin>
-                        <groupId>org.robotframework</groupId>
-                        <artifactId>robotframework-maven-plugin</artifactId>
-                        <configuration>
-                                  <externalRunner>
-                                    <jvmArgs>
-                                        <jvmArg>-Dwebdriver.gecko.driver=${webdriver.gecko.driver}</jvmArg>
-                                    </jvmArgs>
-                                </externalRunner>
-                        </configuration>
-                    </plugin>
-                </plugins>
-            </build>
-        </profile>
 		<profile>
-			<id>phantomjs</id>
+			<id>firefoxheadless</id>
 			<properties>
-				<browser>phantomjs</browser>
+				<browser>firefoxheadless</browser>
 			</properties>
 			<build>
 				<plugins>
@@ -461,13 +407,13 @@
 					<plugin>
 						<groupId>org.robotframework</groupId>
 						<artifactId>robotframework-maven-plugin</artifactId>
-                        <configuration>
-                                  <externalRunner>
-                                    <jvmArgs>
-                                        <jvmArg>-Dphantomjs.binary.path=${phantomjs.binary.path}</jvmArg>
-                                    </jvmArgs>
-                                </externalRunner>
-                        </configuration>
+						<configuration>
+							<externalRunner>
+								<jvmArgs>
+									<jvmArg>-Dwebdriver.gecko.driver=${webdriver.gecko.driver}</jvmArg>
+								</jvmArgs>
+							</externalRunner>
+						</configuration>
 					</plugin>
 				</plugins>
 			</build>
@@ -486,52 +432,38 @@
 					<plugin>
 						<groupId>org.robotframework</groupId>
 						<artifactId>robotframework-maven-plugin</artifactId>
-                        <configuration>
-                                  <externalRunner>
-                                    <jvmArgs>
-                                        <jvmArg>-Dwebdriver.chrome.driver=${webdriver.chrome.driver}</jvmArg>
-                                    </jvmArgs>
-                                </externalRunner>
-                        </configuration>
+						<configuration>
+							<externalRunner>
+								<jvmArgs>
+									<jvmArg>-Dwebdriver.chrome.driver=${webdriver.chrome.driver}</jvmArg>
+								</jvmArgs>
+							</externalRunner>
+						</configuration>
 					</plugin>
 				</plugins>
 			</build>
 		</profile>
 		<profile>
-            <id>googlechromeheadless</id>
-            <properties>
-                <browser>googlechromeheadless</browser>
-            </properties>
-            <build>
-                <plugins>
-                    <plugin>
-                        <groupId>com.lazerycode.selenium</groupId>
-                        <artifactId>driver-binary-downloader-maven-plugin</artifactId>
-                    </plugin>
-                    <plugin>
-                        <groupId>org.robotframework</groupId>
-                        <artifactId>robotframework-maven-plugin</artifactId>
-                        <configuration>
-                                  <externalRunner>
-                                    <jvmArgs>
-                                        <jvmArg>-Dwebdriver.chrome.driver=${webdriver.chrome.driver}</jvmArg>
-                                    </jvmArgs>
-                                </externalRunner>
-                        </configuration>
-                    </plugin>
-                </plugins>
-            </build>
-        </profile>
-		<profile>
-			<id>htmlunitwithjs</id>
+			<id>googlechromeheadless</id>
 			<properties>
-				<browser>htmlunitwithjs</browser>
+				<browser>googlechromeheadless</browser>
 			</properties>
 			<build>
 				<plugins>
 					<plugin>
+						<groupId>com.lazerycode.selenium</groupId>
+						<artifactId>driver-binary-downloader-maven-plugin</artifactId>
+					</plugin>
+					<plugin>
 						<groupId>org.robotframework</groupId>
 						<artifactId>robotframework-maven-plugin</artifactId>
+						<configuration>
+							<externalRunner>
+								<jvmArgs>
+									<jvmArg>-Dwebdriver.chrome.driver=${webdriver.chrome.driver}</jvmArg>
+								</jvmArgs>
+							</externalRunner>
+						</configuration>
 					</plugin>
 				</plugins>
 			</build>
