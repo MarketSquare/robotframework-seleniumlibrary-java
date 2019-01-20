@@ -13,9 +13,11 @@ import org.openqa.selenium.SearchContext;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.python.util.PythonInterpreter;
+import org.robotframework.javalib.annotation.Autowired;
 
 import com.github.markusbernhardt.seleniumlibrary.SeleniumLibraryNonFatalException;
 import com.github.markusbernhardt.seleniumlibrary.keywords.Element;
+import com.github.markusbernhardt.seleniumlibrary.keywords.Logging;
 import com.github.markusbernhardt.seleniumlibrary.utils.Python;
 
 public class ElementFinder {
@@ -275,8 +277,11 @@ public class ElementFinder {
 		String prefix = null;
 		String criteria = locator;
 		if (!locator.startsWith("//")) {
-			String[] locatorParts = locator.split("=", 2);
+			String[] locatorParts = locator.split("[=:]", 2);
 			if (locatorParts.length == 2) {
+			    if (locator.charAt(locatorParts[0].length()) == "=".charAt(0)) {
+			        System.out.println("*WARN* '=' is deprecated as locator strategy separator. ':' should be used instead" );
+			    }
 				prefix = locatorParts[0].trim().toUpperCase();
 				criteria = locatorParts[1].trim();
 			}

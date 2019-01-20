@@ -139,11 +139,11 @@ public class BrowserManagement extends RunOnFailureKeywordsAdapter {
             "\r\n" + 
             "Example:\r\n" + 
             " | Add Location Strategy | byId | return window.document.getElementById(arguments[0]); | \r\n" + 
-            " | Input Text | byId=firstName | Max |\r\n" + 
+            " | Input Text | byId:firstName | Max |\r\n" + 
             "\r\n" + 
             "Example with delimiter:\r\n" + 
             " | Add Location Strategy | byClassname | return window.document.getElementsByClassName(arguments[0])[arguments[1]]; | , | \r\n" + 
-            " | Input Text | byClassname=input,3 | Max | ")
+            " | Input Text | byClassname:input,3 | Max | ")
     @ArgumentNames({ "strategyName", "functionDefinition", "delimiter=NONE" })
     public void addLocationStrategy(String strategyName, String functionDefinition, String delimiter) {
         ElementFinder.addLocationStrategy(strategyName, functionDefinition, delimiter);
@@ -660,12 +660,15 @@ public class BrowserManagement extends RunOnFailureKeywordsAdapter {
             case "opera":
                 return new OperaDriver(new OperaOptions().merge(desiredCapabilities));
             case "phantomjs":
+                logging.warn("Phantomjs going to be removed as it's development is suspended. Should move to some other browser" );
                 return new PhantomJSDriver(desiredCapabilities);
             case "safari":
                 return new SafariDriver(new SafariOptions().merge(desiredCapabilities));
             case "htmlunit":
+                logging.warn("HTMLUnit-driver going to be removed from Selenium. Should move to some other browser" );
                 return new HtmlUnitDriver(desiredCapabilities);
             case "htmlunitwithjs":
+                logging.warn("HTMLUnit-driver going to be removed from Selenium. Should move to some other browser" );
                 HtmlUnitDriver driver = new HtmlUnitDriver(desiredCapabilities);
                 driver.setJavascriptEnabled(true);
                 return driver;
@@ -736,6 +739,7 @@ public class BrowserManagement extends RunOnFailureKeywordsAdapter {
             desiredCapabilities = new OperaOptions();
             break;
         case "phantomjs":
+            logging.warn("Phantomjs going to be removed as it's development is suspended. Should move to some other browser" );
             desiredCapabilities = DesiredCapabilities.phantomjs();
             break;
         case "safari":
@@ -743,6 +747,7 @@ public class BrowserManagement extends RunOnFailureKeywordsAdapter {
             break;
         case "htmlunit":
         case "htmlunitwithjs":
+            logging.warn("HTMLUnit-driver going to be removed from Selenium. Should move to some other browser" );
             desiredCapabilities = DesiredCapabilities.htmlUnit();
             ((DesiredCapabilities) desiredCapabilities).setBrowserName("htmlunit");
             break;
