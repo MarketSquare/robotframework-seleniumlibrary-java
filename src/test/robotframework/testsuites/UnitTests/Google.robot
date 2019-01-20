@@ -4,9 +4,8 @@ Suite Teardown    Google.Site.Close
 Test Setup        Google.Site.Init
 Resource          ../../settings/Settings.robot
 Resource          ../../imports/Google.txt
-Default Tags      phantomjs    htmlunit    htmlunitwithjs
 
-*** Testcases ***
+*** Test cases ***
 Open And Close Google Site
     Capture Page Screenshot
     

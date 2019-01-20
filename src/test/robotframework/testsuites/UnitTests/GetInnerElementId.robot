@@ -1,6 +1,6 @@
 *** Settings ***
 Resource          ../../settings/Settings.robot
-Default Tags      phantomjs
+Default Tags      jbrowser
 
 *** Test Cases ***
 Get Inner Element Id test
