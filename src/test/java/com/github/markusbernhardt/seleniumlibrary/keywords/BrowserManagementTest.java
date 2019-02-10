@@ -63,12 +63,6 @@ public class BrowserManagementTest {
     }
     
     @Test
-    public void testCreateDesiredCapabilitiesForHtmlUnit() {
-        Capabilities dc = bm.createCapabilities("htmlunitwithjs", null, "");
-        assertTrue(dc.getBrowserName().equals("htmlunit"));
-    }
-    
-    @Test
     public void parseChromeBrowserOptions() {
         ChromeOptions chromeOptions = new ChromeOptions();
         String browserOptions = "{\"args\":[\"start-maximized\"],\"extensions\":[],\"prefs\":{\"intl.accept_languages\":\"de-AT\", \"intl.charset_default\":\"UTF-8\"}}";

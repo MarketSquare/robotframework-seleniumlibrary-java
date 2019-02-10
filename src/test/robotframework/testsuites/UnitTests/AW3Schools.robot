@@ -7,7 +7,7 @@ ${URL Application}    http://www.w3schools.com
 
 *** Test Cases *** 
 Select
-    [Tags]    phantomjs    htmlunit    htmlunitwithjs
+    [Tags]    jbrowser
     Open Browser    https://developer.mozilla.org/en/docs/Web/HTML/Element/select#Examples    ${browser}    mainbrowser
     Wait Until Page Contains Element    xpath://select
     Select From List    xpath://select    Third Value
