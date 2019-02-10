@@ -70,6 +70,7 @@
 		<aspectj.version>1.9.1</aspectj.version>
 		<java.version>1.8</java.version>
 		<robotframework.maven.plugin.version>1.5.1</robotframework.maven.plugin.version>
+		<robotframework.version>3.1.1</robotframework.version>
 		<selenium.version>3.141.59</selenium.version>
 		<keywords.class>SeleniumLibrary</keywords.class>
 		<browser>jbrowser</browser>
@@ -84,7 +85,7 @@
 		<dependency>
 			<groupId>org.robotframework</groupId>
 			<artifactId>robotframework</artifactId>
-			<version>3.1.1</version>
+			<version>${robotframework.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.seleniumhq.selenium</groupId>
@@ -351,6 +352,12 @@
 						<artifactId>maven-assembly-plugin</artifactId>
 						<version>2.6</version>
 						<configuration>
+							<archive>
+								<manifest>
+									<addClasspath>true</addClasspath>
+									<mainClass>org.robotframework.RobotFramework</mainClass>
+								</manifest>
+							</archive>
 							<descriptorRefs>
 								<descriptorRef>jar-with-dependencies</descriptorRef>
 							</descriptorRefs>

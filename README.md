@@ -51,7 +51,7 @@ your pom.xml:
 
 If you cannot use the robotframework-maven-plugin you can use the
 [jar-with-dependencies](http://central.maven.org/maven2/com/github/hi-fi/robotframework-seleniumlibrary/3.141.59.0/robotframework-seleniumlibrary-3.141.59.0-jar-with-dependencies.jar),
-which contains all required libraries.
+which contains all required libraries. Running of tests with this can be done with command `java -jar robotframework-seleniumlibrary-3.141.59.0-jar-with-dependencies.jar <test location>`.  
 
 * More information about this library can be found in the
   [Keyword Documentation](http://central.maven.org/maven2/com/github/hi-fi/robotframework-seleniumlibrary/3.141.59.0/robotframework-seleniumlibrary-3.141.59.0.html).
