@@ -10,10 +10,8 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 import java.util.Map.Entry;
 import java.util.concurrent.TimeUnit;
 
@@ -760,20 +758,37 @@ public class BrowserManagement extends RunOnFailureKeywordsAdapter {
         if (browserOptions != null && !"NONE".equalsIgnoreCase(browserOptions)) {
             JSONObject jsonObject = (JSONObject) JSONValue.parse(browserOptions);
             if (jsonObject != null) {
-                List<String> args = new ArrayList<>();
-                for (Object arg : (JSONArray)jsonObject.get("args")) {
-                    args.add("--"+arg.toString().replace("--", ""));
+                // Check all properties for translation to ChromeOptions
+                for (Iterator<?> iterator = jsonObject.keySet().iterator(); iterator.hasNext(); ) {
+                    String key = (String)iterator.next();
+                    switch (key) {
+                    case "args": {
+                        // args is a list of strings
+                        List<String> args = new ArrayList<>();
+                        for (Object arg : (JSONArray)jsonObject.get(key)) {
+                            args.add("--"+arg.toString().replace("--", ""));
+                        }
+                        ((ChromeOptions) desiredCapabilities).addArguments(args);
+                        break;
+                    }
+                    case "extensions": {
+                        List<File> extensions = new ArrayList<>();
+                        for (Object extension : (JSONArray)jsonObject.get(key)) {
+                            extensions.add(new File(extension.toString().toString().replace('/', File.separatorChar)));
+                        }
+                        ((ChromeOptions) desiredCapabilities).addExtensions(extensions);
+                        break;
+                    }
+                    case "disable-extensions":
+                        // change casing
+                        ((ChromeOptions) desiredCapabilities).setExperimentalOption("useAutomationExtension", false);
+                        break;
+                    default:
+                        // all unknonw properties are passed as is
+                        ((ChromeOptions) desiredCapabilities).setExperimentalOption(key, jsonObject.get(key));
+                        break;
+                    }
                 }
-                ((ChromeOptions) desiredCapabilities).addArguments(args);
-                List<File> extensions = new ArrayList<>();
-                for (Object extension : (JSONArray)jsonObject.get("extensions")) {
-                    extensions.add(new File(extension.toString().toString().replace('/', File.separatorChar)));
-                }
-                ((ChromeOptions) desiredCapabilities).addExtensions(extensions);
-                ((ChromeOptions) desiredCapabilities).setExperimentalOption("prefs", jsonObject.get("prefs"));
-        		if (browserOptions.contains("disable-extensions")) {
-        			((ChromeOptions) desiredCapabilities).setExperimentalOption("useAutomationExtension", false);
-        		}
             } else {
                 logging.warn("Invalid browserOptions: " + browserOptions);
             }
