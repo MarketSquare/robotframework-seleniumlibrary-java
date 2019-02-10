@@ -10,10 +10,8 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 import java.util.Map.Entry;
 import java.util.concurrent.TimeUnit;
 
@@ -39,12 +37,10 @@ import org.openqa.selenium.edge.EdgeOptions;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.firefox.FirefoxOptions;
 import org.openqa.selenium.firefox.FirefoxProfile;
-import org.openqa.selenium.htmlunit.HtmlUnitDriver;
 import org.openqa.selenium.ie.InternetExplorerDriver;
 import org.openqa.selenium.ie.InternetExplorerOptions;
 import org.openqa.selenium.opera.OperaDriver;
 import org.openqa.selenium.opera.OperaOptions;
-import org.openqa.selenium.phantomjs.PhantomJSDriver;
 import org.openqa.selenium.remote.Augmenter;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.remote.HttpCommandExecutor;
@@ -171,9 +167,6 @@ public class BrowserManagement extends RunOnFailureKeywordsAdapter {
             "| Opera     | opera     |\r\n" + 
             "| Android   | android   |\r\n" + 
             "| Iphone    | iphone    |\r\n" + 
-            "| PhantomJS | phantomjs |\r\n" + 
-            "| HTMLUnit  | htmlunit  |\r\n" + 
-            "| HTMLUnit with Javascript | htmlunitwithjs    |\r\n" + 
             "| JBrowser  | jbrowser  |\r\n" + 
             "\r\n" + 
             "To be able to actually use one of these browsers, you need to have a matching Selenium browser driver available. See the [https://github.com/Hi-Fi/robotframework-seleniumlibrary-java#browser-drivers|project documentation] for more details.\r\n" + 
@@ -659,19 +652,8 @@ public class BrowserManagement extends RunOnFailureKeywordsAdapter {
                 return new ChromeDriver((ChromeOptions)desiredCapabilities);
             case "opera":
                 return new OperaDriver(new OperaOptions().merge(desiredCapabilities));
-            case "phantomjs":
-                logging.warn("Phantomjs going to be removed as it's development is suspended. Should move to some other browser" );
-                return new PhantomJSDriver(desiredCapabilities);
             case "safari":
                 return new SafariDriver(new SafariOptions().merge(desiredCapabilities));
-            case "htmlunit":
-                logging.warn("HTMLUnit-driver going to be removed from Selenium. Should move to some other browser" );
-                return new HtmlUnitDriver(desiredCapabilities);
-            case "htmlunitwithjs":
-                logging.warn("HTMLUnit-driver going to be removed from Selenium. Should move to some other browser" );
-                HtmlUnitDriver driver = new HtmlUnitDriver(desiredCapabilities);
-                driver.setJavascriptEnabled(true);
-                return driver;
             case "jbrowser":
                 return new JBrowserDriver(Settings.builder().build());
             case "android":
@@ -738,18 +720,8 @@ public class BrowserManagement extends RunOnFailureKeywordsAdapter {
         case "opera":
             desiredCapabilities = new OperaOptions();
             break;
-        case "phantomjs":
-            logging.warn("Phantomjs going to be removed as it's development is suspended. Should move to some other browser" );
-            desiredCapabilities = DesiredCapabilities.phantomjs();
-            break;
         case "safari":
             desiredCapabilities = new SafariOptions();
-            break;
-        case "htmlunit":
-        case "htmlunitwithjs":
-            logging.warn("HTMLUnit-driver going to be removed from Selenium. Should move to some other browser" );
-            desiredCapabilities = DesiredCapabilities.htmlUnit();
-            ((DesiredCapabilities) desiredCapabilities).setBrowserName("htmlunit");
             break;
         case "jbrowser":
             desiredCapabilities = new DesiredCapabilities("jbrowser", "1", Platform.ANY);
@@ -786,20 +758,37 @@ public class BrowserManagement extends RunOnFailureKeywordsAdapter {
         if (browserOptions != null && !"NONE".equalsIgnoreCase(browserOptions)) {
             JSONObject jsonObject = (JSONObject) JSONValue.parse(browserOptions);
             if (jsonObject != null) {
-                List<String> args = new ArrayList<>();
-                for (Object arg : (JSONArray)jsonObject.get("args")) {
-                    args.add("--"+arg.toString().replace("--", ""));
+                // Check all properties for translation to ChromeOptions
+                for (Iterator<?> iterator = jsonObject.keySet().iterator(); iterator.hasNext(); ) {
+                    String key = (String)iterator.next();
+                    switch (key) {
+                    case "args": {
+                        // args is a list of strings
+                        List<String> args = new ArrayList<>();
+                        for (Object arg : (JSONArray)jsonObject.get(key)) {
+                            args.add("--"+arg.toString().replace("--", ""));
+                        }
+                        ((ChromeOptions) desiredCapabilities).addArguments(args);
+                        break;
+                    }
+                    case "extensions": {
+                        List<File> extensions = new ArrayList<>();
+                        for (Object extension : (JSONArray)jsonObject.get(key)) {
+                            extensions.add(new File(extension.toString().toString().replace('/', File.separatorChar)));
+                        }
+                        ((ChromeOptions) desiredCapabilities).addExtensions(extensions);
+                        break;
+                    }
+                    case "disable-extensions":
+                        // change casing
+                        ((ChromeOptions) desiredCapabilities).setExperimentalOption("useAutomationExtension", false);
+                        break;
+                    default:
+                        // all unknonw properties are passed as is
+                        ((ChromeOptions) desiredCapabilities).setExperimentalOption(key, jsonObject.get(key));
+                        break;
+                    }
                 }
-                ((ChromeOptions) desiredCapabilities).addArguments(args);
-                List<File> extensions = new ArrayList<>();
-                for (Object extension : (JSONArray)jsonObject.get("extensions")) {
-                    extensions.add(new File(extension.toString().toString().replace('/', File.separatorChar)));
-                }
-                ((ChromeOptions) desiredCapabilities).addExtensions(extensions);
-                ((ChromeOptions) desiredCapabilities).setExperimentalOption("prefs", jsonObject.get("prefs"));
-        		if (browserOptions.contains("disable-extensions")) {
-        			((ChromeOptions) desiredCapabilities).setExperimentalOption("useAutomationExtension", false);
-        		}
             } else {
                 logging.warn("Invalid browserOptions: " + browserOptions);
             }

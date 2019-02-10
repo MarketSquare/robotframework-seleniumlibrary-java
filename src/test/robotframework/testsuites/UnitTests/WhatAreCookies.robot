@@ -1,6 +1,5 @@
 *** Settings ***
 Resource          ../../settings/Settings.robot
-Default Tags      htmlunit    htmlunitwithjs
 
 *** Test Cases ***
 Cookies
