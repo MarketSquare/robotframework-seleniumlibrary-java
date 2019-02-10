@@ -63,6 +63,7 @@ Differences
 -----------
 
 * Some keyword differences between this and [Python version](https://github.com/robotframework/SeleniumLibrary) exists. (Same) keywords should be aligned in upcoming versions.
+* Older version of the library was imported as `Library    Selenium2Library` (both Java and Python versions). Since 2.53.1.1 (and all 3.x versions) import is done as `Library    SeleniumLibrary`
 
 
 Browser drivers
