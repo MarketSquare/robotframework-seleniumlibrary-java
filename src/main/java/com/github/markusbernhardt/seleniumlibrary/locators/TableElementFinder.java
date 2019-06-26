@@ -85,13 +85,14 @@ public class TableElementFinder {
 	protected static List<String> parseTableLocator(String tableLocator, String locationMethod) {
 		String tableLocatorType = null;
 
-		if (tableLocator.startsWith("xpath=")) {
+		if (tableLocator.startsWith("xpath=") || tableLocator.startsWith("xpath:")) {
 			tableLocatorType = "xpath.";
-		} else if (tableLocator.startsWith("jquery=") || tableLocator.startsWith("sizzle=")) {
+		} else if (tableLocator.startsWith("jquery=") || tableLocator.startsWith("jquery:") ||
+				tableLocator.startsWith("sizzle=") || tableLocator.startsWith("sizzle:")) {
 			tableLocatorType = "sizzle.";
 		} else {
-			if (!tableLocator.startsWith("css=")) {
-				tableLocator = String.format("css=table#%s", tableLocator);
+			if (!tableLocator.startsWith("css=") && !tableLocator.startsWith("css:")) {
+				tableLocator = String.format("css:table#%s", tableLocator);
 			}
 			tableLocatorType = "css.";
 		}

@@ -757,7 +757,7 @@ public class Element extends RunOnFailureKeywordsAdapter {
 	public ArrayList<String> getAllLinks() {
 		ArrayList<String> ret = new ArrayList<String>();
 
-		List<WebElement> elements = elementFind("tag=a", false, false, "a");
+		List<WebElement> elements = elementFind("tag:a", false, false, "a");
 		for (WebElement element : elements) {
 			ret.add(element.getAttribute("id"));
 		}
@@ -861,8 +861,8 @@ public class Element extends RunOnFailureKeywordsAdapter {
 	        "If you wish to assert the number of located elements, use `Xpath Should Match X Times`.")
 	@ArgumentNames({ "xpath" })
 	public int getMatchingXpathCount(String xpath) {
-		if (!xpath.startsWith("xpath=")) {
-			xpath = "xpath=" + xpath;
+		if (!xpath.startsWith("xpath=") && !xpath.startsWith("xpath:")) {
+			xpath = "xpath:" + xpath;
 		}
 		List<WebElement> elements = elementFind(xpath, false, false);
 
@@ -874,8 +874,8 @@ public class Element extends RunOnFailureKeywordsAdapter {
 	public void xpathShouldMatchXTimes(String xpath, int expectedXpathCount, String...params) {
         String message = robot.getParamsValue(params, 0, "");
         String logLevel = robot.getParamsValue(params, 1, "INFO");
-		if (!xpath.startsWith("xpath=")) {
-			xpath = "xpath=" + xpath;
+		if (!xpath.startsWith("xpath=") && !xpath.startsWith("xpath:")) {
+			xpath = "xpath:" + xpath;
 		}
 		List<WebElement> elements = elementFind(xpath, false, false);
 		int actualXpathCount = elements.size();
@@ -932,7 +932,7 @@ public class Element extends RunOnFailureKeywordsAdapter {
 	}
 
 	protected boolean isTextPresent(String text) {
-		String locator = String.format("xpath=//*[contains(., %s)]", escapeXpathValue(text));
+		String locator = String.format("xpath://*[contains(., %s)]", escapeXpathValue(text));
 
 		return isElementPresent(locator);
 	}
@@ -1015,7 +1015,7 @@ public class Element extends RunOnFailureKeywordsAdapter {
 			return true;
 		}
 
-		List<WebElement> elements = elementFind("xpath=//frame|//iframe", false, false);
+		List<WebElement> elements = elementFind("xpath://frame|//iframe", false, false);
 		Iterator<WebElement> it = elements.iterator();
 		while (it.hasNext()) {
 			current.switchTo().frame(it.next());
