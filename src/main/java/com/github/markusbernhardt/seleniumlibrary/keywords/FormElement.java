@@ -49,7 +49,7 @@ public class FormElement extends RunOnFailureKeywordsAdapter {
 	public void submitForm(String locator) {
 		logging.info(String.format("Submitting form '%s'.", locator));
 		if (locator == null) {
-			locator = "xpath=//form";
+			locator = "xpath://form";
 		}
 		List<WebElement> webElements = element.elementFind(locator, true, true, "form");
 		webElements.get(0).submit();
@@ -428,13 +428,13 @@ public class FormElement extends RunOnFailureKeywordsAdapter {
 	}
 
 	protected List<WebElement> getRadioButtons(String groupName) {
-		String xpath = String.format("xpath=//input[@type='radio' and @name='%s']", groupName);
+		String xpath = String.format("xpath://input[@type='radio' and @name='%s']", groupName);
 		logging.debug("Radio group locator: " + xpath);
 		return element.elementFind(xpath, false, true);
 	}
 
 	protected WebElement getRadioButtonWithValue(String groupName, String value) {
-		String xpath = String.format("xpath=//input[@type='radio' and @name='%s' and (@value='%s' or @id='%s')]",
+		String xpath = String.format("xpath://input[@type='radio' and @name='%s' and (@value='%s' or @id='%s')]",
 				groupName, value, value);
 		logging.debug("Radio group locator: " + xpath);
 		return element.elementFind(xpath, true, true).get(0);
