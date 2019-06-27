@@ -5,7 +5,7 @@
 
 	<groupId>com.github.hi-fi</groupId>
 	<artifactId>robotframework-seleniumlibrary</artifactId>
-	<version>3.141.59.26535</version>
+	<version>4.0.0-alpha-1.0-SNAPSHOT</version>
 	<packaging>jar</packaging>
 
 	<name>Robot Framework :: SeleniumLibrary</name>
@@ -70,8 +70,8 @@
 		<aspectj.version>1.9.1</aspectj.version>
 		<java.version>1.8</java.version>
 		<robotframework.maven.plugin.version>1.5.1</robotframework.maven.plugin.version>
-		<robotframework.version>3.1.1</robotframework.version>
-		<selenium.version>3.141.59</selenium.version>
+		<robotframework.version>3.1.2</robotframework.version>
+		<selenium.version>4.0.0-alpha-1</selenium.version>
 		<keywords.class>SeleniumLibrary</keywords.class>
 		<browser>jbrowser</browser>
 		<downloadWebDriver>False</downloadWebDriver>
@@ -118,6 +118,16 @@
 			<groupId>io.appium</groupId>
 			<artifactId>java-client</artifactId>
 			<version>7.0.0</version>
+			<exclusions>
+				<exclusion>
+					<groupId>org.seleniumhq.selenium</groupId>
+					<artifactId>selenium-support</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>org.seleniumhq.selenium</groupId>
+					<artifactId>selenium-api</artifactId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 		<dependency>
 			<groupId>org.apache.commons</groupId>
@@ -127,7 +137,7 @@
 		<dependency>
 			<groupId>com.machinepublishers</groupId>
 			<artifactId>jbrowserdriver</artifactId>
-			<version>1.0.1</version>
+			<version>1.1.0-RC1</version>
 		</dependency>
 		<dependency>
 		    <groupId>org.seleniumhq.selenium</groupId>
