@@ -36,6 +36,14 @@
 					<hashtype>sha1</hashtype>
 				</bitrate>
 			</version>
+			<version id="75.0.3770.90">
+				<bitrate thirtytwobit="true" sixtyfourbit="true">
+					<filelocation>https://chromedriver.storage.googleapis.com/75.0.3770.90/chromedriver_win32.zip
+					</filelocation>
+					<hash>41f9016c262d1ef4792d92d1d518a5f1907a17e2</hash>
+					<hashtype>sha1</hashtype>
+				</bitrate>
+			</version>
 		</driver>
 	</windows>
 	<linux>
@@ -94,6 +102,13 @@
 					<hashtype>sha1</hashtype>
 				</bitrate>
 			</version>
+			<version id="75.0.3770.90">
+				<bitrate sixtyfourbit="true">
+					<filelocation>https://chromedriver.storage.googleapis.com/75.0.3770.90/chromedriver_linux64.zip</filelocation>
+					<hash>a425196b5336796d56d5696e850c2abf4c0c2668</hash>
+					<hashtype>sha1</hashtype>
+				</bitrate>
+			</version>
 		</driver>
 	</linux>
 	<osx>
@@ -123,6 +138,13 @@
 					<filelocation>https://chromedriver.storage.googleapis.com/2.45/chromedriver_mac64.zip
 					</filelocation>
 					<hash>42cd0659e4d16927f06aac74fdafa34b7d760a76</hash>
+					<hashtype>sha1</hashtype>
+				</bitrate>
+			</version>
+			<version id="75.0.3770.90">
+				<bitrate sixtyfourbit="true">
+					<filelocation>https://chromedriver.storage.googleapis.com/75.0.3770.90/chromedriver_mac64.zip</filelocation>
+					<hash>4a026490030a971704249a57113e64ae52ba84f0</hash>
 					<hashtype>sha1</hashtype>
 				</bitrate>
 			</version>
