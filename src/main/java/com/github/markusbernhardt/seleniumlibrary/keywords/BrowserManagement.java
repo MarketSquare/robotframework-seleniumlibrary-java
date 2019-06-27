@@ -19,9 +19,10 @@ import org.apache.http.HttpHost;
 import org.apache.http.auth.AuthScope;
 import org.apache.http.auth.NTCredentials;
 import org.apache.http.auth.UsernamePasswordCredentials;
-import org.apache.http.conn.params.ConnRoutePNames;
-import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.impl.conn.DefaultHttpRoutePlanner;
+import org.apache.http.client.CredentialsProvider;
+import org.apache.http.impl.client.BasicCredentialsProvider;
+import org.apache.http.impl.client.HttpClientBuilder;
+import org.apache.http.impl.conn.DefaultProxyRoutePlanner;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.JSONValue;
@@ -39,8 +40,6 @@ import org.openqa.selenium.firefox.FirefoxOptions;
 import org.openqa.selenium.firefox.FirefoxProfile;
 import org.openqa.selenium.ie.InternetExplorerDriver;
 import org.openqa.selenium.ie.InternetExplorerOptions;
-import org.openqa.selenium.opera.OperaDriver;
-import org.openqa.selenium.opera.OperaOptions;
 import org.openqa.selenium.remote.Augmenter;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.remote.HttpCommandExecutor;
@@ -63,7 +62,6 @@ import com.github.markusbernhardt.seleniumlibrary.utils.WebDriverCache.SessionId
 import com.machinepublishers.jbrowserdriver.JBrowserDriver;
 import com.machinepublishers.jbrowserdriver.Settings;
 
-@SuppressWarnings("deprecation")
 @RobotKeywords
 public class BrowserManagement extends RunOnFailureKeywordsAdapter {
 
@@ -164,7 +162,6 @@ public class BrowserManagement extends RunOnFailureKeywordsAdapter {
             "| Internet Explorer | internetexplorer, ie     |\r\n" + 
             "| Edge      | edge      |\r\n" + 
             "| Safari    | safari    |\r\n" + 
-            "| Opera     | opera     |\r\n" + 
             "| Android   | android   |\r\n" + 
             "| Iphone    | iphone    |\r\n" + 
             "| JBrowser  | jbrowser  |\r\n" + 
@@ -650,8 +647,6 @@ public class BrowserManagement extends RunOnFailureKeywordsAdapter {
             case "chromeheadless":
             case "googlechromeheadless":
                 return new ChromeDriver((ChromeOptions)desiredCapabilities);
-            case "opera":
-                return new OperaDriver(new OperaOptions().merge(desiredCapabilities));
             case "safari":
                 return new SafariDriver(new SafariOptions().merge(desiredCapabilities));
             case "jbrowser":
@@ -716,9 +711,6 @@ public class BrowserManagement extends RunOnFailureKeywordsAdapter {
             logging.debug("Parsing chrome options: "+browserOptions);
             parseBrowserOptionsChrome(browserOptions, desiredCapabilities);
             ((ChromeOptions)desiredCapabilities).setHeadless(true);
-            break;
-        case "opera":
-            desiredCapabilities = new OperaOptions();
             break;
         case "safari":
             desiredCapabilities = new SafariOptions();
@@ -856,25 +848,29 @@ public class BrowserManagement extends RunOnFailureKeywordsAdapter {
             className = "DefaultHttpClient";
             Field field = HttpCommandExecutor.class.getDeclaredField(fieldName);
             field.setAccessible(true);
-            DefaultHttpClient client = (DefaultHttpClient) field.get(httpCommandExecutor);
+            HttpClientBuilder clientBuilder = HttpClientBuilder.create();
+            //DefaultHttpClient client = (DefaultHttpClient) field.get(httpCommandExecutor);
 
             // set the credentials for the proxy
             AuthScope authScope = new AuthScope(remoteWebDriverProxyHost, Integer.parseInt(remoteWebDriverProxyPort));
+            CredentialsProvider credsProvider = new BasicCredentialsProvider();
             if (remoteWebDriverProxyDomain.length() == 0) {
                 // BASIC Authentication
-                client.getCredentialsProvider().setCredentials(authScope,
+                credsProvider.setCredentials(authScope,
                         new UsernamePasswordCredentials(remoteWebDriverProxyUser, remoteWebDriverProxyPassword));
+                clientBuilder.setDefaultCredentialsProvider(credsProvider);
             } else {
                 // NTLM Authentication
-                client.getCredentialsProvider().setCredentials(authScope, new NTCredentials(remoteWebDriverProxyUser,
+            	credsProvider.setCredentials(authScope, new NTCredentials(remoteWebDriverProxyUser,
                         remoteWebDriverProxyPassword, remoteWebDriverProxyWorkstation, remoteWebDriverProxyDomain));
+            	clientBuilder.setDefaultCredentialsProvider(credsProvider);
             }
 
             // Set the RoutePlanner back to something that handles
             // proxies correctly.
-            client.setRoutePlanner(new DefaultHttpRoutePlanner(client.getConnectionManager().getSchemeRegistry()));
             HttpHost proxy = new HttpHost(remoteWebDriverProxyHost, Integer.parseInt(remoteWebDriverProxyPort));
-            client.getParams().setParameter(ConnRoutePNames.DEFAULT_PROXY, proxy);
+            clientBuilder.setRoutePlanner(new DefaultProxyRoutePlanner(proxy));
+            clientBuilder.setProxy(proxy);
         } catch (SecurityException e) {
             throw new SeleniumLibraryFatalException(
                     String.format("The SecurityManager does not allow us to lookup to the %s field.", fieldName));
@@ -884,9 +880,6 @@ public class BrowserManagement extends RunOnFailureKeywordsAdapter {
         } catch (IllegalArgumentException e) {
             throw new SeleniumLibraryFatalException(
                     String.format("The field %s does not belong to the given object.", fieldName));
-        } catch (IllegalAccessException e) {
-            throw new SeleniumLibraryFatalException(
-                    String.format("The SecurityManager does not allow us to access to the %s field.", fieldName));
         } catch (ClassCastException e) {
             throw new SeleniumLibraryFatalException(
                     String.format("The %s field does not contain a %s.", fieldName, className));
