@@ -5,7 +5,6 @@ import java.util.List;
 import java.util.Map;
 
 import org.python.util.PythonInterpreter;
-import org.robotframework.javalib.annotation.Autowired;
 import org.robotframework.javalib.annotation.RobotKeywords;
 
 import com.google.gson.Gson;

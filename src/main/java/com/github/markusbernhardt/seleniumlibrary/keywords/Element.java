@@ -15,7 +15,6 @@ import org.openqa.selenium.interactions.Actions;
 import org.robotframework.javalib.annotation.ArgumentNames;
 import org.robotframework.javalib.annotation.Autowired;
 import org.robotframework.javalib.annotation.RobotKeyword;
-import org.robotframework.javalib.annotation.RobotKeywordOverload;
 import org.robotframework.javalib.annotation.RobotKeywords;
 
 import com.github.markusbernhardt.seleniumlibrary.RunOnFailureKeywordsAdapter;
@@ -891,6 +890,27 @@ public class Element extends RunOnFailureKeywordsAdapter {
 		logging.log(String.format("Current page contains %s elements matching '%s'.", actualXpathCount, xpath),
 				logLevel);
 	}
+
+    @RobotKeyword("Click to First Item from List Items by Locator.")
+    @ArgumentNames({"locator", "childLocator=NONE", "message=NONE"})
+    public void clickToFirstItem(String locator, String... params) {
+        String child = robot.getParamsValue(params, 0, "");
+        String message = robot.getParamsValue(params, 1, "");
+        List<WebElement> elements = browserManagement.getCurrentWebDriver().findElements(By.xpath(locator));
+        if (elements.size() == 0) {
+            if (message == null || message.equals("")) {
+                message = String.format("The Element was not found by locator '%s' and child locator '%s'.",
+                        locator, child);
+            }
+            throw new SeleniumLibraryNonFatalException(message);
+        }
+        WebElement element = elements.get(0);
+        if (!child.isEmpty()) {
+            element.findElements(By.xpath(child)).get(0).click();
+        } else {
+            element.click();
+        }
+    }
 
 	// ##############################
 	// Internal Methods
