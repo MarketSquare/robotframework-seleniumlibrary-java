@@ -880,7 +880,7 @@ public class Element extends RunOnFailureKeywordsAdapter {
 		int actualXpathCount = elements.size();
 
 		if (actualXpathCount != expectedXpathCount) {
-			if (message == null || message.equals("")) {
+			if (message.isEmpty()) {
 				message = String.format("Xpath %s should have matched %s times but matched %s times.", xpath,
 						expectedXpathCount, actualXpathCount);
 			}
@@ -894,19 +894,19 @@ public class Element extends RunOnFailureKeywordsAdapter {
     @RobotKeyword("Click to First Item from List Items by Locator.")
     @ArgumentNames({"locator", "childLocator=NONE", "message=NONE"})
     public void clickToFirstItem(String locator, String... params) {
-        String child = robot.getParamsValue(params, 0, "");
+        String childLocator = robot.getParamsValue(params, 0, "");
         String message = robot.getParamsValue(params, 1, "");
         List<WebElement> elements = browserManagement.getCurrentWebDriver().findElements(By.xpath(locator));
-        if (elements.size() == 0) {
-            if (message == null || message.equals("")) {
+        if (elements.isEmpty()) {
+            if (message.isEmpty()) {
                 message = String.format("The Element was not found by locator '%s' and child locator '%s'.",
-                        locator, child);
+                        locator, childLocator);
             }
             throw new SeleniumLibraryNonFatalException(message);
         }
         WebElement element = elements.get(0);
-        if (!child.isEmpty()) {
-            element.findElements(By.xpath(child)).get(0).click();
+        if (!childLocator.isEmpty()) {
+            element.findElements(By.xpath(childLocator)).get(0).click();
         } else {
             element.click();
         }
