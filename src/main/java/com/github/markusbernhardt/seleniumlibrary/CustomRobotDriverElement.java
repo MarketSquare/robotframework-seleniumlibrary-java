@@ -22,7 +22,7 @@ public class CustomRobotDriverElement {
         try {
             CustomRobotDriverElement.s = getLibraryInstance();
         } catch (javax.script.ScriptException e) {
-            e.printStackTrace();
+            throw new SeleniumLibraryNonFatalException("Cannot create SeleniumLibrary instance: " + e.getMessage());
         }
         Field bmField = SeleniumLibrary.class.getDeclaredField("bm");
         bmField.setAccessible(true);
