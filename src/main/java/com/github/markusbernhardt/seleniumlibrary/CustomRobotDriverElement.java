@@ -38,7 +38,7 @@ public class CustomRobotDriverElement {
         return (SeleniumLibrary) engine.get("instance");
     }
 
-    protected static WebDriver getCurrentBrowser() {
+    protected WebDriver getCurrentBrowser() {
         return b.getCurrentWebDriver();
     }
 
