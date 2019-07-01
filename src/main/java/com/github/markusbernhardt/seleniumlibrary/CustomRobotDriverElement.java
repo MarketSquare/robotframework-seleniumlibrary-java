@@ -2,7 +2,6 @@ package com.github.markusbernhardt.seleniumlibrary;
 
 import com.github.markusbernhardt.seleniumlibrary.keywords.BrowserManagement;
 import com.github.markusbernhardt.seleniumlibrary.keywords.Robot;
-import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.openqa.selenium.WebDriver;
 
 import javax.script.ScriptEngine;
@@ -23,8 +22,7 @@ public class CustomRobotDriverElement {
         try {
             CustomRobotDriverElement.s = getLibraryInstance();
         } catch (ScriptException e) {
-            throw new SeleniumLibraryNonFatalException("Cannot create SeleniumLibrary instance: \n"
-                    + ExceptionUtils.getStackTrace(e));
+            throw new SeleniumLibraryNonFatalException("Cannot create SeleniumLibrary instance.", e);
         }
         Field bmField = SeleniumLibrary.class.getDeclaredField("bm");
         bmField.setAccessible(true);
