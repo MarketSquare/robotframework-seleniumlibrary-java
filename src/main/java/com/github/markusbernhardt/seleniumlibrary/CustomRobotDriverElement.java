@@ -2,6 +2,7 @@ package com.github.markusbernhardt.seleniumlibrary;
 
 import com.github.markusbernhardt.seleniumlibrary.keywords.BrowserManagement;
 import com.github.markusbernhardt.seleniumlibrary.keywords.Robot;
+import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.openqa.selenium.WebDriver;
 
 import javax.script.ScriptEngine;
@@ -21,12 +22,14 @@ public class CustomRobotDriverElement {
     public CustomRobotDriverElement() throws NoSuchFieldException, IllegalAccessException {
         try {
             CustomRobotDriverElement.s = getLibraryInstance();
-        } catch (javax.script.ScriptException e) {
-            throw new SeleniumLibraryNonFatalException("Cannot create SeleniumLibrary instance: " + e.getMessage());
+        } catch (ScriptException e) {
+            throw new SeleniumLibraryNonFatalException("Cannot create SeleniumLibrary instance: \n"
+                    + ExceptionUtils.getStackTrace(e));
         }
         Field bmField = SeleniumLibrary.class.getDeclaredField("bm");
         bmField.setAccessible(true);
         b = (BrowserManagement) bmField.get(s);
+        bmField.setAccessible(false);
     }
 
     private static SeleniumLibrary getLibraryInstance() throws ScriptException {
