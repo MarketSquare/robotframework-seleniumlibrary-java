@@ -103,7 +103,7 @@ public class BrowserManagement extends RunOnFailureKeywordsAdapter {
     protected Element element;
 
     @Autowired
-    private Robot robot;
+    private Robot robot = new Robot();
 
     // ##############################
     // Getter / Setter
@@ -170,7 +170,9 @@ public class BrowserManagement extends RunOnFailureKeywordsAdapter {
             "| Iphone    | iphone    |\r\n" + 
             "| JBrowser  | jbrowser  |\r\n" + 
             "\r\n" + 
-            "To be able to actually use one of these browsers, you need to have a matching Selenium browser driver available. See the [https://github.com/Hi-Fi/robotframework-seleniumlibrary-java#browser-drivers|project documentation] for more details.\r\n" + 
+            "To be able to actually use one of these browsers, you need to have a matching Selenium browser driver available. See the [https://github.com/Hi-Fi/robotframework-seleniumlibrary-java#browser-drivers|project documentation] for more details.\r\n" +
+            "\r\n" +
+            "Optional ``isWebDriverManager`` is a flag of using automation download driver of browser and setting system variable for driver path.\r\n" +
             "\r\n" + 
             "Optional ``alias`` is an alias given for this browser instance and it can be used for switching between browsers. An alternative approach for switching is using an index returned by this keyword. These indices start from 1, are incremented when new browsers are opened, and reset back to 1 when `Close All Browsers` is called. See `Switch Browser` for more information and examples.\r\n" + 
             "\r\n" + 
@@ -184,17 +186,17 @@ public class BrowserManagement extends RunOnFailureKeywordsAdapter {
             "| `Open Browser` | http://example.com | Edge    | remote_url=http://127.0.0.1:4444/wd/hub |\r\n" + 
             "\r\n" + 
             "If the provided configuration options are not enough, it is possible to use `Create Webdriver` to customize browser initialization even more.")
-    @ArgumentNames({ "url", "browserName=firefox", "alias=None", "remoteUrl=None", "desiredCapabilities=None",
-            "browserOptions=None", "webDriverManager=None" })
+    @ArgumentNames({ "url", "browserName=firefox", "isWebDriverManager=false", "alias=None", "remoteUrl=None",
+            "desiredCapabilities=None", "browserOptions=None" })
     public String openBrowser(String url, String... args) {
         String browserName = robot.getParamsValue(args, 0, "firefox");
-        String alias = robot.getParamsValue(args, 1, "None");
-        String remoteUrl = robot.getParamsValue(args, 2, "None");
-        String desiredCapabilities = robot.getParamsValue(args, 3, "None");
-        String browserOptions = robot.getParamsValue(args, 4, "None");
-        String webDriverManager = robot.getParamsValue(args, 5, "None");
+        boolean isWebDriverManager = robot.getParamsValue(args, 1, false);
+        String alias = robot.getParamsValue(args, 2, "None");
+        String remoteUrl = robot.getParamsValue(args, 3, "None");
+        String desiredCapabilities = robot.getParamsValue(args, 4, "None");
+        String browserOptions = robot.getParamsValue(args, 5, "None");
 
-        if (!webDriverManager.equals("None")) {
+        if (isWebDriverManager) {
             webDriverManagerSetup(browserName);
         }
 

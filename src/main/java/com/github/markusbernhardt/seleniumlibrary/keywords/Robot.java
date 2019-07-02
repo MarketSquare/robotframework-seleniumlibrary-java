@@ -30,6 +30,8 @@ public class Robot {
 				value = (T) givenValue;
 			} else if (defaultValue instanceof List) {
 				value = (T) parseRobotList(givenValue);
+			} else if (Boolean.valueOf(givenValue)) {
+				value = (T) Boolean.valueOf(givenValue);
 			}
 		}
 		return value;
