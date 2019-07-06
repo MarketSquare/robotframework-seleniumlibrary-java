@@ -891,26 +891,21 @@ public class Element extends RunOnFailureKeywordsAdapter {
 				logLevel);
 	}
 
-    @RobotKeyword("Click to First Item from List Items by Locator.")
-    @ArgumentNames({"locator", "childLocator=NONE", "message=NONE"})
-    public void clickToFirstItem(String locator, String... params) {
-        String childLocator = robot.getParamsValue(params, 0, "");
-        String message = robot.getParamsValue(params, 1, "");
-        List<WebElement> elements = browserManagement.getCurrentWebDriver().findElements(By.xpath(locator));
-        if (elements.isEmpty()) {
-            if (message.isEmpty()) {
-                message = String.format("The Element was not found by locator '%s' and child locator '%s'.",
-                        locator, childLocator);
-            }
-            throw new SeleniumLibraryNonFatalException(message);
-        }
-        WebElement element = elements.get(0);
-        if (!childLocator.isEmpty()) {
-            element.findElements(By.xpath(childLocator)).get(0).click();
-        } else {
-            element.click();
-        }
-    }
+	@RobotKeyword("Click to element from list elements by locator ``xpath``.")
+	@ArgumentNames({"xpath", "index=0", "message=NONE"})
+	public void clickElementByIndex(String xpath, String... params) {
+		String message = robot.getParamsValue(params, 0, "");
+		int index = robot.getParamsValue(params, 1, 0);
+		List<WebElement> elements = elementFind(xpath, false, false);
+		if (elements.isEmpty()) {
+			if (message.isEmpty()) {
+				message = String.format("The Element was not found by locator '%s' with index '%d'", xpath, index);
+			}
+			throw new SeleniumLibraryNonFatalException(message);
+		}
+		WebElement element = elements.get(index);
+		element.click();
+	}
 
 	// ##############################
 	// Internal Methods
