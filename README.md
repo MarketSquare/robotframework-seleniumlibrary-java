@@ -59,6 +59,30 @@ which contains all required libraries. Running of tests with this can be done wi
   [Library Specs](https://repo1.maven.org/maven2/com/github/hi-fi/robotframework-seleniumlibrary/3.141.59.26535/robotframework-seleniumlibrary-3.141.59.26535.xml)
   and place it in your PYTHONPATH.
 
+Usage, Selenium 4 (WIP)
+-----------------
+
+If you are using the robotframework-maven-plugin you can
+use this library by adding the following dependency to 
+your pom.xml:
+
+    <dependency>
+        <groupId>com.github.hi-fi</groupId>
+        <artifactId>robotframework-seleniumlibrary</artifactId>
+        <version>4.0.0-alpha-1.0</version>
+        <scope>test</scope>
+    </dependency>
+
+If you cannot use the robotframework-maven-plugin you can use the
+[jar-with-dependencies](https://repo1.maven.org/maven2/com/github/hi-fi/robotframework-seleniumlibrary/4.0.0-alpha-1.0/robotframework-seleniumlibrary-4.0.0-alpha-1.0-jar-with-dependencies.jar),
+which contains all required libraries. Running of tests with this can be done with command `java -jar robotframework-seleniumlibrary-4.0.0-alpha-1.0-jar-with-dependencies.jar <test location>`.  
+
+* More information about this library can be found in the
+  [Keyword Documentation](https://repo1.maven.org/maven2/com/github/hi-fi/robotframework-seleniumlibrary/4.0.0-alpha-1.0/robotframework-seleniumlibrary-4.0.0-alpha-1.0.html).
+* For keyword completion in RIDE you can download this
+  [Library Specs](https://repo1.maven.org/maven2/com/github/hi-fi/robotframework-seleniumlibrary/4.0.0-alpha-1.0/robotframework-seleniumlibrary-4.0.0-alpha-1.0.xml)
+  and place it in your PYTHONPATH.
+
 Differences
 -----------
 
@@ -74,11 +98,11 @@ After installing the library, you still need to install browser and
 operating system specific browser drivers for all those browsers you
 want to use in tests. These are the exact same drivers you need to use with
 Selenium also when not using SeleniumLibrary. More information about
-drivers can be found from `Selenium documentation`__.
+drivers can be found from [Selenium documentation](https://seleniumhq.github.io/selenium/docs/api/py/index.html#drivers).
 
 The general approach to install a browser driver is downloading a right
 driver, such as ``chromedriver`` for Chrome, and placing it into
-a directory that is in PATH__. Drivers for different browsers
+a directory that is in [PATH](https://en.wikipedia.org/wiki/PATH_(variable)). Drivers for different browsers
 can be found via Selenium documentation or by using your favorite
 search engine with a search term like ``selenium chrome browser driver``.
 New browser driver versions are released to support features in
@@ -87,7 +111,7 @@ to know when to update drivers you use.
 
 Drivers can also be fetched with [Selenium Driver Binary Downloader plugin](https://github.com/Ardesco/selenium-standalone-server-plugin).
 
-With At 3.141.59.265 [WebdriverManager](https://github.com/bonigarcia/webdrivermanager) is taken to use, so handling of drivers can also be done with standalone JAR from tests itself.
+After version 3.141.59.265 [WebdriverManager](https://github.com/bonigarcia/webdrivermanager) is taken to use, so handling of drivers can also be done with standalone JAR from tests itself.
 
 Demo
 ----
