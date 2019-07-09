@@ -5,7 +5,6 @@ import java.util.List;
 import java.util.Map;
 
 import org.python.util.PythonInterpreter;
-import org.robotframework.javalib.annotation.Autowired;
 import org.robotframework.javalib.annotation.RobotKeywords;
 
 import com.google.gson.Gson;
@@ -31,6 +30,8 @@ public class Robot {
 				value = (T) givenValue;
 			} else if (defaultValue instanceof List) {
 				value = (T) parseRobotList(givenValue);
+			} else if (Boolean.valueOf(givenValue)) {
+				value = (T) Boolean.valueOf(givenValue);
 			}
 		}
 		return value;

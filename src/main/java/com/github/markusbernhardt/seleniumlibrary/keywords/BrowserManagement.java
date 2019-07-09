@@ -1,6 +1,8 @@
 package com.github.markusbernhardt.seleniumlibrary.keywords;
 
 import io.appium.java_client.ios.IOSDriver;
+import io.github.bonigarcia.wdm.DriverManagerType;
+import io.github.bonigarcia.wdm.WebDriverManager;
 import io.selendroid.client.SelendroidDriver;
 
 import java.io.File;
@@ -10,7 +12,6 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map.Entry;
 import java.util.concurrent.TimeUnit;
@@ -166,13 +167,15 @@ public class BrowserManagement extends RunOnFailureKeywordsAdapter {
             "| Iphone    | iphone    |\r\n" + 
             "| JBrowser  | jbrowser  |\r\n" + 
             "\r\n" + 
-            "To be able to actually use one of these browsers, you need to have a matching Selenium browser driver available. See the [https://github.com/Hi-Fi/robotframework-seleniumlibrary-java#browser-drivers|project documentation] for more details.\r\n" + 
+            "To be able to actually use one of these browsers, you need to have a matching Selenium browser driver available. See the [https://github.com/Hi-Fi/robotframework-seleniumlibrary-java#browser-drivers|project documentation] for more details.\r\n" +
             "\r\n" + 
             "Optional ``alias`` is an alias given for this browser instance and it can be used for switching between browsers. An alternative approach for switching is using an index returned by this keyword. These indices start from 1, are incremented when new browsers are opened, and reset back to 1 when `Close All Browsers` is called. See `Switch Browser` for more information and examples.\r\n" + 
             "\r\n" + 
-            "Optional ``remote_url`` is the URL for a remote Selenium server. If you specify a value for a remote, you can also specify ``desired_capabilities`` to configure, for example, a proxy server for Internet Explorer or a browser and operating system when using [http://saucelabs.com|Sauce Labs]. Desired capabilities can be given as a dictionary. [https://github.com/SeleniumHQ/selenium/wiki/Capabilities| Selenium documentation] lists possible capabilities that can be enabled.\r\n" + 
+            "Optional ``remote_url`` is the URL for a remote Selenium server. If you specify a value for a remote, you can also specify ``desired_capabilities`` to configure, for example, a proxy server for Internet Explorer or a browser and operating system when using [http://saucelabs.com|Sauce Labs]. Desired capabilities can be given as a dictionary. [https://github.com/SeleniumHQ/selenium/wiki/Capabilities| Selenium documentation] lists possible capabilities that can be enabled.\r\n" +
             "\r\n" + 
-            "Optional ``ff_profile_dir`` is the path to the Firefox profile directory if you wish to overwrite the default profile Selenium uses. Notice that prior to SeleniumLibrary 3.0, the library contained its own profile that was used by default.\r\n" + 
+            "Optional ``ff_profile_dir`` is the path to the Firefox profile directory if you wish to overwrite the default profile Selenium uses. Notice that prior to SeleniumLibrary 3.0, the library contained its own profile that was used by default.\r\n" +
+            "\r\n" +
+            "Optional ``isWebDriverManager`` is a flag of using automation download driver of browser and setting system variable for driver path.\r\n" +
             "\r\n" + 
             "Examples:\r\n" + 
             "| `Open Browser` | http://example.com | Chrome  |\r\n" + 
@@ -181,13 +184,18 @@ public class BrowserManagement extends RunOnFailureKeywordsAdapter {
             "\r\n" + 
             "If the provided configuration options are not enough, it is possible to use `Create Webdriver` to customize browser initialization even more.")
     @ArgumentNames({ "url", "browserName=firefox", "alias=None", "remoteUrl=None", "desiredCapabilities=None",
-            "browserOptions=None" })
-    public String openBrowser(String url, String... args) throws Throwable {
+            "browserOptions=None", "isWebDriverManager=false" })
+    public String openBrowser(String url, String... args) {
         String browserName = robot.getParamsValue(args, 0, "firefox");
         String alias = robot.getParamsValue(args, 1, "None");
         String remoteUrl = robot.getParamsValue(args, 2, "None");
         String desiredCapabilities = robot.getParamsValue(args, 3, "None");
         String browserOptions = robot.getParamsValue(args, 4, "None");
+        boolean isWebDriverManager = robot.getParamsValue(args, 5, false);
+
+        if (isWebDriverManager) {
+            webDriverManagerSetup(browserName);
+        }
 
         try {
             logging.info("browserName: " + browserName);
@@ -660,12 +668,47 @@ public class BrowserManagement extends RunOnFailureKeywordsAdapter {
             case "ipad":
             case "iphone":
                 try {
-                    return new IOSDriver<WebElement>(new URL(""), desiredCapabilities);
+                    return new IOSDriver<>(new URL(""), desiredCapabilities);
                 } catch (Exception e) {
                     throw new SeleniumLibraryFatalException("Creating " + browserName + " instance failed.", e);
                 }
             default:
                 throw new SeleniumLibraryFatalException(browserName + " is not a supported browser.");
+        }
+    }
+
+    @RobotKeyword("WebDriver Manager Setup")
+    @ArgumentNames({"browserName=firefox"})
+    public void webDriverManagerSetup(String browserName) {
+        initWebDriver(browserName);
+        logging.info(String.format("Init WebDriver Manager for '%s' browser", browserName));
+    }
+
+    private void initWebDriver(String browserName) {
+        switch (browserName.toLowerCase()) {
+            case "ff":
+            case "firefox":
+            case "ffheadless":
+            case "firefoxheadless":
+                WebDriverManager.getInstance(DriverManagerType.FIREFOX).setup();
+                break;
+            case "ie":
+            case "internetexplorer":
+                WebDriverManager.getInstance(DriverManagerType.IEXPLORER).setup();
+                break;
+            case "edge":
+                WebDriverManager.getInstance(DriverManagerType.EDGE).setup();
+                break;
+            case "gc":
+            case "chrome":
+            case "googlechrome":
+            case "gcheadless":
+            case "chromeheadless":
+            case "googlechromeheadless":
+                WebDriverManager.getInstance(DriverManagerType.CHROME).setup();
+                break;
+            default:
+                throw new SeleniumLibraryFatalException(browserName + " is not a supported browser for WebDriver Manager.");
         }
     }
 
@@ -677,7 +720,7 @@ public class BrowserManagement extends RunOnFailureKeywordsAdapter {
 
     protected Capabilities createCapabilities(String browserName, String desiredCapabilitiesString,
             String browserOptions) {
-        Capabilities desiredCapabilities;
+        MutableCapabilities desiredCapabilities;
         switch (browserName.toLowerCase()) {
         case "ff":
         case "firefox":
@@ -726,17 +769,16 @@ public class BrowserManagement extends RunOnFailureKeywordsAdapter {
             JSONObject jsonObject = (JSONObject) JSONValue.parse(desiredCapabilitiesString);
             if (jsonObject != null) {
                 // Valid JSON
-                Iterator<?> iterator = jsonObject.entrySet().iterator();
-                while (iterator.hasNext()) {
-                    Entry<?, ?> entry = (Entry<?, ?>) iterator.next();
-                    ((MutableCapabilities) desiredCapabilities).setCapability(entry.getKey().toString(), entry.getValue());
+                for (Object o : jsonObject.entrySet()) {
+                    Entry<?, ?> entry = (Entry<?, ?>) o;
+                    desiredCapabilities.setCapability(entry.getKey().toString(), entry.getValue());
                 }
             } else {
                 // Invalid JSON. Old style key-value pairs
                 for (String capability : desiredCapabilitiesString.split(",")) {
                     String[] keyValue = capability.split(":");
                     if (keyValue.length == 2) {
-                        ((MutableCapabilities) desiredCapabilities).setCapability(keyValue[0], keyValue[1]);
+                        desiredCapabilities.setCapability(keyValue[0], keyValue[1]);
                     } else {
                         logging.warn("Invalid desiredCapabilities: " + desiredCapabilitiesString);
                     }
@@ -751,34 +793,34 @@ public class BrowserManagement extends RunOnFailureKeywordsAdapter {
             JSONObject jsonObject = (JSONObject) JSONValue.parse(browserOptions);
             if (jsonObject != null) {
                 // Check all properties for translation to ChromeOptions
-                for (Iterator<?> iterator = jsonObject.keySet().iterator(); iterator.hasNext(); ) {
-                    String key = (String)iterator.next();
+                for (Object o : jsonObject.keySet()) {
+                    String key = (String) o;
                     switch (key) {
-                    case "args": {
-                        // args is a list of strings
-                        List<String> args = new ArrayList<>();
-                        for (Object arg : (JSONArray)jsonObject.get(key)) {
-                            args.add("--"+arg.toString().replace("--", ""));
+                        case "args": {
+                            // args is a list of strings
+                            List<String> args = new ArrayList<>();
+                            for (Object arg : (JSONArray) jsonObject.get(key)) {
+                                args.add("--" + arg.toString().replace("--", ""));
+                            }
+                            ((ChromeOptions) desiredCapabilities).addArguments(args);
+                            break;
                         }
-                        ((ChromeOptions) desiredCapabilities).addArguments(args);
-                        break;
-                    }
-                    case "extensions": {
-                        List<File> extensions = new ArrayList<>();
-                        for (Object extension : (JSONArray)jsonObject.get(key)) {
-                            extensions.add(new File(extension.toString().toString().replace('/', File.separatorChar)));
+                        case "extensions": {
+                            List<File> extensions = new ArrayList<>();
+                            for (Object extension : (JSONArray) jsonObject.get(key)) {
+                                extensions.add(new File(extension.toString().replace('/', File.separatorChar)));
+                            }
+                            ((ChromeOptions) desiredCapabilities).addExtensions(extensions);
+                            break;
                         }
-                        ((ChromeOptions) desiredCapabilities).addExtensions(extensions);
-                        break;
-                    }
-                    case "disable-extensions":
-                        // change casing
-                        ((ChromeOptions) desiredCapabilities).setExperimentalOption("useAutomationExtension", false);
-                        break;
-                    default:
-                        // all unknonw properties are passed as is
-                        ((ChromeOptions) desiredCapabilities).setExperimentalOption(key, jsonObject.get(key));
-                        break;
+                        case "disable-extensions":
+                            // change casing
+                            ((ChromeOptions) desiredCapabilities).setExperimentalOption("useAutomationExtension", false);
+                            break;
+                        default:
+                            // all unknonw properties are passed as is
+                            ((ChromeOptions) desiredCapabilities).setExperimentalOption(key, jsonObject.get(key));
+                            break;
                     }
                 }
             } else {
@@ -792,16 +834,14 @@ public class BrowserManagement extends RunOnFailureKeywordsAdapter {
             JSONObject jsonObject = (JSONObject) JSONValue.parse(browserOptions);
             if (jsonObject != null) {
                 FirefoxProfile firefoxProfile = new FirefoxProfile();
-                Iterator<?> iterator = jsonObject.entrySet().iterator();
-                while (iterator.hasNext()) {
-                    Entry<?, ?> entry = (Entry<?, ?>) iterator.next();
+                for (Object o1 : jsonObject.entrySet()) {
+                    Entry<?, ?> entry = (Entry<?, ?>) o1;
                     String key = entry.getKey().toString();
                     if (key.equals("preferences")) {
                         // Preferences
                         JSONObject preferences = (JSONObject) entry.getValue();
-                        Iterator<?> iteratorPreferences = preferences.entrySet().iterator();
-                        while (iteratorPreferences.hasNext()) {
-                            Entry<?, ?> entryPreferences = (Entry<?, ?>) iteratorPreferences.next();
+                        for (Object o : preferences.entrySet()) {
+                            Entry<?, ?> entryPreferences = (Entry<?, ?>) o;
                             Object valuePreferences = entryPreferences.getValue();
                             logging.debug(String.format("Adding property: %s with value: %s",
                                     entryPreferences.getKey().toString(), valuePreferences));
@@ -810,7 +850,7 @@ public class BrowserManagement extends RunOnFailureKeywordsAdapter {
                                         ((Number) valuePreferences).intValue());
                             } else if (valuePreferences instanceof Boolean) {
                                 firefoxProfile.setPreference(entryPreferences.getKey().toString(),
-                                        ((Boolean) valuePreferences).booleanValue());
+                                        (Boolean) valuePreferences);
                             } else {
                                 firefoxProfile.setPreference(entryPreferences.getKey().toString(),
                                         valuePreferences.toString());
@@ -819,9 +859,8 @@ public class BrowserManagement extends RunOnFailureKeywordsAdapter {
                     } else if (key.equals("extensions")) {
                         // Extensions
                         JSONArray extensions = (JSONArray) entry.getValue();
-                        Iterator<?> iteratorExtensions = extensions.iterator();
-                        while (iteratorExtensions.hasNext()) {
-                            File file = new File(iteratorExtensions.next().toString().replace('/', File.separatorChar));
+                        for (Object extension : extensions) {
+                            File file = new File(extension.toString().replace('/', File.separatorChar));
                             firefoxProfile.addExtension(file);
                         }
                     } else {
