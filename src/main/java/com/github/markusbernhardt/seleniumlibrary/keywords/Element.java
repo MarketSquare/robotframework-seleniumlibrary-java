@@ -15,7 +15,6 @@ import org.openqa.selenium.interactions.Actions;
 import org.robotframework.javalib.annotation.ArgumentNames;
 import org.robotframework.javalib.annotation.Autowired;
 import org.robotframework.javalib.annotation.RobotKeyword;
-import org.robotframework.javalib.annotation.RobotKeywordOverload;
 import org.robotframework.javalib.annotation.RobotKeywords;
 
 import com.github.markusbernhardt.seleniumlibrary.RunOnFailureKeywordsAdapter;
@@ -881,7 +880,7 @@ public class Element extends RunOnFailureKeywordsAdapter {
 		int actualXpathCount = elements.size();
 
 		if (actualXpathCount != expectedXpathCount) {
-			if (message == null || message.equals("")) {
+			if (message.isEmpty()) {
 				message = String.format("Xpath %s should have matched %s times but matched %s times.", xpath,
 						expectedXpathCount, actualXpathCount);
 			}
@@ -890,6 +889,22 @@ public class Element extends RunOnFailureKeywordsAdapter {
 
 		logging.log(String.format("Current page contains %s elements matching '%s'.", actualXpathCount, xpath),
 				logLevel);
+	}
+
+	@RobotKeyword("Click to element from list elements by locator ``xpath``.")
+	@ArgumentNames({"xpath", "index=0", "message=NONE"})
+	public void clickElementByIndex(String xpath, String... params) {
+		String message = robot.getParamsValue(params, 0, "");
+		int index = robot.getParamsValue(params, 1, 0);
+		List<WebElement> elements = elementFind(xpath, false, false);
+		if (elements.isEmpty()) {
+			if (message.isEmpty()) {
+				message = String.format("The Element was not found by locator '%s' with index '%d'", xpath, index);
+			}
+			throw new SeleniumLibraryNonFatalException(message);
+		}
+		WebElement element = elements.get(index);
+		element.click();
 	}
 
 	// ##############################
