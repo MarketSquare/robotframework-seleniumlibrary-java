@@ -6,6 +6,7 @@ Library           SeleniumLibrary
 *** Variables ***
 ${Profile}    Local
 ${browser}    jbrowser
+${downloadWebDriver}    ${False}
 ${Selenium.Browser.Name}    ${browser}
 ${Selenium.Browser.Version}    17
 ${Selenium.Timeout}        30.0
