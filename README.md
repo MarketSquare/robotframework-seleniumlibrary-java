@@ -59,30 +59,6 @@ which contains all required libraries. Running of tests with this can be done wi
   [Library Specs](http://central.maven.org/maven2/com/github/hi-fi/robotframework-seleniumlibrary/3.141.59.26/robotframework-seleniumlibrary-3.141.59.26.xml)
   and place it in your PYTHONPATH.
 
-Usage, Selenium 4 (WIP)
------------------
-
-If you are using the robotframework-maven-plugin you can
-use this library by adding the following dependency to 
-your pom.xml:
-
-    <dependency>
-        <groupId>com.github.hi-fi</groupId>
-        <artifactId>robotframework-seleniumlibrary</artifactId>
-        <version>4.0.0-alpha-1.0</version>
-        <scope>test</scope>
-    </dependency>
-
-If you cannot use the robotframework-maven-plugin you can use the
-[jar-with-dependencies](http://central.maven.org/maven2/com/github/hi-fi/robotframework-seleniumlibrary/4.0.0-alpha-1.0/robotframework-seleniumlibrary-4.0.0-alpha-1.0-jar-with-dependencies.jar),
-which contains all required libraries. Running of tests with this can be done with command `java -jar robotframework-seleniumlibrary-4.0.0-alpha-1.0-jar-with-dependencies.jar <test location>`.  
-
-* More information about this library can be found in the
-  [Keyword Documentation](http://central.maven.org/maven2/com/github/hi-fi/robotframework-seleniumlibrary/4.0.0-alpha-1.0/robotframework-seleniumlibrary-4.0.0-alpha-1.0.html).
-* For keyword completion in RIDE you can download this
-  [Library Specs](http://central.maven.org/maven2/com/github/hi-fi/robotframework-seleniumlibrary/4.0.0-alpha-1.0/robotframework-seleniumlibrary-4.0.0-alpha-1.0.xml)
-  and place it in your PYTHONPATH.
-
 Differences
 -----------
 
@@ -111,7 +87,7 @@ to know when to update drivers you use.
 
 Drivers can also be fetched with [https://github.com/Ardesco/selenium-standalone-server-plugin|Selenium Driver Binary Downloader plugin].
 
-With Selenium 4 [https://github.com/bonigarcia/webdrivermanager|WebdriverManager] is taken to use, so handling of drivers can also be done with standalone JAR from tests itself.
+With At 3.141.59.265 [https://github.com/bonigarcia/webdrivermanager|WebdriverManager] is taken to use, so handling of drivers can also be done with standalone JAR from tests itself.
 
 __ https://seleniumhq.github.io/selenium/docs/api/py/index.html#drivers
 __ https://en.wikipedia.org/wiki/PATH_(variable)
