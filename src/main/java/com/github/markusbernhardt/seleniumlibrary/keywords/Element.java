@@ -247,8 +247,8 @@ public class Element extends RunOnFailureKeywordsAdapter {
                 .executeScript(String.format("arguments[0].id = '%s';", id), elements.get(0));
     }
 
-    @RobotKeyword("Verify the element identified by ``locator`` is found on the current page\r\n" + 
-            "\r\n" + 
+    @RobotKeyword("Verify the element identified by ``locator`` is enabled\r\n" +
+            "\r\n" +
             "Key attributes for arbitrary elements are id and name. See `Introduction` for details about log levels and locators.")
     @ArgumentNames({ "locator" })
     public void elementShouldBeEnabled(String locator) {
@@ -257,13 +257,23 @@ public class Element extends RunOnFailureKeywordsAdapter {
         }
     }
 
-    @RobotKeyword("Verify the element identified by ``locator`` is disabled.\r\n" + 
+    @RobotKeyword("Verify the element identified by ``locator`` is disabled.\r\n" +
             "\r\n" + 
             "Key attributes for arbitrary elements are id and name. See `Introduction` for details about locators.")
     @ArgumentNames({ "locator" })
     public void elementShouldBeDisabled(String locator) {
         if (isEnabled(locator)) {
             throw new SeleniumLibraryNonFatalException(String.format("Element %s is enabled.", locator));
+        }
+    }
+
+    @RobotKeyword("Verify the element identified by ``locator`` is focused\r\n" +
+            "\r\n" +
+            "Key attributes for arbitrary elements are id and name. See `Introduction` for details about log levels and locators.")
+    @ArgumentNames({ "locator" })
+    public void elementShouldBeFocused(String locator) {
+        if (!isFocused(locator)) {
+            throw new SeleniumLibraryNonFatalException(String.format("Element %s is disabled.", locator));
         }
     }
 
@@ -582,11 +592,20 @@ public class Element extends RunOnFailureKeywordsAdapter {
         action.doubleClick(elements.get(0)).perform();
     }
 
-    @RobotKeyword("Set the focus to the element identified by ``locator``.\r\n" + 
-            "\r\n" + 
+    @RobotKeyword("Set the focus to the element identified by ``locator``.\r\n" +
+            "\r\n" +
             "Key attributes for arbitrary elements are id and name. See `Introduction` for details about locators.")
     @ArgumentNames({ "locator" })
+    @Deprecated
     public void focus(String locator) {
+        setFocusToElement(locator);
+    }
+
+    @RobotKeyword("Set the focus to the element identified by ``locator``.\r\n" +
+            "\r\n" +
+            "Key attributes for arbitrary elements are id and name. See `Introduction` for details about locators.")
+    @ArgumentNames({ "locator" })
+    public void setFocusToElement(String locator) {
         List<WebElement> elements = elementFind(locator, true, true);
         ((JavascriptExecutor) browserManagement.getCurrentWebDriver()).executeScript("arguments[0].focus();",
                 elements.get(0));
@@ -975,6 +994,14 @@ public class Element extends RunOnFailureKeywordsAdapter {
         }
 
         return true;
+    }
+
+    protected boolean isFocused(String locator) {
+        List<WebElement> elements = elementFind(locator, true, true);
+        WebElement element = elements.get(0);
+        WebDriver current = browserManagement.getCurrentWebDriver();
+        WebElement focused = current.switchTo().activeElement();
+        return element.equals(focused);
     }
 
     protected boolean isVisible(String locator) {
