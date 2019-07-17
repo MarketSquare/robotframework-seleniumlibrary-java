@@ -273,7 +273,7 @@ public class Element extends RunOnFailureKeywordsAdapter {
     @ArgumentNames({ "locator" })
     public void elementShouldBeFocused(String locator) {
         if (!isFocused(locator)) {
-            throw new SeleniumLibraryNonFatalException(String.format("Element %s is disabled.", locator));
+            throw new SeleniumLibraryNonFatalException(String.format("Element %s is not focused.", locator));
         }
     }
 
