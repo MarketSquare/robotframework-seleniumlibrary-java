@@ -429,18 +429,32 @@ public class Element extends RunOnFailureKeywordsAdapter {
             "\r\n" +
             "The ``attribute_locator`` consists of element locator followed by an @ sign and attribute name. Example: element_id@class\r\n" +
             "\r\n" +
-            "Key attributes for arbitrary elements are id and name. See `Introduction` for details about locators.")
+            "Key attributes for arbitrary elements are id and name. See `Introduction` for details about locators.\r\n" +
+            "\r\n" +
+            "Passing attribute name as part of the locator was removed in SeleniumLibrary 3.2. The explicit attribute argument should be used instead.")
     @ArgumentNames({ "attributeLocator" })
+    @Deprecated
     public String getElementAttribute(String attributeLocator) {
         String[] parts = parseAttributeLocator(attributeLocator);
+        return getElementAttribute(parts[0], parts[1]);
+    }
 
-        List<WebElement> elements = elementFind(parts[0], true, false);
+    @RobotKeyword("Returns value of attribute from element locator.\r\n" +
+            "\r\n" +
+            "See the `Locating elements` section for details about the locator syntax.\r\n" +
+            "\r\n" +
+            "Example: ${id}=    Get Element Attribute   css:h1  id\r\n" +
+            "\r\n" +
+            "Passing attribute name as part of the locator was removed in SeleniumLibrary 3.2. The explicit attribute argument should be used instead.")
+    @ArgumentNames({ "locator", "attribute" })
+    public String getElementAttribute(String locator, String attribute) {
+
+        List<WebElement> elements = elementFind(locator, true, false);
 
         if (elements.size() == 0) {
-            throw new SeleniumLibraryNonFatalException(String.format("Element '%s' not found.", parts[0]));
+            throw new SeleniumLibraryNonFatalException(String.format("Element '%s' not found.", locator));
         }
-
-        return elements.get(0).getAttribute(parts[1]);
+        return elements.get(0).getAttribute(attribute);
     }
 
     @RobotKeyword("Clears the text from element identified by ``locator``.\r\n" +
