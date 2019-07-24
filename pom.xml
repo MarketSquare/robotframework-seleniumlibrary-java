@@ -113,6 +113,7 @@
 					<artifactId>selenium-java</artifactId>
 				</exclusion>
 			</exclusions>
+			<scope>provided</scope>
 		</dependency>
 		<dependency>
 			<groupId>io.appium</groupId>
@@ -128,6 +129,7 @@
 					<artifactId>selenium-api</artifactId>
 				</exclusion>
 			</exclusions>
+			<scope>provided</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.apache.commons</groupId>
