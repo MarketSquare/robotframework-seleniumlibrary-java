@@ -60,7 +60,7 @@ which contains all required libraries. Running of tests with this can be done wi
   and place it in your PYTHONPATH.
 
 Usage, Selenium 4 (WIP)
------------------
+-----------------------
 
 If you are using the robotframework-maven-plugin you can
 use this library by adding the following dependency to 
@@ -75,13 +75,18 @@ your pom.xml:
 
 If you cannot use the robotframework-maven-plugin you can use the
 [jar-with-dependencies](http://central.maven.org/maven2/com/github/hi-fi/robotframework-seleniumlibrary/4.0.0-alpha-1.0/robotframework-seleniumlibrary-4.0.0-alpha-1.0-jar-with-dependencies.jar),
-which contains all required libraries. Running of tests with this can be done with command `java -jar robotframework-seleniumlibrary-4.0.0-alpha-1.0-jar-with-dependencies.jar <test location>`.  
+which contains all required libraries except ios/android ones (Appium and Selendroid). Running of tests with this can be done with command `java -jar robotframework-seleniumlibrary-4.0.0-alpha-1.0-jar-with-dependencies.jar <test location>`.  
 
 * More information about this library can be found in the
   [Keyword Documentation](http://central.maven.org/maven2/com/github/hi-fi/robotframework-seleniumlibrary/4.0.0-alpha-1.0/robotframework-seleniumlibrary-4.0.0-alpha-1.0.html).
 * For keyword completion in RIDE you can download this
   [Library Specs](http://central.maven.org/maven2/com/github/hi-fi/robotframework-seleniumlibrary/4.0.0-alpha-1.0/robotframework-seleniumlibrary-4.0.0-alpha-1.0.xml)
   and place it in your PYTHONPATH.
+
+Testing IOS/Android browsers with library
+-----------------------------------------
+Pre-Selenium 4 fat-jar contains Appium and Selendroid that allow testing of IOS and Android browsers. Those are dropped in Selenium 4 -versions,
+so dependencies needs to be handles self with either Maven/Gradle or manually. If there's need to have fat-jar with those, please create issue about that.
 
 Differences
 -----------
