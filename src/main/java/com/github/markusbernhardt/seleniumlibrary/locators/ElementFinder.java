@@ -1,31 +1,24 @@
 package com.github.markusbernhardt.seleniumlibrary.locators;
 
-import java.util.ArrayList;
-import java.util.Hashtable;
-import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
-import java.util.TreeMap;
-
-import org.openqa.selenium.By;
-import org.openqa.selenium.JavascriptExecutor;
-import org.openqa.selenium.SearchContext;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
-import org.python.util.PythonInterpreter;
-
 import com.github.markusbernhardt.seleniumlibrary.SeleniumLibraryNonFatalException;
 import com.github.markusbernhardt.seleniumlibrary.keywords.Element;
 import com.github.markusbernhardt.seleniumlibrary.utils.Python;
+import org.openqa.selenium.*;
+import org.python.util.PythonInterpreter;
+
+import java.util.*;
+import java.util.Map.Entry;
 
 public class ElementFinder {
 
-	protected final static Hashtable<String, CustomStrategy> registeredLocationStrategies = new Hashtable<String, CustomStrategy>();
+	protected final static Hashtable<String, CustomStrategy> registeredLocationStrategies = new Hashtable<>();
 
 	protected enum KeyAttrs {
-		DEFAULT("@id,@name"), A("@id,@name,@href,normalize-space(descendant-or-self::text())"), IMG(
-				"@id,@name,@src,@alt"), INPUT("@id,@name,@value,@src"), BUTTON(
-				"@id,@name,@value,normalize-space(descendant-or-self::text())");
+		DEFAULT("@id,@name"),
+		A("@id,@name,@href,normalize-space(descendant-or-self::text())"),
+		IMG("@id,@name,@src,@alt"),
+		INPUT("@id,@name,@value,@src"),
+		BUTTON("@id,@name,@value,normalize-space(descendant-or-self::text())");
 
 		protected String[] keyAttrs;
 
@@ -40,8 +33,7 @@ public class ElementFinder {
 
 	protected interface Strategy {
 		List<WebElement> findBy(WebDriver webDriver, FindByCoordinates findByCoordinates);
-
-	};
+	}
 
 	protected enum StrategyEnum implements Strategy {
 		DEFAULT {
@@ -150,7 +142,7 @@ public class ElementFinder {
 			return elements;
 		}
 
-		List<WebElement> result = new ArrayList<WebElement>();
+		List<WebElement> result = new ArrayList<>();
 		for (WebElement element : elements) {
 			if (elementMatches(element, findByCoordinates)) {
 				result.add(element);
@@ -189,13 +181,13 @@ public class ElementFinder {
 		if (findByCoordinates.tag == null) {
 			xpathTag = "*";
 		}
-		List<String> xpathConstraints = new ArrayList<String>();
+		List<String> xpathConstraints = new ArrayList<>();
 		if (findByCoordinates.constraints != null) {
 			for (Entry<String, String> entry : findByCoordinates.constraints.entrySet()) {
 				xpathConstraints.add(String.format("@%s='%s'", entry.getKey(), entry.getValue()));
 			}
 		}
-		List<String> xpathSearchers = new ArrayList<String>();
+		List<String> xpathSearchers = new ArrayList<>();
 		for (String attr : keyAttrs.getKeyAttrs()) {
 			xpathSearchers.add(String.format("%s=%s", attr, xpathCriteria));
 		}
@@ -207,7 +199,7 @@ public class ElementFinder {
 	}
 
 	protected static List<String> getAttrsWithUrl(WebDriver webDriver, KeyAttrs keyAttrs, String criteria) {
-		List<String> attrs = new ArrayList<String>();
+		List<String> attrs = new ArrayList<>();
 		String url = null;
 		String xpathUrl = null;
 		String[] srcHref = { "@src", "@href" };
@@ -252,19 +244,15 @@ public class ElementFinder {
 
 		FindByCoordinates findByCoordinates = new FindByCoordinates();
 		Strategy strategy = parseLocator(findByCoordinates, locator);
-		parseTag(findByCoordinates, strategy, tag);
+		parseTag(findByCoordinates, tag);
 		return strategy.findBy(webDriver, findByCoordinates);
 	}
 
-	protected static ThreadLocal<PythonInterpreter> loggingPythonInterpreter = new ThreadLocal<PythonInterpreter>() {
-
-		@Override
-		protected PythonInterpreter initialValue() {
-			PythonInterpreter pythonInterpreter = new PythonInterpreter();
-			pythonInterpreter.exec("from robot.libraries.BuiltIn import BuiltIn; from robot.api import logger;");
-			return pythonInterpreter;
-		}
-	};
+	protected static ThreadLocal<PythonInterpreter> loggingPythonInterpreter = ThreadLocal.withInitial(() -> {
+		PythonInterpreter pythonInterpreter = new PythonInterpreter();
+		pythonInterpreter.exec("from robot.libraries.BuiltIn import BuiltIn; from robot.api import logger;");
+		return pythonInterpreter;
+	});
 
 	protected static void warn(String msg) {
 		loggingPythonInterpreter.get().exec(
@@ -301,33 +289,43 @@ public class ElementFinder {
 		return strategy;
 	}
 
-	protected static void parseTag(FindByCoordinates findByCoordinates, Strategy strategy, String tag) {
+	protected static void parseTag(FindByCoordinates findByCoordinates, String tag) {
 		if (tag == null) {
 			return;
 		}
+
 		tag = tag.toLowerCase();
-		Map<String, String> constraints = new TreeMap<String, String>();
-		if (tag.equals("link")) {
-			tag = "a";
-		} else if (tag.equals("image")) {
-			tag = "img";
-		} else if (tag.equals("list")) {
-			tag = "select";
-		} else if (tag.equals("text area")) {
-			tag = "textarea";
-		} else if (tag.equals("radio button")) {
-			tag = "input";
-			constraints.put("type", "radio");
-		} else if (tag.equals("checkbox")) {
-			tag = "input";
-			constraints.put("type", "checkbox");
-		} else if (tag.equals("text field")) {
-			tag = "input";
-			constraints.put("type", "text");
-		} else if (tag.equals("file upload")) {
-			tag = "input";
-			constraints.put("type", "file");
-		}
+		Map<String, String> constraints = new TreeMap<>();
+        switch (tag) {
+            case "link":
+                tag = "a";
+                break;
+            case "image":
+                tag = "img";
+                break;
+            case "list":
+                tag = "select";
+                break;
+            case "text area":
+                tag = "textarea";
+                break;
+            case "radio button":
+                tag = "input";
+                constraints.put("type", "radio");
+                break;
+            case "checkbox":
+                tag = "input";
+                constraints.put("type", "checkbox");
+                break;
+            case "text field":
+                tag = "input";
+                constraints.put("type", "text");
+                break;
+            case "file upload":
+                tag = "input";
+                constraints.put("type", "file");
+                break;
+        }
 		findByCoordinates.tag = tag;
 		findByCoordinates.constraints = constraints;
 	}
@@ -337,7 +335,7 @@ public class ElementFinder {
 		if (o instanceof List<?>) {
 			return (List<WebElement>) o;
 		}
-		List<WebElement> list = new ArrayList<WebElement>();
+		List<WebElement> list = new ArrayList<>();
 		if (o instanceof WebElement) {
 			list.add((WebElement) o);
 			return list;
@@ -369,16 +367,14 @@ public class ElementFinder {
 
 				@Override
 				public List<WebElement> findElements(SearchContext context) {
-					Object[] arguments = null;
+					Object[] arguments;
 					if (delimiter == null) {
 						arguments = new Object[1];
 						arguments[0] = findByCoordinates.criteria;
 					} else {
 						String[] splittedCriteria = findByCoordinates.criteria.split(delimiter);
 						arguments = new Object[splittedCriteria.length];
-						for (int i = 0; i < splittedCriteria.length; i++) {
-							arguments[i] = splittedCriteria[i];
-						}
+						System.arraycopy(splittedCriteria, 0, arguments, 0, splittedCriteria.length);
 					}
 					Object o = ((JavascriptExecutor) webDriver).executeScript(functionDefinition, arguments);
 					return toList(o);

@@ -42,12 +42,12 @@ public class Cookie extends RunOnFailureKeywordsAdapter {
 
 	@RobotKeyword("Returns all cookies of the current page.")
 	public String getCookies() {
-		StringBuffer ret = new StringBuffer();
+		StringBuilder ret = new StringBuilder();
 
-		ArrayList<org.openqa.selenium.Cookie> cookies = new ArrayList<org.openqa.selenium.Cookie>(browserManagement
+		ArrayList<org.openqa.selenium.Cookie> cookies = new ArrayList<>(browserManagement
 				.getCurrentWebDriver().manage().getCookies());
 		for (int i = 0; i < cookies.size(); i++) {
-			ret.append(cookies.get(i).getName() + "=" + cookies.get(i).getValue());
+			ret.append(cookies.get(i).getName()).append("=").append(cookies.get(i).getValue());
 			if (i != cookies.size() - 1) {
 				ret.append("; ");
 			}

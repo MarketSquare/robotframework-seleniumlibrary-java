@@ -52,14 +52,8 @@ public class Waiting extends RunOnFailureKeywordsAdapter {
 		if (message == null) {
 			message = String.format("Condition '%s' did not become true in <TIMEOUT>", condition);
 		}
-		waitUntil(timeout, message, new WaitUntilFunction() {
-
-			@Override
-			public boolean isFinished() {
-				return Boolean.TRUE.equals(((JavascriptExecutor) browserManagement.getCurrentWebDriver())
-						.executeScript(condition));
-			}
-		});
+		waitUntil(timeout, message, () -> Boolean.TRUE.equals(((JavascriptExecutor) browserManagement.getCurrentWebDriver())
+				.executeScript(condition)));
 	}
 
     @RobotKeyword("Waits until the current page contains ``text``.\r\n" + 
@@ -74,13 +68,7 @@ public class Waiting extends RunOnFailureKeywordsAdapter {
 		if (message == null) {
 			message = String.format("Text '%s' did not appear in <TIMEOUT>", text);
 		}
-		waitUntil(timeout, message, new WaitUntilFunction() {
-
-			@Override
-			public boolean isFinished() {
-				return element.isTextPresent(text);
-			}
-		});
+		waitUntil(timeout, message, () -> element.isTextPresent(text));
 	}
 
     @RobotKeyword("Waits until the current page does not contain ``text``.\r\n" + 
@@ -95,13 +83,7 @@ public class Waiting extends RunOnFailureKeywordsAdapter {
 		if (message == null) {
 			message = String.format("Text '%s' did not disappear in <TIMEOUT>", text);
 		}
-		waitUntil(timeout, message, new WaitUntilFunction() {
-
-			@Override
-			public boolean isFinished() {
-				return !element.isTextPresent(text);
-			}
-		});
+		waitUntil(timeout, message, () -> !element.isTextPresent(text));
 	}
 
     @RobotKeyword("Waits until the current page does not contain ``text``.\r\n" + 
@@ -128,13 +110,7 @@ public class Waiting extends RunOnFailureKeywordsAdapter {
 		if (message == null) {
 			message = String.format("Element '%s' did not appear in <TIMEOUT>", locator);
 		}
-		waitUntil(timeout, message, new WaitUntilFunction() {
-
-			@Override
-			public boolean isFinished() {
-				return element.isElementPresent(locator);
-			}
-		});
+		waitUntil(timeout, message, () -> element.isElementPresent(locator));
 	}
 
     @RobotKeyword("Waits until the element identified by ``locator`` is not found on the current page.\r\n" + 
@@ -149,13 +125,7 @@ public class Waiting extends RunOnFailureKeywordsAdapter {
 		if (message == null) {
 			message = String.format("Element '%s' did not disappear in <TIMEOUT>", locator);
 		}
-		waitUntil(timeout, message, new WaitUntilFunction() {
-
-			@Override
-			public boolean isFinished() {
-				return !element.isElementPresent(locator);
-			}
-		});
+		waitUntil(timeout, message, () -> !element.isElementPresent(locator));
 	}
 
     @RobotKeyword("Waits until the element identified by ``locator`` is not found on the current page.\r\n" + 
@@ -182,13 +152,7 @@ public class Waiting extends RunOnFailureKeywordsAdapter {
 		if (message == null) {
 			message = String.format("Element '%s' not visible in <TIMEOUT>", locator);
 		}
-		waitUntil(timeout, message, new WaitUntilFunction() {
-
-			@Override
-			public boolean isFinished() {
-				return element.isVisible(locator);
-			}
-		});
+		waitUntil(timeout, message, () -> element.isVisible(locator));
 	}
 
     @RobotKeyword("Waits until the element identified by ``locator`` is not visible.\r\n" + 
@@ -203,13 +167,7 @@ public class Waiting extends RunOnFailureKeywordsAdapter {
 		if (message == null) {
 			message = String.format("Element '%s' still visible in <TIMEOUT>", locator);
 		}
-		waitUntil(timeout, message, new WaitUntilFunction() {
-
-			@Override
-			public boolean isFinished() {
-				return !element.isVisible(locator);
-			}
-		});
+		waitUntil(timeout, message, () -> !element.isVisible(locator));
 	}
 
     @RobotKeyword("Waits until the element identified by ``locator`` is clickable.\r\n" + 
@@ -224,13 +182,7 @@ public class Waiting extends RunOnFailureKeywordsAdapter {
 		if (message == null) {
 			message = String.format("Element '%s' not clickable in <TIMEOUT>", locator);
 		}
-		waitUntil(timeout, message, new WaitUntilFunction() {
-
-			@Override
-			public boolean isFinished() {
-				return element.isClickable(locator);
-			}
-		});
+		waitUntil(timeout, message, () -> element.isClickable(locator));
 	}
 
     @RobotKeyword("Waits until the element identified by ``locator`` is not clickable.\r\n" + 
@@ -245,13 +197,7 @@ public class Waiting extends RunOnFailureKeywordsAdapter {
 		if (message == null) {
 			message = String.format("Element '%s' still clickable in <TIMEOUT>", locator);
 		}
-		waitUntil(timeout, message, new WaitUntilFunction() {
-
-			@Override
-			public boolean isFinished() {
-				return !element.isClickable(locator);
-			}
-		});
+		waitUntil(timeout, message, () -> !element.isClickable(locator));
 	}
 
     @RobotKeyword("Waits until the element identified by ``locator`` is succesfully clicked on.\r\n" + 
@@ -266,13 +212,9 @@ public class Waiting extends RunOnFailureKeywordsAdapter {
 		if (message == null) {
 			message = String.format("Element '%s' not successfully clicked in <TIMEOUT>", locator);
 		}
-		waitUntil(timeout, message, new WaitUntilFunction() {
-
-			@Override
-			public boolean isFinished() {
-				element.clickElement(locator);
-				return true;
-			}
+		waitUntil(timeout, message, () -> {
+			element.clickElement(locator);
+			return true;
 		});
 	}
 
@@ -288,13 +230,7 @@ public class Waiting extends RunOnFailureKeywordsAdapter {
 		if (message == null) {
 			message = String.format("Element '%s' not selected in <TIMEOUT>", locator);
 		}
-		waitUntil(timeout, message, new WaitUntilFunction() {
-
-			@Override
-			public boolean isFinished() {
-				return element.isSelected(locator);
-			}
-		});
+		waitUntil(timeout, message, () -> element.isSelected(locator));
 	}
 
     @RobotKeyword("Waits until the element identified by ``locator`` is not selected.\r\n" + 
@@ -309,13 +245,7 @@ public class Waiting extends RunOnFailureKeywordsAdapter {
 		if (message == null) {
 			message = String.format("Element '%s' still selected in <TIMEOUT>", locator);
 		}
-		waitUntil(timeout, message, new WaitUntilFunction() {
-
-			@Override
-			public boolean isFinished() {
-				return !element.isSelected(locator);
-			}
-		});
+		waitUntil(timeout, message, () -> !element.isSelected(locator));
 	}
 
     @RobotKeyword("Waits until the current page title contains ``title``.\r\n" + 
@@ -330,13 +260,9 @@ public class Waiting extends RunOnFailureKeywordsAdapter {
 		if (message == null) {
 			message = String.format("Title '%s' did not appear in <TIMEOUT>", title);
 		}
-		waitUntil(timeout, message, new WaitUntilFunction() {
-
-			@Override
-			public boolean isFinished() {
-				String currentTitle = browserManagement.getTitle();
-				return currentTitle != null && currentTitle.contains(title);
-			}
+		waitUntil(timeout, message, () -> {
+			String currentTitle = browserManagement.getTitle();
+			return currentTitle != null && currentTitle.contains(title);
 		});
 	}
 
@@ -352,13 +278,9 @@ public class Waiting extends RunOnFailureKeywordsAdapter {
 		if (message == null) {
 			message = String.format("Title '%s' did not appear in <TIMEOUT>", title);
 		}
-		waitUntil(timeout, message, new WaitUntilFunction() {
-
-			@Override
-			public boolean isFinished() {
-				String currentTitle = browserManagement.getTitle();
-				return currentTitle == null || !currentTitle.contains(title);
-			}
+		waitUntil(timeout, message, () -> {
+			String currentTitle = browserManagement.getTitle();
+			return currentTitle == null || !currentTitle.contains(title);
 		});
 	}
 
@@ -374,13 +296,9 @@ public class Waiting extends RunOnFailureKeywordsAdapter {
 		if (message == null) {
 			message = String.format("Title '%s' did not appear in <TIMEOUT>", title);
 		}
-		waitUntil(timeout, message, new WaitUntilFunction() {
-
-			@Override
-			public boolean isFinished() {
-				String currentTitle = browserManagement.getTitle();
-				return currentTitle != null && currentTitle.equals(title);
-			}
+		waitUntil(timeout, message, () -> {
+			String currentTitle = browserManagement.getTitle();
+			return currentTitle != null && currentTitle.equals(title);
 		});
 	}
 
@@ -396,13 +314,9 @@ public class Waiting extends RunOnFailureKeywordsAdapter {
 		if (message == null) {
 			message = String.format("Title '%s' did not appear in <TIMEOUT>", title);
 		}
-		waitUntil(timeout, message, new WaitUntilFunction() {
-
-			@Override
-			public boolean isFinished() {
-				String currentTitle = browserManagement.getTitle();
-				return currentTitle == null || !currentTitle.equals(title);
-			}
+		waitUntil(timeout, message, () -> {
+			String currentTitle = browserManagement.getTitle();
+			return currentTitle == null || !currentTitle.equals(title);
 		});
 	}
 
@@ -429,12 +343,12 @@ public class Waiting extends RunOnFailureKeywordsAdapter {
 			}
 			try {
 				Thread.sleep(200);
-			} catch (InterruptedException e) {
+			} catch (InterruptedException ignored) {
 			}
 		}
 	}
 
-	protected static interface WaitUntilFunction {
+	protected interface WaitUntilFunction {
 
 		boolean isFinished();
 	}

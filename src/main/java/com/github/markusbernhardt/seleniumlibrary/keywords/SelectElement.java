@@ -1,6 +1,7 @@
 package com.github.markusbernhardt.seleniumlibrary.keywords;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import org.openqa.selenium.NoSuchElementException;
@@ -46,7 +47,6 @@ public class SelectElement extends RunOnFailureKeywordsAdapter {
 
 		return getLabelsForOptions(options);
 	}
-
 
 	@RobotKeyword("Returns the visible label of the first selected element from the select list identified by ``locator``.\r\n" + 
 	        "\r\n" + 
@@ -142,11 +142,11 @@ public class SelectElement extends RunOnFailureKeywordsAdapter {
 		logging.info(String.format("Verifying list '%s' has no selection.", locator));
 
 		List<WebElement> options = getSelectListOptionsSelected(locator);
-		if (!options.equals(null)) {
+		if (options != null) {
 			List<String> selectedLabels = getLabelsForOptions(options);
 			String items = Python.join(" | ", selectedLabels);
 			throw new SeleniumLibraryNonFatalException(String.format(
-					"List '%s' should have had no selection (selection was [ %s ]).", locator, items.toString()));
+					"List '%s' should have had no selection (selection was [ %s ]).", locator, items));
 		}
 	}
 
@@ -211,7 +211,7 @@ public class SelectElement extends RunOnFailureKeywordsAdapter {
 		}
 
 		boolean lastItemFound = false;
-		List<String> nonExistingItems = new ArrayList<String>();
+		List<String> nonExistingItems = new ArrayList<>();
 		for (String item : items) {
 			lastItemFound = true;
 			try {
@@ -222,7 +222,6 @@ public class SelectElement extends RunOnFailureKeywordsAdapter {
 				} catch (NoSuchElementException e2) {
 					nonExistingItems.add(item);
 					lastItemFound = false;
-					continue;
 				}
 			}
 		}
@@ -257,10 +256,7 @@ public class SelectElement extends RunOnFailureKeywordsAdapter {
 			throw new SeleniumLibraryNonFatalException("No index given.");
 		}
 
-		List<String> tmp = new ArrayList<String>();
-		for (String index : indexes) {
-			tmp.add(index);
-		}
+		List<String> tmp = new ArrayList<>(Arrays.asList(indexes));
 		String items = String.format("index(es) '%s'", Python.join(", ", tmp));
 		logging.info(String.format("Selecting %s from list '%s'.", items, locator));
 
@@ -343,11 +339,11 @@ public class SelectElement extends RunOnFailureKeywordsAdapter {
             "Select list keywords work on both lists and combo boxes. Key attributes for select lists are id and name. See `Introduction` for details about locators.")
 	@ArgumentNames({ "locator", "*indexes" })
 	public void unselectFromListByIndex(String locator, Integer... indexes) {
-		if (indexes.equals(null)) {
+		if (indexes.length == 0) {
 			throw new SeleniumLibraryNonFatalException("No index given.");
 		}
 
-		List<String> tmp = new ArrayList<String>();
+		List<String> tmp = new ArrayList<>();
 		for (Integer index : indexes) {
 			tmp.add(index.toString());
 		}
@@ -371,7 +367,7 @@ public class SelectElement extends RunOnFailureKeywordsAdapter {
             "Select list keywords work on both lists and combo boxes. Key attributes for select lists are id and name. See `Introduction` for details about locators.")
 	@ArgumentNames({ "locator", "*values" })
 	public void unselectFromListByValue(String locator, String... values) {
-		if (values.equals(null)) {
+		if (values.length == 0) {
 			throw new SeleniumLibraryNonFatalException("No value given.");
 		}
 
@@ -395,7 +391,7 @@ public class SelectElement extends RunOnFailureKeywordsAdapter {
             "Select list keywords work on both lists and combo boxes. Key attributes for select lists are id and name. See `Introduction` for details about locators.")
 	@ArgumentNames({ "locator", "*labels" })
 	public void unselectFromListByLabel(String locator, String... labels) {
-		if (labels.equals(null)) {
+		if (labels.length == 0) {
 			throw new SeleniumLibraryNonFatalException("No value given.");
 		}
 
@@ -419,7 +415,7 @@ public class SelectElement extends RunOnFailureKeywordsAdapter {
 	// ##############################
 
 	protected List<String> getLabelsForOptions(List<WebElement> options) {
-		List<String> labels = new ArrayList<String>();
+		List<String> labels = new ArrayList<>();
 
 		for (WebElement option : options) {
 			labels.add(option.getText());
@@ -435,7 +431,7 @@ public class SelectElement extends RunOnFailureKeywordsAdapter {
 	}
 
 	protected List<WebElement> getSelectListOptions(Select select) {
-		return new ArrayList<WebElement>(select.getOptions());
+		return new ArrayList<>(select.getOptions());
 	}
 
 	protected List<WebElement> getSelectListOptions(String locator) {
@@ -447,11 +443,11 @@ public class SelectElement extends RunOnFailureKeywordsAdapter {
 	protected List<WebElement> getSelectListOptionsSelected(String locator) {
 		Select select = getSelectList(locator);
 
-		return new ArrayList<WebElement>(select.getAllSelectedOptions());
+		return new ArrayList<>(select.getAllSelectedOptions());
 	}
 
 	protected List<String> getValuesForOptions(List<WebElement> options) {
-		ArrayList<String> labels = new ArrayList<String>();
+		ArrayList<String> labels = new ArrayList<>();
 
 		for (WebElement option : options) {
 			labels.add(option.getAttribute("value"));
