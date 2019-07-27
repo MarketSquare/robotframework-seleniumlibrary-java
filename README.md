@@ -45,25 +45,26 @@ your pom.xml:
     <dependency>
         <groupId>com.github.hi-fi</groupId>
         <artifactId>robotframework-seleniumlibrary</artifactId>
-        <version>3.141.59.26</version>
+        <version>3.141.59.265</version>
         <scope>test</scope>
     </dependency>
 
 If you cannot use the robotframework-maven-plugin you can use the
-[jar-with-dependencies](http://central.maven.org/maven2/com/github/hi-fi/robotframework-seleniumlibrary/3.141.59.26/robotframework-seleniumlibrary-3.141.59.26-jar-with-dependencies.jar),
-which contains all required libraries. Running of tests with this can be done with command `java -jar robotframework-seleniumlibrary-3.141.59.26-jar-with-dependencies.jar <test location>`.  
+[jar-with-dependencies](http://central.maven.org/maven2/com/github/hi-fi/robotframework-seleniumlibrary/3.141.59.265/robotframework-seleniumlibrary-3.141.59.265-jar-with-dependencies.jar),
+which contains all required libraries. Running of tests with this can be done with command `java -jar robotframework-seleniumlibrary-3.141.59.265-jar-with-dependencies.jar <test location>`.  
 
 * More information about this library can be found in the
-  [Keyword Documentation](http://central.maven.org/maven2/com/github/hi-fi/robotframework-seleniumlibrary/3.141.59.26/robotframework-seleniumlibrary-3.141.59.26.html).
+  [Keyword Documentation](http://central.maven.org/maven2/com/github/hi-fi/robotframework-seleniumlibrary/3.141.59.265/robotframework-seleniumlibrary-3.141.59.265.html).
 * For keyword completion in RIDE you can download this
-  [Library Specs](http://central.maven.org/maven2/com/github/hi-fi/robotframework-seleniumlibrary/3.141.59.26/robotframework-seleniumlibrary-3.141.59.26.xml)
+  [Library Specs](http://central.maven.org/maven2/com/github/hi-fi/robotframework-seleniumlibrary/3.141.59.265/robotframework-seleniumlibrary-3.141.59.265.xml)
   and place it in your PYTHONPATH.
 
 Differences
 -----------
 
 * Some keyword differences between this and [Python version](https://github.com/robotframework/SeleniumLibrary) exists. (Same) keywords should be aligned in upcoming versions.
-* Older version of the library was imported as `Library    Selenium2Library` (both Java and Python versions). Since 2.53.1.1 (and all 3.x versions) import is done as `Library    SeleniumLibrary`
+* Older version of the library was imported as `Library    Selenium2Library` (both Java and Python versions). 
+Since 2.53.1.1 (and later major versions) import is done as `Library    SeleniumLibrary`
 
 
 Browser drivers
@@ -86,6 +87,8 @@ to know when to update drivers you use.
 
 Drivers can also be fetched with [https://github.com/Ardesco/selenium-standalone-server-plugin|Selenium Driver Binary Downloader plugin].
 
+With At 3.141.59.265 [https://github.com/bonigarcia/webdrivermanager|WebdriverManager] is taken to use, so handling of drivers can also be done with standalone JAR from tests itself.
+
 __ https://seleniumhq.github.io/selenium/docs/api/py/index.html#drivers
 __ https://en.wikipedia.org/wiki/PATH_(variable)
 
@@ -96,7 +99,8 @@ This is a maven project. You can execute the integration tests (using [jBrowser]
 
     mvn integration-test
     
-Other browsers are behind profiles (require browser installation with Firefox and Google Chrome, but not driver):
+Other browsers are behind profiles 
+(require browser installation with Firefox and Google Chrome, but not driver. Driver downloaded directly from Internet, so runner needs to have access to it.):
 
 * Firefox: mvn integration-test -Pfirefox
 * Google Chrome: mvn integration-test -Pgooglechrome

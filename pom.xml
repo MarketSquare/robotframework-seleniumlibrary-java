@@ -5,7 +5,7 @@
 
 	<groupId>com.github.hi-fi</groupId>
 	<artifactId>robotframework-seleniumlibrary</artifactId>
-	<version>3.141.59.265-SNAPSHOT</version>
+	<version>3.141.59.2653-SNAPSHOT</version>
 	<packaging>jar</packaging>
 
 	<name>Robot Framework :: SeleniumLibrary</name>
@@ -74,6 +74,7 @@
 		<selenium.version>3.141.59</selenium.version>
 		<keywords.class>SeleniumLibrary</keywords.class>
 		<browser>jbrowser</browser>
+		<downloadWebDriver>False</downloadWebDriver>
 	</properties>
 
 	<dependencies>
@@ -133,6 +134,11 @@
 			<artifactId>mockito-core</artifactId>
 			<version>2.18.3</version>
 			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>io.github.bonigarcia</groupId>
+			<artifactId>webdrivermanager</artifactId>
+			<version>3.4.0</version>
 		</dependency>
 	</dependencies>
 
@@ -199,27 +205,6 @@
 					</configuration>
 				</plugin>
 				<plugin>
-					<groupId>com.lazerycode.selenium</groupId>
-					<artifactId>driver-binary-downloader-maven-plugin</artifactId>
-					<version>1.0.16</version>
-					<configuration>
-						<!-- root directory that downloaded driver binaries will be stored 
-							in -->
-						<rootStandaloneServerDirectory>webdriver/binaries</rootStandaloneServerDirectory>
-						<!-- Where you want to store downloaded zip files -->
-						<downloadedZipFileDirectory>webdriver/zips</downloadedZipFileDirectory>
-						<!-- Location of a custom repository map -->
-						<customRepositoryMap>src/test/resources/RepositoryMap.xml</customRepositoryMap>
-					</configuration>
-					<executions>
-						<execution>
-							<goals>
-								<goal>selenium</goal>
-							</goals>
-						</execution>
-					</executions>
-				</plugin>
-				<plugin>
 					<!-- Integration-Test, build documentation -->
 					<groupId>org.robotframework</groupId>
 					<artifactId>robotframework-maven-plugin</artifactId>
@@ -236,6 +221,7 @@
 								<testCasesDirectory>${project.basedir}/src/test/robotframework/testsuites</testCasesDirectory>
 								<variables>
 									<variable>browser:${browser}</variable>
+									<variable>downloadWebDriver:${downloadWebDriver}</variable>
 								</variables>
 								<report>target/robotframework-reports/${browser}_report.html</report>
 								<log>target/robotframework-reports/${browser}_log.html</log>
@@ -379,101 +365,29 @@
 			<id>firefox</id>
 			<properties>
 				<browser>firefox</browser>
+				<downloadWebDriver>True</downloadWebDriver>
 			</properties>
-			<build>
-				<plugins>
-					<plugin>
-						<groupId>com.lazerycode.selenium</groupId>
-						<artifactId>driver-binary-downloader-maven-plugin</artifactId>
-					</plugin>
-					<plugin>
-						<groupId>org.robotframework</groupId>
-						<artifactId>robotframework-maven-plugin</artifactId>
-						<configuration>
-							<externalRunner>
-								<jvmArgs>
-									<jvmArg>-Dwebdriver.gecko.driver=${webdriver.gecko.driver}</jvmArg>
-								</jvmArgs>
-							</externalRunner>
-						</configuration>
-					</plugin>
-				</plugins>
-			</build>
 		</profile>
 		<profile>
 			<id>firefoxheadless</id>
 			<properties>
 				<browser>firefoxheadless</browser>
+				<downloadWebDriver>True</downloadWebDriver>
 			</properties>
-			<build>
-				<plugins>
-					<plugin>
-						<groupId>com.lazerycode.selenium</groupId>
-						<artifactId>driver-binary-downloader-maven-plugin</artifactId>
-					</plugin>
-					<plugin>
-						<groupId>org.robotframework</groupId>
-						<artifactId>robotframework-maven-plugin</artifactId>
-						<configuration>
-							<externalRunner>
-								<jvmArgs>
-									<jvmArg>-Dwebdriver.gecko.driver=${webdriver.gecko.driver}</jvmArg>
-								</jvmArgs>
-							</externalRunner>
-						</configuration>
-					</plugin>
-				</plugins>
-			</build>
 		</profile>
 		<profile>
 			<id>googlechrome</id>
 			<properties>
 				<browser>googlechrome</browser>
+				<downloadWebDriver>True</downloadWebDriver>
 			</properties>
-			<build>
-				<plugins>
-					<plugin>
-						<groupId>com.lazerycode.selenium</groupId>
-						<artifactId>driver-binary-downloader-maven-plugin</artifactId>
-					</plugin>
-					<plugin>
-						<groupId>org.robotframework</groupId>
-						<artifactId>robotframework-maven-plugin</artifactId>
-						<configuration>
-							<externalRunner>
-								<jvmArgs>
-									<jvmArg>-Dwebdriver.chrome.driver=${webdriver.chrome.driver}</jvmArg>
-								</jvmArgs>
-							</externalRunner>
-						</configuration>
-					</plugin>
-				</plugins>
-			</build>
 		</profile>
 		<profile>
 			<id>googlechromeheadless</id>
 			<properties>
 				<browser>googlechromeheadless</browser>
+				<downloadWebDriver>True</downloadWebDriver>
 			</properties>
-			<build>
-				<plugins>
-					<plugin>
-						<groupId>com.lazerycode.selenium</groupId>
-						<artifactId>driver-binary-downloader-maven-plugin</artifactId>
-					</plugin>
-					<plugin>
-						<groupId>org.robotframework</groupId>
-						<artifactId>robotframework-maven-plugin</artifactId>
-						<configuration>
-							<externalRunner>
-								<jvmArgs>
-									<jvmArg>-Dwebdriver.chrome.driver=${webdriver.chrome.driver}</jvmArg>
-								</jvmArgs>
-							</externalRunner>
-						</configuration>
-					</plugin>
-				</plugins>
-			</build>
 		</profile>
 		<profile>
 			<id>release</id>

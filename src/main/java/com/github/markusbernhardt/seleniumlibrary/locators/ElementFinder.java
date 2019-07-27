@@ -13,11 +13,9 @@ import org.openqa.selenium.SearchContext;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.python.util.PythonInterpreter;
-import org.robotframework.javalib.annotation.Autowired;
 
 import com.github.markusbernhardt.seleniumlibrary.SeleniumLibraryNonFatalException;
 import com.github.markusbernhardt.seleniumlibrary.keywords.Element;
-import com.github.markusbernhardt.seleniumlibrary.keywords.Logging;
 import com.github.markusbernhardt.seleniumlibrary.utils.Python;
 
 public class ElementFinder {
