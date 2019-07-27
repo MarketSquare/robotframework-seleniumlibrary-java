@@ -142,7 +142,7 @@ public class SelectElement extends RunOnFailureKeywordsAdapter {
 		logging.info(String.format("Verifying list '%s' has no selection.", locator));
 
 		List<WebElement> options = getSelectListOptionsSelected(locator);
-		if (options != null) {
+		if (!options.isEmpty()) {
 			List<String> selectedLabels = getLabelsForOptions(options);
 			String items = Python.join(" | ", selectedLabels);
 			throw new SeleniumLibraryNonFatalException(String.format(
