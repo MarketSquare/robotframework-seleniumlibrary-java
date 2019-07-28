@@ -296,36 +296,36 @@ public class ElementFinder {
 
 		tag = tag.toLowerCase();
 		Map<String, String> constraints = new TreeMap<>();
-        switch (tag) {
-            case "link":
-                tag = "a";
-                break;
-            case "image":
-                tag = "img";
-                break;
-            case "list":
-                tag = "select";
-                break;
-            case "text area":
-                tag = "textarea";
-                break;
-            case "radio button":
-                tag = "input";
-                constraints.put("type", "radio");
-                break;
-            case "checkbox":
-                tag = "input";
-                constraints.put("type", "checkbox");
-                break;
-            case "text field":
-                tag = "input";
-                constraints.put("type", "text");
-                break;
-            case "file upload":
-                tag = "input";
-                constraints.put("type", "file");
-                break;
-        }
+		switch(tag) {
+			case "link":
+				tag = "a";
+				break;
+			case "image":
+				tag = "img";
+				break;
+			case "list":
+				tag = "select";
+				break;
+			case "text area":
+				tag = "textarea";
+				break;
+			case "radio button":
+				tag = "input";
+				constraints.put("type", "radio");
+				break;
+			case "checkbox":
+				tag = "input";
+				constraints.put("type", "checkbox");
+				break;
+			case "text field":
+				tag = "input";
+				constraints.put("type", "text");
+				break;
+			case "file upload":
+				tag = "input";
+				constraints.put("type", "file");
+				break;
+		}
 		findByCoordinates.tag = tag;
 		findByCoordinates.constraints = constraints;
 	}

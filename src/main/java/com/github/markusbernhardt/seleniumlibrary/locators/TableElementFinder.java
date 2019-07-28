@@ -72,7 +72,8 @@ public class TableElementFinder {
 	}
 
 	protected static void addLocatorSuffix(Map<String, List<String>> locatorSuffixesMap, String key, String... values) {
-		List<String> list = new ArrayList<>(Arrays.asList(values));
+		List<String> list = new ArrayList<>();
+		Collections.addAll(list, values);
 		locatorSuffixesMap.put(key, list);
 	}
 

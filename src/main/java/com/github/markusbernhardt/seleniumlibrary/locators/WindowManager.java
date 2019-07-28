@@ -45,24 +45,31 @@ public class WindowManager {
 
 			@Override
 			public void select(WebDriver webDriver, final SelectCoordinates selectCoordinates) {
-				selectMatching(webDriver, currentWindowInfo -> currentWindowInfo.get(WINDOW_INFO_INDEX_DOCUMENT_TITLE).trim().toLowerCase()
-						.equals(selectCoordinates.criteria.toLowerCase()), "Unable to locate window with title '" + selectCoordinates.criteria + "'");
+				String selectionCriteria = selectCoordinates.criteria;
+				selectMatching(webDriver,
+						currentWindowInfo -> currentWindowInfo.get(WINDOW_INFO_INDEX_DOCUMENT_TITLE).trim()
+								.equalsIgnoreCase(selectionCriteria),
+						String.format("Unable to locate window with title '%s'", selectionCriteria));
 			}
 		},
 		NAME {
 
 			@Override
 			public void select(WebDriver webDriver, final SelectCoordinates selectCoordinates) {
-				selectMatching(webDriver, currentWindowInfo -> currentWindowInfo.get(WINDOW_INFO_INDEX_WINDOW_NAME).trim().toLowerCase()
-						.equals(selectCoordinates.criteria.toLowerCase()), "Unable to locate window with name '" + selectCoordinates.criteria + "'");
+				String selectionCriteria = selectCoordinates.criteria;
+				selectMatching(webDriver,
+						currentWindowInfo -> currentWindowInfo.get(WINDOW_INFO_INDEX_WINDOW_NAME).trim().equalsIgnoreCase(selectionCriteria),
+						String.format("Unable to locate window with name '%s'", selectionCriteria));
 			}
 		},
 		URL {
 
 			@Override
 			public void select(WebDriver webDriver, final SelectCoordinates selectCoordinates) {
-				selectMatching(webDriver, currentWindowInfo -> currentWindowInfo.get(WINDOW_INFO_INDEX_DOCUMENT_URL).trim().toLowerCase()
-						.equals(selectCoordinates.criteria.toLowerCase()), "Unable to locate window with URL '" + selectCoordinates.criteria + "'");
+				String selectionCriteria = selectCoordinates.criteria;
+				selectMatching(webDriver,
+						currentWindowInfo -> currentWindowInfo.get(WINDOW_INFO_INDEX_DOCUMENT_URL).trim().equalsIgnoreCase(selectionCriteria),
+						String.format("Unable to locate window with URL '%s'", selectionCriteria));
 			}
 		};
 

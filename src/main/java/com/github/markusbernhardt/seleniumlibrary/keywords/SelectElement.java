@@ -2,6 +2,7 @@ package com.github.markusbernhardt.seleniumlibrary.keywords;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import org.openqa.selenium.NoSuchElementException;
@@ -222,6 +223,7 @@ public class SelectElement extends RunOnFailureKeywordsAdapter {
 				} catch (NoSuchElementException e2) {
 					nonExistingItems.add(item);
 					lastItemFound = false;
+					continue;
 				}
 			}
 		}
@@ -256,7 +258,8 @@ public class SelectElement extends RunOnFailureKeywordsAdapter {
 			throw new SeleniumLibraryNonFatalException("No index given.");
 		}
 
-		List<String> tmp = new ArrayList<>(Arrays.asList(indexes));
+		List<String> tmp = new ArrayList<>();
+		Collections.addAll(tmp, indexes);
 		String items = String.format("index(es) '%s'", Python.join(", ", tmp));
 		logging.info(String.format("Selecting %s from list '%s'.", items, locator));
 

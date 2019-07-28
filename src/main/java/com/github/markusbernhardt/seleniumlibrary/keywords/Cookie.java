@@ -47,7 +47,7 @@ public class Cookie extends RunOnFailureKeywordsAdapter {
 		ArrayList<org.openqa.selenium.Cookie> cookies = new ArrayList<>(browserManagement
 				.getCurrentWebDriver().manage().getCookies());
 		for (int i = 0; i < cookies.size(); i++) {
-			ret.append(cookies.get(i).getName()).append("=").append(cookies.get(i).getValue());
+			ret.append(cookies.get(i).getName()).append('=').append(cookies.get(i).getValue());
 			if (i != cookies.size() - 1) {
 				ret.append("; ");
 			}
