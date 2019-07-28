@@ -9,8 +9,7 @@ import org.robotframework.javalib.annotation.RobotKeywords;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+import java.util.Locale;
 
 @RobotKeywords
 public class DataUtils extends RunOnFailureKeywordsAdapter {
@@ -31,10 +30,17 @@ public class DataUtils extends RunOnFailureKeywordsAdapter {
     // Keywords
     // ##############################
 
-    @RobotKeyword
+    /**
+     * Sort list of strings.
+     *
+     * @param jsonStringOfList  json string of list strings
+     * @param params            sorting order
+     * @return sorting list of strings
+     */
+    @RobotKeyword("Returns sorting list of strings by ``order``.")
     @ArgumentNames({"list", "order=ascending"})
-    public List<String> sortStringList(String listToString, String... params) {
-        List<String> listOfStrings = robot.parseRobotList(listToString);
+    public List<String> sortStrings(String jsonStringOfList, String... params) {
+        List<String> listOfStrings = robot.parseRobotList(jsonStringOfList);
         String order = robot.getParamsValue(params, 0, ASCENDING);
         List<String> sortedList = new ArrayList<>(listOfStrings);
         if (order.equalsIgnoreCase(DESCENDING)) {
@@ -42,23 +48,7 @@ public class DataUtils extends RunOnFailureKeywordsAdapter {
         } else {
             Collections.sort(listOfStrings);
         }
-        logging.info(String.format("Sorted list '%s' by %s", sortedList, order.toUpperCase()));
+        logging.info(String.format("Sorted list '%s' by %s", sortedList, order.toUpperCase(Locale.ENGLISH)));
         return sortedList;
-    }
-
-    @RobotKeyword
-    @ArgumentNames({"text", "regExpPattern", "groupIndex"})
-    public String getStringByRegexpGroup(String text, String regExpPattern, int groupIndex) {
-        Matcher matcher = Pattern.compile(regExpPattern).matcher(text);
-        matcher.find();
-        String matchedText = matcher.group(groupIndex);
-        logging.info(String.format("Matched text '%s' by pattern '%s' and group index '%d' from the text '%s'", matchedText, regExpPattern, groupIndex, text));
-        return matchedText;
-    }
-
-    @RobotKeyword
-    @ArgumentNames({"text", "regExpPattern"})
-    public boolean isTextMatchPattern(String text, String regExpPattern) {
-        return Pattern.compile(regExpPattern).matcher(text).matches();
     }
 }
