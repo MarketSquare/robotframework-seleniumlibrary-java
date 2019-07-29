@@ -29,13 +29,13 @@ public class WindowManager {
 				try {
 					NAME.select(webDriver, selectCoordinates);
 					return;
-				} catch (Throwable t) {
+				} catch (Throwable ignored) {
 				}
 
 				try {
 					TITLE.select(webDriver, selectCoordinates);
 					return;
-				} catch (Throwable t) {
+				} catch (Throwable ignored) {
 				}
 				throw new SeleniumLibraryNonFatalException("Unable to locate window with name or title '"
 						+ selectCoordinates.criteria + "'");
@@ -45,45 +45,31 @@ public class WindowManager {
 
 			@Override
 			public void select(WebDriver webDriver, final SelectCoordinates selectCoordinates) {
-				selectMatching(webDriver, new Matcher() {
-
-					@Override
-					public boolean match(List<String> currentWindowInfo) {
-						return currentWindowInfo.get(WINDOW_INFO_INDEX_DOCUMENT_TITLE).trim().toLowerCase()
-								.equals(selectCoordinates.criteria.toLowerCase());
-					}
-
-				}, "Unable to locate window with title '" + selectCoordinates.criteria + "'");
+				String selectionCriteria = selectCoordinates.criteria;
+				selectMatching(webDriver,
+						currentWindowInfo -> currentWindowInfo.get(WINDOW_INFO_INDEX_DOCUMENT_TITLE).trim()
+								.equalsIgnoreCase(selectionCriteria),
+						String.format("Unable to locate window with title '%s'", selectionCriteria));
 			}
 		},
 		NAME {
 
 			@Override
 			public void select(WebDriver webDriver, final SelectCoordinates selectCoordinates) {
-				selectMatching(webDriver, new Matcher() {
-
-					@Override
-					public boolean match(List<String> currentWindowInfo) {
-						return currentWindowInfo.get(WINDOW_INFO_INDEX_WINDOW_NAME).trim().toLowerCase()
-								.equals(selectCoordinates.criteria.toLowerCase());
-					}
-
-				}, "Unable to locate window with name '" + selectCoordinates.criteria + "'");
+				String selectionCriteria = selectCoordinates.criteria;
+				selectMatching(webDriver,
+						currentWindowInfo -> currentWindowInfo.get(WINDOW_INFO_INDEX_WINDOW_NAME).trim().equalsIgnoreCase(selectionCriteria),
+						String.format("Unable to locate window with name '%s'", selectionCriteria));
 			}
 		},
 		URL {
 
 			@Override
 			public void select(WebDriver webDriver, final SelectCoordinates selectCoordinates) {
-				selectMatching(webDriver, new Matcher() {
-
-					@Override
-					public boolean match(List<String> currentWindowInfo) {
-						return currentWindowInfo.get(WINDOW_INFO_INDEX_DOCUMENT_URL).trim().toLowerCase()
-								.equals(selectCoordinates.criteria.toLowerCase());
-					}
-
-				}, "Unable to locate window with URL '" + selectCoordinates.criteria + "'");
+				String selectionCriteria = selectCoordinates.criteria;
+				selectMatching(webDriver,
+						currentWindowInfo -> currentWindowInfo.get(WINDOW_INFO_INDEX_DOCUMENT_URL).trim().equalsIgnoreCase(selectionCriteria),
+						String.format("Unable to locate window with URL '%s'", selectionCriteria));
 			}
 		};
 
@@ -112,7 +98,7 @@ public class WindowManager {
 	}
 
 	public static List<String> getWindowIds(WebDriver webDriver) {
-		List<String> windowIds = new ArrayList<String>();
+		List<String> windowIds = new ArrayList<>();
 		for (List<String> windowInfo : getWindowInfos(webDriver)) {
 			windowIds.add(windowInfo.get(0));
 		}
@@ -120,7 +106,7 @@ public class WindowManager {
 	}
 
 	public static List<String> getWindowNames(WebDriver webDriver) {
-		List<String> windowNames = new ArrayList<String>();
+		List<String> windowNames = new ArrayList<>();
 		for (List<String> windowInfo : getWindowInfos(webDriver)) {
 			windowNames.add(windowInfo.get(1));
 		}
@@ -128,7 +114,7 @@ public class WindowManager {
 	}
 
 	public static List<String> getWindowTitles(WebDriver webDriver) {
-		List<String> windowTitles = new ArrayList<String>();
+		List<String> windowTitles = new ArrayList<>();
 		for (List<String> windowInfo : getWindowInfos(webDriver)) {
 			windowTitles.add(windowInfo.get(2));
 		}
@@ -143,7 +129,7 @@ public class WindowManager {
 			// Window of current WebDriver instance is already closed
 		}
 
-		List<List<String>> windowInfos = new ArrayList<List<String>>();
+		List<List<String>> windowInfos = new ArrayList<>();
 		try {
 			for (String handle : webDriver.getWindowHandles()) {
 				webDriver.switchTo().window(handle);
@@ -199,13 +185,10 @@ public class WindowManager {
 	}
 
 	protected static class SelectCoordinates {
-
 		String criteria;
 	}
 
-	protected static interface Matcher {
-
+	protected interface Matcher {
 		boolean match(List<String> currentWindowInfo);
-
 	}
 }

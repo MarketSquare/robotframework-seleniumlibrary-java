@@ -75,7 +75,7 @@ public class Window extends RunOnFailureKeywordsAdapter {
     
     @RobotKeyword("Returns and logs URLs of all known browser windows.")
     public List<String> getLocations() {
-        List<String> locations = new ArrayList<String>();
+        List<String> locations = new ArrayList<>();
         for (SessionIdAliasWebDriverTuple sessionIdAliasWebdriverTuple : browserManagement.getWebDriverCache().getWebDrivers()) {
             locations.add(sessionIdAliasWebdriverTuple.webDriver.getCurrentUrl());
         }
@@ -114,14 +114,13 @@ public class Window extends RunOnFailureKeywordsAdapter {
         browserManagement.getWebDriverCache().getCurrent().manage().window()
                 .setSize(new Dimension(Integer.parseInt(width), Integer.parseInt(height)));
     }
-    
-    
+
     protected List<String> toList(List<String> items) {
         return toList(items, "item");
     }
 
     protected List<String> toList(List<String> items, String what) {
-        List<String> msg = new ArrayList<String>();
+        List<String> msg = new ArrayList<>();
         msg.add(String.format("Altogether %d %s%s.\n", items.size(), what, items.size() == 1 ? "" : "s"));
         for (int index = 0; index < items.size(); index++) {
             msg.add(String.format("%d: %s", index + 1, items.get(index)));

@@ -24,22 +24,22 @@ public class WebDriverCache {
 	/**
 	 * Stack of currently open session ids to reuse
 	 */
-	Stack<String> openSessionIds = new Stack<String>();
+	Stack<String> openSessionIds = new Stack<>();
 
 	/**
 	 * Stack of already closed session ids to reuse
 	 */
-	Stack<String> closedSessionIds = new Stack<String>();
+	Stack<String> closedSessionIds = new Stack<>();
 
 	/**
 	 * Map session ids to webdrivers
 	 */
-	Map<String, SessionIdAliasWebDriverTuple> tupleBySessionId = new TreeMap<String, SessionIdAliasWebDriverTuple>();
+	Map<String, SessionIdAliasWebDriverTuple> tupleBySessionId = new TreeMap<>();
 
 	/**
 	 * Map aliases to webdrivers
 	 */
-	Map<String, SessionIdAliasWebDriverTuple> tupleByAlias = new TreeMap<String, SessionIdAliasWebDriverTuple>();
+	Map<String, SessionIdAliasWebDriverTuple> tupleByAlias = new TreeMap<>();
 
 	public String register(WebDriver webDriver, String alias) {
 		// create the new tuple
@@ -104,10 +104,10 @@ public class WebDriverCache {
 		}
 		maxAssignedSessionId = 0;
 		currentSessionIdAliasWebDriverTuple = null;
-		openSessionIds = new Stack<String>();
-		closedSessionIds = new Stack<String>();
-		tupleBySessionId = new TreeMap<String, SessionIdAliasWebDriverTuple>();
-		tupleByAlias = new TreeMap<String, SessionIdAliasWebDriverTuple>();
+		openSessionIds = new Stack<>();
+		closedSessionIds = new Stack<>();
+		tupleBySessionId = new TreeMap<>();
+		tupleByAlias = new TreeMap<>();
 	}
 
 	public void switchBrowser(String sessionIdOrAlias) {
