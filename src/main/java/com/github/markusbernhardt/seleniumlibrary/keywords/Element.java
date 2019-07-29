@@ -934,8 +934,8 @@ public class Element extends RunOnFailureKeywordsAdapter {
     @RobotKeyword("Click to element from list elements by locator ``xpath``.")
     @ArgumentNames({"xpath", "index=0", "message=NONE"})
     public void clickElementByIndex(String xpath, String... params) {
-        String message = robot.getParamsValue(params, 0, "");
-        int index = robot.getParamsValue(params, 1, 0);
+        int index = robot.getParamsValue(params, 0, 0);
+        String message = robot.getParamsValue(params, 1, "");
         List<WebElement> elements = elementFind(xpath, false, false);
         if (elements.isEmpty()) {
             if (message.isEmpty()) {
