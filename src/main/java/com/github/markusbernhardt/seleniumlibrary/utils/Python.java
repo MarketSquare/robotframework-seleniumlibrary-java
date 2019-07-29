@@ -33,7 +33,7 @@ public abstract class Python {
 			return null;
 		}
 
-		Map<A, B> map = new HashMap<A, B>();
+		Map<A, B> map = new HashMap<>();
 		Iterator<B> valueIterator = values.listIterator();
 		for (A key : keys) {
 			map.put(key, valueIterator.next());
@@ -50,7 +50,7 @@ public abstract class Python {
 		int index = path.lastIndexOf(File.separatorChar) + 1;
 		String head = path.substring(0, index);
 		if (head.length() != 0) {
-			String regex = "";
+			String regex;
 			if (File.separatorChar == '/') {
 				regex = String.format("/{%d}", head.length());
 			} else {

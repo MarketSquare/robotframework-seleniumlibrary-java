@@ -45,18 +45,18 @@ your pom.xml:
     <dependency>
         <groupId>com.github.hi-fi</groupId>
         <artifactId>robotframework-seleniumlibrary</artifactId>
-        <version>3.141.59.26</version>
+        <version>3.141.59.265</version>
         <scope>test</scope>
     </dependency>
 
 If you cannot use the robotframework-maven-plugin you can use the
-[jar-with-dependencies](http://central.maven.org/maven2/com/github/hi-fi/robotframework-seleniumlibrary/3.141.59.26/robotframework-seleniumlibrary-3.141.59.26-jar-with-dependencies.jar),
-which contains all required libraries. Running of tests with this can be done with command `java -jar robotframework-seleniumlibrary-3.141.59.26-jar-with-dependencies.jar <test location>`.  
+[jar-with-dependencies](http://central.maven.org/maven2/com/github/hi-fi/robotframework-seleniumlibrary/3.141.59.265/robotframework-seleniumlibrary-3.141.59.265-jar-with-dependencies.jar),
+which contains all required libraries. Running of tests with this can be done with command `java -jar robotframework-seleniumlibrary-3.141.59.265-jar-with-dependencies.jar <test location>`.  
 
 * More information about this library can be found in the
-  [Keyword Documentation](http://central.maven.org/maven2/com/github/hi-fi/robotframework-seleniumlibrary/3.141.59.26/robotframework-seleniumlibrary-3.141.59.26.html).
+  [Keyword Documentation](http://central.maven.org/maven2/com/github/hi-fi/robotframework-seleniumlibrary/3.141.59.265/robotframework-seleniumlibrary-3.141.59.265.html).
 * For keyword completion in RIDE you can download this
-  [Library Specs](http://central.maven.org/maven2/com/github/hi-fi/robotframework-seleniumlibrary/3.141.59.26/robotframework-seleniumlibrary-3.141.59.26.xml)
+  [Library Specs](http://central.maven.org/maven2/com/github/hi-fi/robotframework-seleniumlibrary/3.141.59.265/robotframework-seleniumlibrary-3.141.59.265.xml)
   and place it in your PYTHONPATH.
 
 Usage, Selenium 4 (WIP)
@@ -116,7 +116,11 @@ to know when to update drivers you use.
 
 Drivers can also be fetched with [https://github.com/Ardesco/selenium-standalone-server-plugin|Selenium Driver Binary Downloader plugin].
 
+<<<<<<< HEAD
 With Selenium 4 [https://github.com/bonigarcia/webdrivermanager|WebdriverManager] is taken to use, so handling of drivers can also be done with standalone JAR from tests itself.
+=======
+With At 3.141.59.265 [https://github.com/bonigarcia/webdrivermanager|WebdriverManager] is taken to use, so handling of drivers can also be done with standalone JAR from tests itself.
+>>>>>>> 6b856261db4247ab771ecfafe4912c36a508aef1
 
 __ https://seleniumhq.github.io/selenium/docs/api/py/index.html#drivers
 __ https://en.wikipedia.org/wiki/PATH_(variable)
