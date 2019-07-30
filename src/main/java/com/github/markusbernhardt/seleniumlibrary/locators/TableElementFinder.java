@@ -1,9 +1,6 @@
 package com.github.markusbernhardt.seleniumlibrary.locators;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.TreeMap;
+import java.util.*;
 
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -13,7 +10,7 @@ public class TableElementFinder {
 	protected final static TreeMap<String, List<String>> locatorSuffixesMap;
 
 	static {
-		locatorSuffixesMap = new TreeMap<String, List<String>>();
+		locatorSuffixesMap = new TreeMap<>();
 		addLocatorSuffix(locatorSuffixesMap, "css.default", "");
 		addLocatorSuffix(locatorSuffixesMap, "css.content", "");
 		addLocatorSuffix(locatorSuffixesMap, "css.header", " th");
@@ -58,7 +55,7 @@ public class TableElementFinder {
 
 	public static WebElement findByRow(WebDriver webDriver, String tableLocator, int row, String content) {
 		List<String> locators = parseTableLocator(tableLocator, "row");
-		List<String> formattedLocators = new ArrayList<String>();
+		List<String> formattedLocators = new ArrayList<>();
 		for (String locator : locators) {
 			formattedLocators.add(String.format(locator, Integer.toString(row)));
 		}
@@ -67,7 +64,7 @@ public class TableElementFinder {
 
 	public static WebElement findByCol(WebDriver webDriver, String tableLocator, int col, String content) {
 		List<String> locators = parseTableLocator(tableLocator, "col");
-		List<String> formattedLocators = new ArrayList<String>();
+		List<String> formattedLocators = new ArrayList<>();
 		for (String locator : locators) {
 			formattedLocators.add(String.format(locator, Integer.toString(col)));
 		}
@@ -75,15 +72,13 @@ public class TableElementFinder {
 	}
 
 	protected static void addLocatorSuffix(Map<String, List<String>> locatorSuffixesMap, String key, String... values) {
-		List<String> list = new ArrayList<String>();
-		for (String value : values) {
-			list.add(value);
-		}
+		List<String> list = new ArrayList<>();
+		Collections.addAll(list, values);
 		locatorSuffixesMap.put(key, list);
 	}
 
 	protected static List<String> parseTableLocator(String tableLocator, String locationMethod) {
-		String tableLocatorType = null;
+		String tableLocatorType;
 
 		if (tableLocator.startsWith("xpath=") || tableLocator.startsWith("xpath:")) {
 			tableLocatorType = "xpath.";
@@ -99,7 +94,7 @@ public class TableElementFinder {
 
 		List<String> locatorSuffixes = locatorSuffixesMap.get(tableLocatorType + locationMethod);
 
-		List<String> parsedTabeLocators = new ArrayList<String>();
+		List<String> parsedTabeLocators = new ArrayList<>();
 		for (String locatorSuffix : locatorSuffixes) {
 			parsedTabeLocators.add(tableLocator + locatorSuffix);
 		}

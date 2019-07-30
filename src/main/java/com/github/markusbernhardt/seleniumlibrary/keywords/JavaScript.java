@@ -137,7 +137,7 @@ public class JavaScript extends RunOnFailureKeywordsAdapter {
 	@ArgumentNames({ "*code" })
 	public Object executeJavascript(String... code) {
 		String js = getJavascriptToExecute(Python.join("", Arrays.asList(code)));
-		String.format("Executing JavaScript:\n%s", js);
+		logging.html(String.format("Executing JavaScript:\n%s", js));
 		return ((JavascriptExecutor) browserManagement.getCurrentWebDriver()).executeScript(js);
 	}
 
@@ -155,7 +155,7 @@ public class JavaScript extends RunOnFailureKeywordsAdapter {
 	@ArgumentNames({ "*code" })
 	public Object executeAsyncJavascript(String... code) {
 		String js = getJavascriptToExecute(Python.join("", Arrays.asList(code)));
-		String.format("Executing JavaScript:\n%s", js);
+		logging.html(String.format("Executing JavaScript:\n%s", js));
 		return ((JavascriptExecutor) browserManagement.getCurrentWebDriver()).executeAsyncScript(js);
 	}
 
@@ -165,8 +165,7 @@ public class JavaScript extends RunOnFailureKeywordsAdapter {
 	public String getAlertMessage() {
 		try {
 			Alert alert = browserManagement.getCurrentWebDriver().switchTo().alert();
-			String text = alert.getText().replace("\n", "");
-			return text;
+			return alert.getText().replace("\n", "");
 		} catch (WebDriverException wde) {
 			throw new SeleniumLibraryNonFatalException("There were no alerts");
 		}
@@ -177,14 +176,11 @@ public class JavaScript extends RunOnFailureKeywordsAdapter {
 	// ##############################
 
 	protected static String readFile(String path) throws IOException {
-		FileInputStream stream = new FileInputStream(new File(path));
-		try {
+		try (FileInputStream stream = new FileInputStream(new File(path))) {
 			FileChannel fc = stream.getChannel();
 			MappedByteBuffer bb = fc.map(FileChannel.MapMode.READ_ONLY, 0, fc.size());
 			/* Instead of using default, pass in a decoder. */
 			return Charset.defaultCharset().decode(bb).toString();
-		} finally {
-			stream.close();
 		}
 	}
 

@@ -63,7 +63,6 @@ public class SeleniumLibrary extends AnnotationLibrary {
         if (!screenshotPath.isEmpty()) {
             screenshot.setScreenshotDirectory(screenshotPath);
         }
-        
     }
 
     // ##############################
@@ -78,7 +77,6 @@ public class SeleniumLibrary extends AnnotationLibrary {
     
     @Autowired
     Screenshot screenshot;
-
 
     @Override
     public String getKeywordDocumentation(String keywordName) {
@@ -185,6 +183,5 @@ public class SeleniumLibrary extends AnnotationLibrary {
             }
         }
         return keywordName;
-
     }
 }

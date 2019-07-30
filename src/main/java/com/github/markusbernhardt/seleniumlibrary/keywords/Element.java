@@ -366,7 +366,6 @@ public class Element extends RunOnFailureKeywordsAdapter {
         }
     }
 
-
     @RobotKeyword("Verify the element identified by ``locator`` is not clickable.\r\n" + 
             "\r\n" +  
             "Key attributes for arbitrary elements are id and name. See `Introduction` for details about locators.")
@@ -403,7 +402,6 @@ public class Element extends RunOnFailureKeywordsAdapter {
             throw new SeleniumLibraryNonFatalException(message);
         }
     }
-
 
     @RobotKeyword("Verify the text of the element identified by ``locator`` is not exactly ``text``.\r\n" + 
             "\r\n" + 
@@ -448,7 +446,6 @@ public class Element extends RunOnFailureKeywordsAdapter {
             "Passing attribute name as part of the locator was removed in SeleniumLibrary 3.2. The explicit attribute argument should be used instead.")
     @ArgumentNames({ "locator", "attribute" })
     public String getElementAttribute(String locator, String attribute) {
-
         List<WebElement> elements = elementFind(locator, true, false);
 
         if (elements.size() == 0) {
@@ -494,7 +491,6 @@ public class Element extends RunOnFailureKeywordsAdapter {
         logging.info(String.format("Found element ID: '%s'.", eId));
 
         return eId;
-
     }
 
     @RobotKeyword("Returns horizontal position of element identified by ``locator``.\r\n" +
@@ -778,7 +774,6 @@ public class Element extends RunOnFailureKeywordsAdapter {
     // Keywords - Links
     // ##############################
 
-
     @RobotKeyword("Click on the link identified by ``locator``.\r\n" +
             "\r\n" +
             "Key attributes for links are id, name, href and link text. See `Introduction` for details about locators.")
@@ -794,7 +789,7 @@ public class Element extends RunOnFailureKeywordsAdapter {
             "\r\n" +
             "If a link has no id, an empty string will be in the list instead.")
     public ArrayList<String> getAllLinks() {
-        ArrayList<String> ret = new ArrayList<String>();
+        ArrayList<String> ret = new ArrayList<>();
 
         List<WebElement> elements = elementFind("tag:a", false, false, "a");
         for (WebElement element : elements) {
@@ -934,8 +929,8 @@ public class Element extends RunOnFailureKeywordsAdapter {
     @RobotKeyword("Click to element from list elements by locator ``xpath``.")
     @ArgumentNames({"xpath", "index=0", "message=NONE"})
     public void clickElementByIndex(String xpath, String... params) {
-        String message = robot.getParamsValue(params, 0, "");
-        int index = robot.getParamsValue(params, 1, 0);
+        int index = robot.getParamsValue(params, 0, 0);
+        String message = robot.getParamsValue(params, 1, "");
         List<WebElement> elements = elementFind(xpath, false, false);
         if (elements.isEmpty()) {
             if (message.isEmpty()) {
@@ -965,7 +960,7 @@ public class Element extends RunOnFailureKeywordsAdapter {
 
         if (firstOnly) {
             if (elements.size() > 1) {
-                List<WebElement> tmp = new ArrayList<WebElement>();
+                List<WebElement> tmp = new ArrayList<>();
                 tmp.add(elements.get(0));
                 elements = tmp;
             }
@@ -1079,9 +1074,8 @@ public class Element extends RunOnFailureKeywordsAdapter {
         }
 
         List<WebElement> elements = elementFind("xpath://frame|//iframe", false, false);
-        Iterator<WebElement> it = elements.iterator();
-        while (it.hasNext()) {
-            current.switchTo().frame(it.next());
+        for (WebElement element : elements) {
+            current.switchTo().frame(element);
             boolean found = isTextPresent(text);
             current.switchTo().defaultContent();
             if (found) {

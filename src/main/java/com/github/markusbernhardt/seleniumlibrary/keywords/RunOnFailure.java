@@ -61,15 +61,11 @@ public class RunOnFailure extends RunOnFailureKeywordsAdapter {
 	// Internal Methods
 	// ##############################
 
-	protected static ThreadLocal<PythonInterpreter> runOnFailurePythonInterpreter = new ThreadLocal<PythonInterpreter>() {
-
-		@Override
-		protected PythonInterpreter initialValue() {
-			PythonInterpreter pythonInterpreter = new PythonInterpreter();
-			pythonInterpreter.exec("from robot.libraries.BuiltIn import BuiltIn; from robot.running.context import EXECUTION_CONTEXTS; BIN = BuiltIn();");
-			return pythonInterpreter;
-		}
-	};
+	protected static ThreadLocal<PythonInterpreter> runOnFailurePythonInterpreter = ThreadLocal.withInitial(() -> {
+		PythonInterpreter pythonInterpreter = new PythonInterpreter();
+		pythonInterpreter.exec("from robot.libraries.BuiltIn import BuiltIn; from robot.running.context import EXECUTION_CONTEXTS; BIN = BuiltIn();");
+		return pythonInterpreter;
+	});
 
 	public void runOnFailure() {
 		if (runOnFailureKeyword == null) {
