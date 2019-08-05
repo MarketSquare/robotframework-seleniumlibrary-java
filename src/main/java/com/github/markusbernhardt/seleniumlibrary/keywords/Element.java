@@ -435,7 +435,7 @@ public class Element extends RunOnFailureKeywordsAdapter {
             "Passing attribute name as part of the locator was removed in SeleniumLibrary 3.2. The explicit attribute argument should be used instead.")
     @ArgumentNames({ "locator", "attribute=None" })
     public String getElementAttribute(String locator, String... attribute) {
-        String attributeName= robot.getParamsValue(attribute, 0, "None");
+        String attributeName = robot.getParamsValue(attribute, 0, "None");
         List<WebElement> elements = elementFind(locator, true, false);
 
         if (elements.size() == 0) {
