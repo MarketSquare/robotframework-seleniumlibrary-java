@@ -116,11 +116,7 @@ to know when to update drivers you use.
 
 Drivers can also be fetched with [https://github.com/Ardesco/selenium-standalone-server-plugin|Selenium Driver Binary Downloader plugin].
 
-<<<<<<< HEAD
-With Selenium 4 [https://github.com/bonigarcia/webdrivermanager|WebdriverManager] is taken to use, so handling of drivers can also be done with standalone JAR from tests itself.
-=======
 With At 3.141.59.265 [https://github.com/bonigarcia/webdrivermanager|WebdriverManager] is taken to use, so handling of drivers can also be done with standalone JAR from tests itself.
->>>>>>> 6b856261db4247ab771ecfafe4912c36a508aef1
 
 __ https://seleniumhq.github.io/selenium/docs/api/py/index.html#drivers
 __ https://en.wikipedia.org/wiki/PATH_(variable)
