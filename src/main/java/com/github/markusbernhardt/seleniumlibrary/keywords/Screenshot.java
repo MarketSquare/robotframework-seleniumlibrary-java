@@ -1,9 +1,7 @@
 package com.github.markusbernhardt.seleniumlibrary.keywords;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-
+import com.github.markusbernhardt.seleniumlibrary.RunOnFailureKeywordsAdapter;
+import com.github.markusbernhardt.seleniumlibrary.utils.Robotframework;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.TakesScreenshot;
@@ -13,8 +11,9 @@ import org.robotframework.javalib.annotation.Autowired;
 import org.robotframework.javalib.annotation.RobotKeyword;
 import org.robotframework.javalib.annotation.RobotKeywords;
 
-import com.github.markusbernhardt.seleniumlibrary.RunOnFailureKeywordsAdapter;
-import com.github.markusbernhardt.seleniumlibrary.utils.Robotframework;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 
 @RobotKeywords
 public class Screenshot extends RunOnFailureKeywordsAdapter {
@@ -50,15 +49,15 @@ public class Screenshot extends RunOnFailureKeywordsAdapter {
 	    screenshotDir = new File(path);
 	    return oldDir;
 	}
-	
-	@RobotKeyword("Take a screenshot of the current page and embed it into the log.\r\n" + 
-	        "\r\n" + 
-	        "The ``filename`` argument specifies the name of the file to write the screenshot into. If no filename is given, the screenshot is saved into file selenium-screenshot-{index}.png under the directory where the Robot Framework log file is written into. The filename is also considered relative to the same directory, if it is not given in absolute format.\r\n" + 
-	        "\r\n" + 
-		"if ``filename`` contains marker {index}, it will be automatically replaced with unique running index preventing files to be overwritten. Indices start from 1.\r\n" +
-		"\r\n" + 
-	        "A CSS can be used to modify how the screenshot is taken. By default the background color is changed to avoid possible problems with background leaking when the page layout is somehow broken.")
-	@ArgumentNames({ "filename=selenium-screenshot-{index}.png" })
+
+	@RobotKeyword("Take a screenshot of the current page and embed it into the log.\r\n" +
+			"\r\n" +
+			"The ``filename`` argument specifies the name of the file to write the screenshot into. If no filename is given, the screenshot is saved into file selenium-screenshot-{index}.png under the directory where the Robot Framework log file is written into. The filename is also considered relative to the same directory, if it is not given in absolute format.\r\n" +
+			"\r\n" +
+			"if ``filename`` contains marker {index}, it will be automatically replaced with unique running index preventing files to be overwritten. Indices start from 1.\r\n" +
+			"\r\n" +
+			"A CSS can be used to modify how the screenshot is taken. By default the background color is changed to avoid possible problems with background leaking when the page layout is somehow broken.")
+	@ArgumentNames({"filename=selenium-screenshot-{index}.png"})
 	public void capturePageScreenshot(String...params) {
 	    String filename = robot.getParamsValue(params, 0, null);
 		File logdir = screenshotDir != null ? screenshotDir : logging.getLogDir();
@@ -68,7 +67,6 @@ public class Screenshot extends RunOnFailureKeywordsAdapter {
 
 		if (currentWebDriver.getClass().toString().contains("HtmlUnit")) {
 		    logging.warn("HTMLunit is not supporting screenshots.");
-		    return;
 		} else {
 		    try {
 		        TakesScreenshot takesScreenshot = ((TakesScreenshot) currentWebDriver);
@@ -79,8 +77,7 @@ public class Screenshot extends RunOnFailureKeywordsAdapter {
 	                    "</td></tr><tr><td colspan=\"3\"><a href=\"%s\"><img src=\"%s\" width=\"800px\"></a>", link, link));
 		    } catch (NullPointerException e) {
 	            logging.warn("Can't take screenshot. No open browser found");
-                return;    
-	        }    	
+			}
 		}
 	}
 

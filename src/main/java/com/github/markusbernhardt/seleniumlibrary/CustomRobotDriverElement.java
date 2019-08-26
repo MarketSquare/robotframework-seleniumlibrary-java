@@ -1,6 +1,7 @@
 package com.github.markusbernhardt.seleniumlibrary;
 
 import com.github.markusbernhardt.seleniumlibrary.keywords.BrowserManagement;
+import com.github.markusbernhardt.seleniumlibrary.keywords.Logging;
 import com.github.markusbernhardt.seleniumlibrary.keywords.Robot;
 import org.openqa.selenium.WebDriver;
 
@@ -16,7 +17,8 @@ public class CustomRobotDriverElement {
 
     private static SeleniumLibrary s;
     private static BrowserManagement b;
-    private Robot robot = new Robot();
+    protected Robot robot = new Robot();
+    protected Logging logging = new Logging();
 
     public CustomRobotDriverElement() throws NoSuchFieldException, IllegalAccessException {
         try {
@@ -41,9 +43,4 @@ public class CustomRobotDriverElement {
     protected WebDriver getCurrentBrowser() {
         return b.getCurrentWebDriver();
     }
-
-    protected Robot getRobot() {
-        return robot;
-    }
-
 }

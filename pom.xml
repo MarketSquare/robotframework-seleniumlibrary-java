@@ -5,7 +5,7 @@
 
 	<groupId>com.github.hi-fi</groupId>
 	<artifactId>robotframework-seleniumlibrary</artifactId>
-	<version>4.0.0-alpha-1.0-SNAPSHOT</version>
+	<version>4.0.0-alpha-2.0-SNAPSHOT</version>
 	<packaging>jar</packaging>
 
 	<name>Robot Framework :: SeleniumLibrary</name>
@@ -71,7 +71,7 @@
 		<java.version>1.8</java.version>
 		<robotframework.maven.plugin.version>1.5.1</robotframework.maven.plugin.version>
 		<robotframework.version>3.1.2</robotframework.version>
-		<selenium.version>4.0.0-alpha-1</selenium.version>
+		<selenium.version>4.0.0-alpha-2</selenium.version>
 		<keywords.class>SeleniumLibrary</keywords.class>
 		<browser>jbrowser</browser>
 		<downloadWebDriver>False</downloadWebDriver>
@@ -113,11 +113,12 @@
 					<artifactId>selenium-java</artifactId>
 				</exclusion>
 			</exclusions>
+			<scope>provided</scope>
 		</dependency>
 		<dependency>
 			<groupId>io.appium</groupId>
 			<artifactId>java-client</artifactId>
-			<version>7.0.0</version>
+			<version>7.2.0</version>
 			<exclusions>
 				<exclusion>
 					<groupId>org.seleniumhq.selenium</groupId>
@@ -128,6 +129,7 @@
 					<artifactId>selenium-api</artifactId>
 				</exclusion>
 			</exclusions>
+			<scope>provided</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.apache.commons</groupId>
@@ -137,7 +139,36 @@
 		<dependency>
 			<groupId>com.machinepublishers</groupId>
 			<artifactId>jbrowserdriver</artifactId>
-			<version>1.1.0-RC1</version>
+			<version>1.1.0-RC2</version>
+			<exclusions>
+                <exclusion>
+                    <groupId>org.seleniumhq.selenium</groupId>
+                    <artifactId>selenium-remote-driver</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.seleniumhq.selenium</groupId>
+                    <artifactId>selenium-api</artifactId>
+                </exclusion>
+            </exclusions>
+		</dependency>
+		<dependency>
+		    <groupId>org.seleniumhq.selenium</groupId>
+		    <artifactId>htmlunit-driver</artifactId>
+		    <version>2.36.0</version>
+		    <exclusions>
+                <exclusion>
+                    <groupId>org.seleniumhq.selenium</groupId>
+                    <artifactId>selenium-remote-driver</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.seleniumhq.selenium</groupId>
+                    <artifactId>selenium-api</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.seleniumhq.selenium</groupId>
+                    <artifactId>selenium-support</artifactId>
+                </exclusion>
+            </exclusions>
 		</dependency>
 		<dependency>
 			<groupId>org.mockito</groupId>
@@ -148,7 +179,7 @@
 		<dependency>
 			<groupId>io.github.bonigarcia</groupId>
 			<artifactId>webdrivermanager</artifactId>
-			<version>3.4.0</version>
+			<version>3.6.2</version>
 		</dependency>
 	</dependencies>
 
@@ -288,7 +319,7 @@
 						<!-- Weave the failure handler into the code -->
 						<groupId>org.codehaus.mojo</groupId>
 						<artifactId>aspectj-maven-plugin</artifactId>
-						<version>1.10</version>
+						<version>1.11</version>
 						<executions>
 							<execution>
 								<goals>
@@ -318,7 +349,7 @@
 						<!-- Set 1.7 as target, use project source encoding -->
 						<groupId>org.apache.maven.plugins</groupId>
 						<artifactId>maven-compiler-plugin</artifactId>
-						<version>3.7.0</version>
+						<version>3.8.0</version>
 						<configuration>
 							<source>${java.version}</source>
 							<target>${java.version}</target>
@@ -346,7 +377,7 @@
 						<!-- Build the fat jar with all dependencies -->
 						<groupId>org.apache.maven.plugins</groupId>
 						<artifactId>maven-assembly-plugin</artifactId>
-						<version>2.6</version>
+						<version>3.1.0</version>
 						<configuration>
 							<archive>
 								<manifest>
@@ -371,6 +402,13 @@
 				</plugins>
 			</build>
 		</profile>
+        <profile>
+            <id>htmlunitwithjs</id>
+            <properties>
+                <browser>htmlunitwithjs</browser>
+                <downloadWebDriver>False</downloadWebDriver>
+            </properties>
+        </profile>
 		<profile>
 			<id>firefox</id>
 			<properties>
@@ -432,7 +470,7 @@
 					<plugin>
 						<groupId>org.codehaus.mojo</groupId>
 						<artifactId>build-helper-maven-plugin</artifactId>
-						<version>1.10</version>
+						<version>3.0.0</version>
 						<executions>
 							<execution>
 								<id>attach-artifacts</id>

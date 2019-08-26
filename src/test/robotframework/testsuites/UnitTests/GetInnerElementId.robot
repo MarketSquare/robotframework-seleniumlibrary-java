@@ -1,6 +1,5 @@
 *** Settings ***
 Resource          ../../settings/Settings.robot
-Default Tags      jbrowser
 
 *** Test Cases ***
 Get Inner Element Id test
