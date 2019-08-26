@@ -1,13 +1,13 @@
 *** Settings ***
 Suite Teardown    Close All Browsers
 Resource          ../../settings/Settings.robot
+Default Tags      htmlunitwith    htmlunitwithjs
 
 *** Variables ***
 ${URL Application}    http://www.w3schools.com
 
 *** Test Cases *** 
 Select
-    [Tags]    jbrowser
     Open Browser    https://developer.mozilla.org/en/docs/Web/HTML/Element/select#Examples    ${browser}    mainbrowser
     Wait Until Page Contains Element    xpath://select
     Select From List    xpath://select    Third Value
