@@ -5,5 +5,5 @@ Resource          ../../settings/Settings.robot
 Cookies
     Open Browser    http://www.whatarecookies.com/cookietest.asp    ${browser}    mainbrowser
     ${all_cookies}=    Get Cookies
-    ${test}=    Get Cookie Value    __atuvc
+    ${test}=    Get Cookie Value    _ga
     Close Browser 

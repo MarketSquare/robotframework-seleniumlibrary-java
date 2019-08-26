@@ -12,7 +12,6 @@ import org.python.util.PythonInterpreter;
 import org.robotframework.javalib.annotation.ArgumentNames;
 import org.robotframework.javalib.annotation.Autowired;
 import org.robotframework.javalib.annotation.RobotKeyword;
-import org.robotframework.javalib.annotation.RobotKeywordOverload;
 import org.robotframework.javalib.annotation.RobotKeywords;
 
 import com.github.markusbernhardt.seleniumlibrary.RunOnFailureKeywordsAdapter;
@@ -25,7 +24,7 @@ public class Logging extends RunOnFailureKeywordsAdapter {
     protected static String logDir = null;
 
     static {
-        VALID_LOG_LEVELS = new HashMap<String, String[]>();
+        VALID_LOG_LEVELS = new HashMap<>();
         VALID_LOG_LEVELS.put("debug", new String[] { "debug", "" });
         VALID_LOG_LEVELS.put("html", new String[] { "info", ", True, False" });
         VALID_LOG_LEVELS.put("info", new String[] { "info", "" });
@@ -60,7 +59,6 @@ public class Logging extends RunOnFailureKeywordsAdapter {
         }
         return windowIdentifiers;
     }
-
 
     @RobotKeyword("Logs and returns the names of all windows known to the current browser instance.\r\n" + 
             "\r\n" + 
@@ -131,7 +129,6 @@ public class Logging extends RunOnFailureKeywordsAdapter {
         log(actual, logLevel);
         return actual;
     }
-
 
     @RobotKeyword("Returns the actually supported capabilities of the remote browser instance.\r\n" + 
             "\r\n" + 
@@ -240,7 +237,6 @@ public class Logging extends RunOnFailureKeywordsAdapter {
     }
 
     protected File getLogDir() {
-
         if (logDir == null
                 && !loggingPythonInterpreter.get().eval("EXECUTION_CONTEXTS.current").toString().equals("None")) {
             PyString logDirName = (PyString) loggingPythonInterpreter.get()
@@ -259,14 +255,10 @@ public class Logging extends RunOnFailureKeywordsAdapter {
         logDir = logDirectory;
     }
 
-    protected static ThreadLocal<PythonInterpreter> loggingPythonInterpreter = new ThreadLocal<PythonInterpreter>() {
-
-        @Override
-        protected PythonInterpreter initialValue() {
-            PythonInterpreter pythonInterpreter = new PythonInterpreter();
-            pythonInterpreter.exec(
-                    "from robot.libraries.BuiltIn import BuiltIn; from robot.running.context import EXECUTION_CONTEXTS; from robot.api import logger;");
-            return pythonInterpreter;
-        }
-    };
+    protected static ThreadLocal<PythonInterpreter> loggingPythonInterpreter = ThreadLocal.withInitial(() -> {
+        PythonInterpreter pythonInterpreter = new PythonInterpreter();
+        pythonInterpreter.exec(
+                "from robot.libraries.BuiltIn import BuiltIn; from robot.running.context import EXECUTION_CONTEXTS; from robot.api import logger;");
+        return pythonInterpreter;
+    });
 }

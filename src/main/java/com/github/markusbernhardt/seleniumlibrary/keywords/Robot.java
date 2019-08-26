@@ -1,14 +1,11 @@
 package com.github.markusbernhardt.seleniumlibrary.keywords;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
+import com.google.gson.Gson;
 import org.python.util.PythonInterpreter;
-import org.robotframework.javalib.annotation.Autowired;
 import org.robotframework.javalib.annotation.RobotKeywords;
 
-import com.google.gson.Gson;
+import java.util.List;
+import java.util.Map;
 
 @RobotKeywords
 public class Robot {
@@ -31,26 +28,28 @@ public class Robot {
 				value = (T) givenValue;
 			} else if (defaultValue instanceof List) {
 				value = (T) parseRobotList(givenValue);
+			} else if (Boolean.valueOf(givenValue)) {
+				value = (T) Boolean.valueOf(givenValue);
 			}
 		}
 		return value;
 	}
 
 	@SuppressWarnings({ "unchecked", "resource" })
-	public Map<String, Object> parseRobotDictionary(String dictionary) {
-		logging.debug("Dictionary going to be parsed to Map: " + dictionary);
-		Map<String, Object> json = new HashMap<String, Object>();
-		try {
-		PythonInterpreter py = new PythonInterpreter();
-		py.exec("import json");
-		json = new Gson().fromJson(py.eval("json.dumps(" + dictionary + ")").toString(), Map.class);
-		} catch (RuntimeException e)  {
-			logging.error(String.format("Parsing of dictionary %s failed.", dictionary));
-			throw e;
-		}
-		
-		return json;
-	}
+    public Map<String, Object> parseRobotDictionary(String dictionary) {
+        logging.debug("Dictionary going to be parsed to Map: " + dictionary);
+        Map<String, Object> json;
+        try {
+            PythonInterpreter py = new PythonInterpreter();
+            py.exec("import json");
+            json = new Gson().fromJson(py.eval("json.dumps(" + dictionary + ")").toString(), Map.class);
+        } catch (RuntimeException e) {
+            logging.error(String.format("Parsing of dictionary %s failed.", dictionary));
+            throw e;
+        }
+
+        return json;
+    }
 
 	@SuppressWarnings("unchecked")
 	public List<String> parseRobotList(String list) {

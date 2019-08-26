@@ -7,7 +7,6 @@ import org.openqa.selenium.WebElement;
 import org.robotframework.javalib.annotation.ArgumentNames;
 import org.robotframework.javalib.annotation.Autowired;
 import org.robotframework.javalib.annotation.RobotKeyword;
-import org.robotframework.javalib.annotation.RobotKeywordOverload;
 import org.robotframework.javalib.annotation.RobotKeywords;
 
 import com.github.markusbernhardt.seleniumlibrary.RunOnFailureKeywordsAdapter;
@@ -81,7 +80,7 @@ public class TableElement extends RunOnFailureKeywordsAdapter {
 		String message = String.format("Cell in table '%s' in row #%d and column #%d should have contained text '%s'.",
 				tableLocator, row, column, text);
 
-		String content = "";
+		String content;
 		try {
 			content = getTableCell(tableLocator, row, column, logLevel);
 		} catch (SeleniumLibraryNonFatalException e) {

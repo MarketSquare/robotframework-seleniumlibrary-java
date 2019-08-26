@@ -1,13 +1,14 @@
 language: java
+dist: trusty
+
 jdk:
   - oraclejdk8
 
 env:
   - PROFILE=build
-  - PROFILE=build,googlechrome
-  - PROFILE=build,firefox
   - PROFILE=build,googlechromeheadless
   - PROFILE=build,firefoxheadless
+  - PROFILE=build,htmlunitwithjs
   
 stages:
   - test
