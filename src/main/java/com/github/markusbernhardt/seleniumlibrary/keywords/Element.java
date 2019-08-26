@@ -13,10 +13,7 @@ import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
-import org.robotframework.javalib.annotation.ArgumentNames;
-import org.robotframework.javalib.annotation.Autowired;
-import org.robotframework.javalib.annotation.RobotKeyword;
-import org.robotframework.javalib.annotation.RobotKeywords;
+import org.robotframework.javalib.annotation.*;
 
 import com.github.markusbernhardt.seleniumlibrary.RunOnFailureKeywordsAdapter;
 import com.github.markusbernhardt.seleniumlibrary.SeleniumLibraryNonFatalException;
@@ -423,17 +420,9 @@ public class Element extends RunOnFailureKeywordsAdapter {
         }
     }
 
-    @RobotKeyword("Returns the value of an element attribute.\r\n" +
-            "\r\n" +
-            "The ``attribute_locator`` consists of element locator followed by an @ sign and attribute name. Example: element_id@class\r\n" +
-            "\r\n" +
-            "Key attributes for arbitrary elements are id and name. See `Introduction` for details about locators.\r\n" +
-            "\r\n" +
-            "Passing attribute name as part of the locator was removed in SeleniumLibrary 3.2. The explicit attribute argument should be used instead.")
-    @ArgumentNames({ "attributeLocator" })
-    @Deprecated
-    public String getElementAttribute(String attributeLocator) {
-        String[] parts = parseAttributeLocator(attributeLocator);
+    @RobotKeywordOverload
+    public String getElementAttribute(String locator) {
+        String[] parts = parseAttributeLocator(locator);
         return getElementAttribute(parts[0], parts[1]);
     }
 
@@ -444,14 +433,15 @@ public class Element extends RunOnFailureKeywordsAdapter {
             "Example: ${id}=    Get Element Attribute   css:h1  id\r\n" +
             "\r\n" +
             "Passing attribute name as part of the locator was removed in SeleniumLibrary 3.2. The explicit attribute argument should be used instead.")
-    @ArgumentNames({ "locator", "attribute" })
-    public String getElementAttribute(String locator, String attribute) {
+    @ArgumentNames({ "locator", "attribute=None" })
+    public String getElementAttribute(String locator, String... attribute) {
+        String attributeName = robot.getParamsValue(attribute, 0, "None");
         List<WebElement> elements = elementFind(locator, true, false);
 
         if (elements.size() == 0) {
             throw new SeleniumLibraryNonFatalException(String.format("Element '%s' not found.", locator));
         }
-        return elements.get(0).getAttribute(attribute);
+        return elements.get(0).getAttribute(attributeName);
     }
 
     @RobotKeyword("Clears the text from element identified by ``locator``.\r\n" +
