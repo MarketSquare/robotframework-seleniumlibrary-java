@@ -8,6 +8,7 @@ env:
   - PROFILE=build
   - PROFILE=build,googlechromeheadless
   - PROFILE=build,firefoxheadless
+  - PROFILE=build,htmlunitwithjs
   
 stages:
   - test

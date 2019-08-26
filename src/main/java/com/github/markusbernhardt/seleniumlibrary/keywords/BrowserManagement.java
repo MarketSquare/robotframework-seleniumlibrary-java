@@ -38,6 +38,7 @@ import org.openqa.selenium.edge.EdgeOptions;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.firefox.FirefoxOptions;
 import org.openqa.selenium.firefox.FirefoxProfile;
+import org.openqa.selenium.htmlunit.HtmlUnitDriver;
 import org.openqa.selenium.ie.InternetExplorerDriver;
 import org.openqa.selenium.ie.InternetExplorerOptions;
 import org.openqa.selenium.opera.OperaDriver;
@@ -168,7 +169,9 @@ public class BrowserManagement extends RunOnFailureKeywordsAdapter {
             "| Opera     | opera     |\r\n" + 
             "| Android   | android   |\r\n" + 
             "| Iphone    | iphone    |\r\n" + 
-            "| JBrowser  | jbrowser  |\r\n" + 
+            "| JBrowser  | jbrowser  |\r\n" +
+            "| HTMLUnit  | htmlunit  |\r\n" + 
+            "| HTMLUnit with Javascript | htmlunitwithjs    |\r\n" + 
             "\r\n" + 
             "To be able to actually use one of these browsers, you need to have a matching Selenium browser driver available. See the [https://github.com/Hi-Fi/robotframework-seleniumlibrary-java#browser-drivers|project documentation] for more details.\r\n" +
             "\r\n" + 
@@ -677,6 +680,12 @@ public class BrowserManagement extends RunOnFailureKeywordsAdapter {
                 } catch (Exception e) {
                     throw new SeleniumLibraryFatalException("Creating " + browserName + " instance failed.", e);
                 }
+            case "htmlunit":
+                return new HtmlUnitDriver(desiredCapabilities);
+            case "htmlunitwithjs":
+                HtmlUnitDriver driver = new HtmlUnitDriver(desiredCapabilities);
+                driver.setJavascriptEnabled(true);
+                return driver;
             default:
                 throw new SeleniumLibraryFatalException(browserName + " is not a supported browser.");
         }
@@ -768,6 +777,11 @@ public class BrowserManagement extends RunOnFailureKeywordsAdapter {
             break;
         case "jbrowser":
             desiredCapabilities = new DesiredCapabilities("jbrowser", "1", Platform.ANY);
+            break;
+        case "htmlunit":
+        case "htmlunitwithjs":
+            desiredCapabilities = DesiredCapabilities.htmlUnit();
+            ((DesiredCapabilities) desiredCapabilities).setBrowserName("htmlunit");
             break;
         default:
             throw new SeleniumLibraryFatalException(browserName + " is not a supported browser.");

@@ -77,6 +77,7 @@ public class RunOnFailure extends RunOnFailureKeywordsAdapter {
 		if(runOnFailurePythonInterpreter.get().eval("EXECUTION_CONTEXTS.current").toString().equals("None")) {
 			return;
 		}
+		runningOnFailureRoutine = true;
 		
 		try {
 			runOnFailurePythonInterpreter.get().exec(
