@@ -96,7 +96,7 @@ public abstract class Robotframework {
 	}
 
 	public static String secsToTimestr(double double_secs) {
-		TimestrHelper secsToTimestrHelper = new TimestrHelper(double_secs);
+		TimeStringHelper secsToTimestrHelper = new TimeStringHelper(double_secs);
 		return secsToTimestrHelper.getValue();
 	}
 
@@ -117,7 +117,7 @@ public abstract class Robotframework {
 		int mins = 0;
 		int hours = 0;
 		int days = 0;
-		int sign = 0;
+		int sign;
 		if (timestr.charAt(0) == '-') {
 			sign = -1;
 			timestr = timestr.substring(1);

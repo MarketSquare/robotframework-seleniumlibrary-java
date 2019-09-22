@@ -303,6 +303,26 @@ public class Waiting extends RunOnFailureKeywordsAdapter {
                 });
 	}
 
+	@RobotKeyword("Waits until the current WebElement attribute or CSS property will be containing value.")
+	@ArgumentNames({ "value", "attribute", "locator", "timeout=NONE", "message=NONE" })
+	public void waitUntilElementAttributeValueContains(final String value, final String attribute, final String locator, String...params) {
+		String timeout = robot.getParamsValue(params, 0, null);
+		String message = robot.getParamsValue(params, 1, null);
+		if (message == null) {
+			message = String.format("Attribute value '%s' did not contain in attribute '%s' in <TIMEOUT>", value, attribute);
+		}
+		waitUntil(
+				timeout,
+				message,
+				() -> {
+					String currentValue = element.getElementAttribute(locator, attribute);
+					if (currentValue == null || currentValue.isEmpty()) {
+						currentValue = element.getCssValue(attribute, locator);
+					}
+					return value.equals(currentValue);
+				});
+	}
+
     @RobotKeyword("Waits until the current page title does not contain ``title``.\r\n" + 
             "\r\n" + 
             "Fails, if the timeout expires, before the page title does not contain the given title. \r\n" + 

@@ -3,10 +3,10 @@ package com.github.markusbernhardt.seleniumlibrary.utils;
 import java.util.ArrayList;
 import java.util.List;
 
-public class TimestrHelper {
+public class TimeStringHelper {
 
 	protected boolean compact;
-	protected List<String> ret = new ArrayList<String>();
+	protected List<String> ret = new ArrayList<>();
 	protected String sign;
 	protected int millis;
 	protected int secs;
@@ -14,11 +14,11 @@ public class TimestrHelper {
 	protected int hours;
 	protected int days;
 
-	public TimestrHelper(double double_secs) {
+	public TimeStringHelper(double double_secs) {
 		this(double_secs, false);
 	}
 
-	public TimestrHelper(double double_secs, boolean compact) {
+	public TimeStringHelper(double double_secs, boolean compact) {
 		this.compact = compact;
 		secsToComponents(double_secs);
 		addItem(days, "d", "day");

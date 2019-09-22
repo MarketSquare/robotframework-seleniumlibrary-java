@@ -94,11 +94,11 @@ public class TableElementFinder {
 
 		List<String> locatorSuffixes = locatorSuffixesMap.get(tableLocatorType + locationMethod);
 
-		List<String> parsedTabeLocators = new ArrayList<>();
+		List<String> parsedTableLocators = new ArrayList<>();
 		for (String locatorSuffix : locatorSuffixes) {
-			parsedTabeLocators.add(tableLocator + locatorSuffix);
+			parsedTableLocators.add(tableLocator + locatorSuffix);
 		}
-		return parsedTabeLocators;
+		return parsedTableLocators;
 	}
 
 	protected static WebElement searchInLocators(WebDriver webDriver, List<String> locators, String content) {
