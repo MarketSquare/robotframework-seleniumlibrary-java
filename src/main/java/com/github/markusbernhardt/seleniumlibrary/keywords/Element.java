@@ -426,6 +426,17 @@ public class Element extends RunOnFailureKeywordsAdapter {
         return getElementAttribute(parts[0], parts[1]);
     }
 
+    @RobotKeyword("Get the value of a given CSS property.")
+    @ArgumentNames({ "attribute", "locator" })
+    public String getCssValue(final String attribute, final String locator) {
+        List<WebElement> elements = elementFind(locator, true, false);
+
+        if (elements.size() == 0) {
+            throw new SeleniumLibraryNonFatalException(String.format("Element '%s' not found.", locator));
+        }
+        return elements.get(0).getCssValue(attribute);
+    }
+
     @RobotKeyword("Returns value of attribute from element locator.\r\n" +
             "\r\n" +
             "See the `Locating elements` section for details about the locator syntax.\r\n" +
@@ -988,11 +999,7 @@ public class Element extends RunOnFailureKeywordsAdapter {
             return false;
         }
         String readonly = element.getAttribute("readonly");
-        if (readonly != null && (readonly.equals("readonly") || readonly.equals("true"))) {
-            return false;
-        }
-
-        return true;
+        return readonly == null || (!readonly.equals("readonly") && !readonly.equals("true"));
     }
 
     protected boolean isFocused(String locator) {
@@ -1113,6 +1120,7 @@ public class Element extends RunOnFailureKeywordsAdapter {
         case 127:
             return Keys.DELETE;
         default:
+            //noinspection NewStringBufferWithCharArgument
             return new StringBuffer((char) keyCode);
         }
     }
