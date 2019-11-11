@@ -158,7 +158,7 @@ public class ElementFinder {
 
 		if (findByCoordinates.constraints != null) {
 			for (String name : findByCoordinates.constraints.keySet()) {
-				if (!element.getAttribute(name).equals(findByCoordinates.constraints.get(name))) {
+				if (findByCoordinates.constraints.get(name) != null && !Arrays.asList(findByCoordinates.constraints.get(name).split(",")).contains(element.getAttribute(name))) {
 					return false;
 				}
 			}
@@ -184,7 +184,9 @@ public class ElementFinder {
 		List<String> xpathConstraints = new ArrayList<>();
 		if (findByCoordinates.constraints != null) {
 			for (Entry<String, String> entry : findByCoordinates.constraints.entrySet()) {
-				xpathConstraints.add(String.format("@%s='%s'", entry.getKey(), entry.getValue()));
+				for (String value: entry.getValue().split(",")) {
+					xpathConstraints.add(String.format("@%s='%s'", entry.getKey(), value));
+				}
 			}
 		}
 		List<String> xpathSearchers = new ArrayList<>();
@@ -192,9 +194,8 @@ public class ElementFinder {
 			xpathSearchers.add(String.format("%s=%s", attr, xpathCriteria));
 		}
 		xpathSearchers.addAll(getAttrsWithUrl(webDriver, keyAttrs, findByCoordinates.criteria));
-		String xpath = String.format("//%s[%s(%s)]", xpathTag, Python.join(" and ", xpathConstraints)
-				+ (xpathConstraints.size() > 0 ? " and " : ""), Python.join(" or ", xpathSearchers));
-
+		String xpath = String.format("//%s[(%s)%s(%s)]", xpathTag, Python.join(" or ", xpathConstraints)
+				,(xpathConstraints.size() > 0 ? " and " : ""), Python.join(" or ", xpathSearchers));
 		return webDriver.findElements(By.xpath(xpath));
 	}
 
@@ -319,7 +320,7 @@ public class ElementFinder {
 				break;
 			case "text field":
 				tag = "input";
-				constraints.put("type", "text");
+				constraints.put("type", "date,datetime-local,email,month,number,password,search,tel,text,time,url,week,file");
 				break;
 			case "file upload":
 				tag = "input";

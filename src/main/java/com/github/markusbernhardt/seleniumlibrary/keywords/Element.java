@@ -2,7 +2,6 @@ package com.github.markusbernhardt.seleniumlibrary.keywords;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Iterator;
 import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
@@ -520,7 +519,7 @@ public class Element extends RunOnFailureKeywordsAdapter {
     }
 
     protected String getValue(String locator, String tag) {
-        List<WebElement> elements = elementFind(locator, true, false, tag);
+        List<WebElement> elements = elementFind(locator, true, true, tag);
 
         if (elements.size() == 0) {
             return null;

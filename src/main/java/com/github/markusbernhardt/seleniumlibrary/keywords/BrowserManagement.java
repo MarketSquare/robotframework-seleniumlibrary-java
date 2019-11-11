@@ -319,7 +319,7 @@ public class BrowserManagement extends RunOnFailureKeywordsAdapter {
         // Null returned from jbrowserdriver
         if (getCurrentWebDriver() instanceof RemoteWebDriver
                 && ((RemoteWebDriver) getCurrentWebDriver()).getCapabilities() != null) {
-            System.out.println(getCurrentWebDriver());
+            logging.info(getCurrentWebDriver());
             return ((RemoteWebDriver) getCurrentWebDriver()).getCapabilities().toString();
         } else {
             return "No remote session id or capabilities available";
