@@ -198,7 +198,7 @@ public class Logging extends RunOnFailureKeywordsAdapter {
     protected void log(String msg, String logLevel) {
         String[] methodParameters = VALID_LOG_LEVELS.get(logLevel.toLowerCase());
         if (methodParameters != null) {
-            System.out.println(String.format("*%s* %s", logLevel.toUpperCase(), msg));
+            System.out.printf("*%s* %s%n", logLevel.toUpperCase(), msg);
         } else {
             throw new SeleniumLibraryNonFatalException(String.format("Given log level %s is invalid.", logLevel));
         }

@@ -3,6 +3,9 @@ package com.github.markusbernhardt.seleniumlibrary.locators;
 import com.github.markusbernhardt.seleniumlibrary.SeleniumLibraryNonFatalException;
 import com.github.markusbernhardt.seleniumlibrary.keywords.Element;
 import com.github.markusbernhardt.seleniumlibrary.utils.Python;
+
+import org.apache.commons.lang3.ArrayUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.openqa.selenium.*;
 import org.python.util.PythonInterpreter;
 
@@ -14,10 +17,8 @@ public class ElementFinder {
 	protected final static Hashtable<String, CustomStrategy> registeredLocationStrategies = new Hashtable<>();
 
 	protected enum KeyAttrs {
-		DEFAULT("@id,@name"),
-		A("@id,@name,@href,normalize-space(descendant-or-self::text())"),
-		IMG("@id,@name,@src,@alt"),
-		INPUT("@id,@name,@value,@src"),
+		DEFAULT("@id,@name"), A("@id,@name,@href,normalize-space(descendant-or-self::text())"),
+		IMG("@id,@name,@src,@alt"), INPUT("@id,@name,@value,@src"),
 		BUTTON("@id,@name,@value,normalize-space(descendant-or-self::text())");
 
 		protected String[] keyAttrs;
@@ -80,8 +81,8 @@ public class ElementFinder {
 
 			@Override
 			public List<WebElement> findBy(WebDriver webDriver, FindByCoordinates findByCoordinates) {
-				Object result = ((JavascriptExecutor) webDriver).executeScript(String.format("return %s;",
-						findByCoordinates.criteria));
+				Object result = ((JavascriptExecutor) webDriver)
+						.executeScript(String.format("return %s;", findByCoordinates.criteria));
 				return filterElements(toList(result), findByCoordinates);
 			}
 		},
@@ -105,7 +106,8 @@ public class ElementFinder {
 
 			@Override
 			public List<WebElement> findBy(WebDriver webDriver, FindByCoordinates findByCoordinates) {
-				return filterElements(webDriver.findElements(By.tagName(findByCoordinates.criteria)), findByCoordinates);
+				return filterElements(webDriver.findElements(By.tagName(findByCoordinates.criteria)),
+						findByCoordinates);
 			}
 		},
 		JQUERY {
@@ -158,7 +160,9 @@ public class ElementFinder {
 
 		if (findByCoordinates.constraints != null) {
 			for (String name : findByCoordinates.constraints.keySet()) {
-				if (findByCoordinates.constraints.get(name) != null && !Arrays.asList(findByCoordinates.constraints.get(name).split(",")).contains(element.getAttribute(name))) {
+				if (findByCoordinates.constraints.get(name) != null
+						&& !ArrayUtils.contains(StringUtils.split(findByCoordinates.constraints.get(name), ","),
+								element.getAttribute(name))) {
 					return false;
 				}
 			}
@@ -184,7 +188,7 @@ public class ElementFinder {
 		List<String> xpathConstraints = new ArrayList<>();
 		if (findByCoordinates.constraints != null) {
 			for (Entry<String, String> entry : findByCoordinates.constraints.entrySet()) {
-				for (String value: entry.getValue().split(",")) {
+				for (String value : entry.getValue().split(",")) {
 					xpathConstraints.add(String.format("@%s='%s'", entry.getKey(), value));
 				}
 			}
@@ -194,8 +198,10 @@ public class ElementFinder {
 			xpathSearchers.add(String.format("%s=%s", attr, xpathCriteria));
 		}
 		xpathSearchers.addAll(getAttrsWithUrl(webDriver, keyAttrs, findByCoordinates.criteria));
-		String xpath = String.format("//%s[(%s)%s(%s)]", xpathTag, Python.join(" or ", xpathConstraints)
-				,(xpathConstraints.size() > 0 ? " and " : ""), Python.join(" or ", xpathSearchers));
+		String xpath = String.format("//%s[%s(%s)]",
+				xpathTag,
+				(xpathConstraints.size() > 0 ? String.format("(%s) and ",StringUtils.join(xpathConstraints, " or ")) : ""),
+				StringUtils.join(xpathSearchers, " or "));
 		return webDriver.findElements(By.xpath(xpath));
 	}
 
@@ -256,8 +262,8 @@ public class ElementFinder {
 	});
 
 	protected static void warn(String msg) {
-		loggingPythonInterpreter.get().exec(
-				String.format("logger.warn('%s');", msg.replace("'", "\\'").replace("\n", "\\n")));
+		loggingPythonInterpreter.get()
+				.exec(String.format("logger.warn('%s');", msg.replace("'", "\\'").replace("\n", "\\n")));
 	}
 
 	protected static Strategy parseLocator(FindByCoordinates findByCoordinates, String locator) {
@@ -266,9 +272,10 @@ public class ElementFinder {
 		if (!locator.startsWith("//")) {
 			String[] locatorParts = locator.split("[=:]", 2);
 			if (locatorParts.length == 2) {
-			    if (locator.charAt(locatorParts[0].length()) == "=".charAt(0)) {
-			        System.out.println("*WARN* '=' is deprecated as locator strategy separator. ':' should be used instead" );
-			    }
+				if (locator.charAt(locatorParts[0].length()) == '=') {
+					System.out.println(
+							"*WARN* '=' is deprecated as locator strategy separator. ':' should be used instead");
+				}
 				prefix = locatorParts[0].trim().toUpperCase();
 				criteria = locatorParts[1].trim();
 			}
@@ -297,35 +304,36 @@ public class ElementFinder {
 
 		tag = tag.toLowerCase();
 		Map<String, String> constraints = new TreeMap<>();
-		switch(tag) {
-			case "link":
-				tag = "a";
-				break;
-			case "image":
-				tag = "img";
-				break;
-			case "list":
-				tag = "select";
-				break;
-			case "text area":
-				tag = "textarea";
-				break;
-			case "radio button":
-				tag = "input";
-				constraints.put("type", "radio");
-				break;
-			case "checkbox":
-				tag = "input";
-				constraints.put("type", "checkbox");
-				break;
-			case "text field":
-				tag = "input";
-				constraints.put("type", "date,datetime-local,email,month,number,password,search,tel,text,time,url,week,file");
-				break;
-			case "file upload":
-				tag = "input";
-				constraints.put("type", "file");
-				break;
+		switch (tag) {
+		case "link":
+			tag = "a";
+			break;
+		case "image":
+			tag = "img";
+			break;
+		case "list":
+			tag = "select";
+			break;
+		case "text area":
+			tag = "textarea";
+			break;
+		case "radio button":
+			tag = "input";
+			constraints.put("type", "radio");
+			break;
+		case "checkbox":
+			tag = "input";
+			constraints.put("type", "checkbox");
+			break;
+		case "text field":
+			tag = "input";
+			constraints.put("type",
+					"date,datetime-local,email,month,number,password,search,tel,text,time,url,week,file");
+			break;
+		case "file upload":
+			tag = "input";
+			constraints.put("type", "file");
+			break;
 		}
 		findByCoordinates.tag = tag;
 		findByCoordinates.constraints = constraints;

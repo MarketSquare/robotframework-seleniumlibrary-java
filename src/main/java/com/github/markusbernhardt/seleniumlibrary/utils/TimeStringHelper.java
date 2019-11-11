@@ -3,6 +3,8 @@ package com.github.markusbernhardt.seleniumlibrary.utils;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.lang3.StringUtils;
+
 public class TimeStringHelper {
 
 	protected boolean compact;
@@ -30,7 +32,7 @@ public class TimeStringHelper {
 
 	public String getValue() {
 		if (ret.size() > 0) {
-			return sign + Python.join(" ", ret);
+			return sign + StringUtils.join(ret, " ");
 		}
 		return compact ? "0s" : "0 seconds";
 	}

@@ -5,6 +5,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
+import org.apache.commons.lang3.StringUtils;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.Select;
@@ -31,7 +32,7 @@ public class SelectElement extends RunOnFailureKeywordsAdapter {
 	 */
 	@Autowired
 	protected Logging logging;
-	
+
 	@Autowired
 	protected Robot robot;
 
@@ -39,9 +40,8 @@ public class SelectElement extends RunOnFailureKeywordsAdapter {
 	// Keywords
 	// ##############################
 
-	@RobotKeyword("Returns the values in the select list identified by ``locator``.\r\n" + 
-	        "\r\n" + 
-	        "Select list keywords work on both lists and combo boxes. Key attributes for select lists are id and name. See `Introduction` for details about locators.")
+	@RobotKeyword("Returns the values in the select list identified by ``locator``.\r\n" + "\r\n"
+			+ "Select list keywords work on both lists and combo boxes. Key attributes for select lists are id and name. See `Introduction` for details about locators.")
 	@ArgumentNames({ "locator" })
 	public List<String> getListItems(String locator) {
 		List<WebElement> options = getSelectListOptions(locator);
@@ -49,9 +49,9 @@ public class SelectElement extends RunOnFailureKeywordsAdapter {
 		return getLabelsForOptions(options);
 	}
 
-	@RobotKeyword("Returns the visible label of the first selected element from the select list identified by ``locator``.\r\n" + 
-	        "\r\n" + 
-	        "Select list keywords work on both lists and combo boxes. Key attributes for select lists are id and name. See `Introduction` for details about locators.")
+	@RobotKeyword("Returns the visible label of the first selected element from the select list identified by ``locator``.\r\n"
+			+ "\r\n"
+			+ "Select list keywords work on both lists and combo boxes. Key attributes for select lists are id and name. See `Introduction` for details about locators.")
 	@ArgumentNames({ "locator" })
 	public String getSelectedListLabel(String locator) {
 		Select select = getSelectList(locator);
@@ -59,28 +59,24 @@ public class SelectElement extends RunOnFailureKeywordsAdapter {
 		return select.getFirstSelectedOption().getText();
 	}
 
-    @RobotKeyword("Returns the visible labels of the first selected element from the select list identified by ``locator``.\r\n" + 
-            "\r\n" +
-            "Fails if there is no selection.\r\n" + 
-            "\r\n" + 
-            "Select list keywords work on both lists and combo boxes. Key attributes for select lists are id and name. See `Introduction` for details about locators.")
+	@RobotKeyword("Returns the visible labels of the first selected element from the select list identified by ``locator``.\r\n"
+			+ "\r\n" + "Fails if there is no selection.\r\n" + "\r\n"
+			+ "Select list keywords work on both lists and combo boxes. Key attributes for select lists are id and name. See `Introduction` for details about locators.")
 	@ArgumentNames({ "locator" })
 	public List<String> getSelectedListLabels(String locator) {
 		List<WebElement> options = getSelectListOptionsSelected(locator);
 
 		if (options.size() == 0) {
-			throw new SeleniumLibraryNonFatalException(String.format(
-					"Select list with locator '%s' does not have any selected values.", locator));
+			throw new SeleniumLibraryNonFatalException(
+					String.format("Select list with locator '%s' does not have any selected values.", locator));
 		}
 
 		return getLabelsForOptions(options);
 	}
 
-    @RobotKeyword("Returns the value of the first selected element from the select list identified by ``locator``.\r\n" + 
-            "\r\n" +
-            "The return value is read from the value attribute of the selected element.\r\n" + 
-            "\r\n" + 
-            "Select list keywords work on both lists and combo boxes. Key attributes for select lists are id and name. See `Introduction` for details about locators.")
+	@RobotKeyword("Returns the value of the first selected element from the select list identified by ``locator``.\r\n"
+			+ "\r\n" + "The return value is read from the value attribute of the selected element.\r\n" + "\r\n"
+			+ "Select list keywords work on both lists and combo boxes. Key attributes for select lists are id and name. See `Introduction` for details about locators.")
 	@ArgumentNames({ "locator" })
 	public String getSelectedListValue(String locator) {
 		Select select = getSelectList(locator);
@@ -88,31 +84,29 @@ public class SelectElement extends RunOnFailureKeywordsAdapter {
 		return select.getFirstSelectedOption().getAttribute("value");
 	}
 
-    @RobotKeyword("Returns the values of the first selected element as a list from the select list identified by ``locator``.\r\n" + 
-            "\r\n" +
-            "Fails if there is no selection. The return values are read from the value attribute of the selected element.\r\n" + 
-            "\r\n" + 
-            "Select list keywords work on both lists and combo boxes. Key attributes for select lists are id and name. See `Introduction` for details about locators.")
+	@RobotKeyword("Returns the values of the first selected element as a list from the select list identified by ``locator``.\r\n"
+			+ "\r\n"
+			+ "Fails if there is no selection. The return values are read from the value attribute of the selected element.\r\n"
+			+ "\r\n"
+			+ "Select list keywords work on both lists and combo boxes. Key attributes for select lists are id and name. See `Introduction` for details about locators.")
 	@ArgumentNames({ "locator" })
 	public List<String> getSelectedListValues(String locator) {
 		List<WebElement> options = getSelectListOptionsSelected(locator);
 
 		if (options.size() == 0) {
-			throw new SeleniumLibraryNonFatalException(String.format(
-					"Select list with locator '%s' does not have any selected values.", locator));
+			throw new SeleniumLibraryNonFatalException(
+					String.format("Select list with locator '%s' does not have any selected values.", locator));
 		}
 
 		return getValuesForOptions(options);
 	}
 
-    @RobotKeyword("Verify the selection of the select list identified by ``locator``.\r\n" + 
-            "\r\n" +
-            "If you want to verify no option is selected, simply give no items.\r\n" + 
-            "\r\n" + 
-            "Select list keywords work on both lists and combo boxes. Key attributes for select lists are id and name. See `Introduction` for details about locators.")
+	@RobotKeyword("Verify the selection of the select list identified by ``locator``.\r\n" + "\r\n"
+			+ "If you want to verify no option is selected, simply give no items.\r\n" + "\r\n"
+			+ "Select list keywords work on both lists and combo boxes. Key attributes for select lists are id and name. See `Introduction` for details about locators.")
 	@ArgumentNames({ "locator", "*items" })
 	public void listSelectionShouldBe(String locator, String... items) {
-		String itemList = items.length != 0 ? String.format("option(s) [ %s ]", Python.join(" | ", items))
+		String itemList = items.length != 0 ? String.format("option(s) [ %s ]", StringUtils.join(items, " | "))
 				: "no options";
 		logging.info(String.format("Verifying list '%s' has %s selected.", locator, itemList));
 
@@ -121,7 +115,7 @@ public class SelectElement extends RunOnFailureKeywordsAdapter {
 		List<WebElement> options = getSelectListOptionsSelected(locator);
 		List<String> selectedLabels = getLabelsForOptions(options);
 		String message = String.format("List '%s' should have had selection [ %s ] but it was [ %s ].", locator,
-				Python.join(" | ", items), Python.join(" | ", selectedLabels));
+				StringUtils.join(items, " | "), StringUtils.join(selectedLabels, " | "));
 		if (items.length != options.size()) {
 			throw new SeleniumLibraryNonFatalException(message);
 		} else {
@@ -135,9 +129,8 @@ public class SelectElement extends RunOnFailureKeywordsAdapter {
 		}
 	}
 
-    @RobotKeyword("Verify the select list identified by ``locator`` has no selections.\r\n" + 
-            "\r\n" +
-            "Select list keywords work on both lists and combo boxes. Key attributes for select lists are id and name. See `Introduction` for details about locators.")
+	@RobotKeyword("Verify the select list identified by ``locator`` has no selections.\r\n" + "\r\n"
+			+ "Select list keywords work on both lists and combo boxes. Key attributes for select lists are id and name. See `Introduction` for details about locators.")
 	@ArgumentNames({ "locator" })
 	public void listShouldHaveNoSelections(String locator) {
 		logging.info(String.format("Verifying list '%s' has no selection.", locator));
@@ -145,35 +138,32 @@ public class SelectElement extends RunOnFailureKeywordsAdapter {
 		List<WebElement> options = getSelectListOptionsSelected(locator);
 		if (!options.isEmpty()) {
 			List<String> selectedLabels = getLabelsForOptions(options);
-			String items = Python.join(" | ", selectedLabels);
-			throw new SeleniumLibraryNonFatalException(String.format(
-					"List '%s' should have had no selection (selection was [ %s ]).", locator, items));
+			String items = StringUtils.join(selectedLabels, " | ");
+			throw new SeleniumLibraryNonFatalException(
+					String.format("List '%s' should have had no selection (selection was [ %s ]).", locator, items));
 		}
 	}
 
-    @RobotKeyword("Verify the select list identified by ``locator`` is found on the current page.\r\n" + 
-            "\r\n" +
-            "Select list keywords work on both lists and combo boxes. Key attributes for select lists are id and name. See `Introduction` for details about locators.")
+	@RobotKeyword("Verify the select list identified by ``locator`` is found on the current page.\r\n" + "\r\n"
+			+ "Select list keywords work on both lists and combo boxes. Key attributes for select lists are id and name. See `Introduction` for details about locators.")
 	@ArgumentNames({ "locator", "message=NONE", "logLevel=INFO" })
-	public void pageShouldContainList(String locator, String...params) {
-        String message = robot.getParamsValue(params, 0, "");
-        String logLevel = robot.getParamsValue(params, 1, "INFO");
+	public void pageShouldContainList(String locator, String... params) {
+		String message = robot.getParamsValue(params, 0, "");
+		String logLevel = robot.getParamsValue(params, 1, "INFO");
 		element.pageShouldContainElement(locator, "list", message, logLevel);
 	}
 
-    @RobotKeyword("Verify the select list identified by ``locator`` is not found on the current page.\r\n" + 
-            "\r\n" +
-            "Select list keywords work on both lists and combo boxes. Key attributes for select lists are id and name. See `Introduction` for details about locators.")
+	@RobotKeyword("Verify the select list identified by ``locator`` is not found on the current page.\r\n" + "\r\n"
+			+ "Select list keywords work on both lists and combo boxes. Key attributes for select lists are id and name. See `Introduction` for details about locators.")
 	@ArgumentNames({ "locator", "message=NONE", "logLevel=INFO" })
-	public void pageShouldNotContainList(String locator, String...params) {
-        String message = robot.getParamsValue(params, 0, "");
-        String logLevel = robot.getParamsValue(params, 1, "INFO");
+	public void pageShouldNotContainList(String locator, String... params) {
+		String message = robot.getParamsValue(params, 0, "");
+		String logLevel = robot.getParamsValue(params, 1, "INFO");
 		element.pageShouldNotContainElement(locator, "list", message, logLevel);
 	}
 
-    @RobotKeyword("Select all values of the multi-select list identified by ``locator``.\r\n" + 
-            "\r\n" +
-            "Select list keywords work on both lists and combo boxes. Key attributes for select lists are id and name. See `Introduction` for details about locators.")
+	@RobotKeyword("Select all values of the multi-select list identified by ``locator``.\r\n" + "\r\n"
+			+ "Select list keywords work on both lists and combo boxes. Key attributes for select lists are id and name. See `Introduction` for details about locators.")
 	@ArgumentNames({ "locator" })
 	public void selectAllFromList(String locator) {
 		logging.info(String.format("Selecting all options from list '%s'.", locator));
@@ -189,14 +179,13 @@ public class SelectElement extends RunOnFailureKeywordsAdapter {
 		}
 	}
 
-	@RobotKeyword("Select the given ``*items`` of the multi-select list identified by ``locator``.\r\n" + 
-	        "\r\n" + 
-	        "An exception is raised for a single-selection list if the last value does not exist in the list and a warning for all other non-existing items. For a multi-selection list, an exception is raised for any and all non-existing values.\r\n" + 
-	        "\r\n" + 
-	        "Select list keywords work on both lists and combo boxes. Key attributes for select lists are id and name. See `Introduction` for details about locators.")
+	@RobotKeyword("Select the given ``*items`` of the multi-select list identified by ``locator``.\r\n" + "\r\n"
+			+ "An exception is raised for a single-selection list if the last value does not exist in the list and a warning for all other non-existing items. For a multi-selection list, an exception is raised for any and all non-existing values.\r\n"
+			+ "\r\n"
+			+ "Select list keywords work on both lists and combo boxes. Key attributes for select lists are id and name. See `Introduction` for details about locators.")
 	@ArgumentNames({ "locator", "*items" })
 	public void selectFromList(String locator, String... items) {
-		String itemList = items.length != 0 ? String.format("option(s) [ %s ]", Python.join(" | ", items))
+		String itemList = items.length != 0 ? String.format("option(s) [ %s ]", StringUtils.join(items, " | "))
 				: "all options";
 		logging.info(String.format("Selecting %s from list '%s'.", itemList, locator));
 
@@ -231,13 +220,13 @@ public class SelectElement extends RunOnFailureKeywordsAdapter {
 		if (nonExistingItems.size() != 0) {
 			// multi-selection list => throw immediately
 			if (select.isMultiple()) {
-				throw new SeleniumLibraryNonFatalException(String.format("Options '%s' not in list '%s'.",
-						Python.join(", ", nonExistingItems), locator));
+				throw new SeleniumLibraryNonFatalException(
+						String.format("Options '%s' not in list '%s'.", StringUtils.join(nonExistingItems, ", "), locator));
 			}
 
 			// single-selection list => log warning with not found items
-			logging.warn(String.format("Option%s '%s' not found within list '%s'.", nonExistingItems.size() == 0 ? ""
-					: "s", Python.join(", ", nonExistingItems), locator));
+			logging.warn(String.format("Option%s '%s' not found within list '%s'.",
+					nonExistingItems.size() == 0 ? "" : "s", StringUtils.join(nonExistingItems, ", "), locator));
 
 			// single-selection list => throw if last item was not found
 			if (!lastItemFound) {
@@ -247,11 +236,10 @@ public class SelectElement extends RunOnFailureKeywordsAdapter {
 		}
 	}
 
-	@RobotKeyword("Select the given ``*indexes`` of the multi-select list identified by ``locator``.\r\n" + 
-	        "\r\n" + 
-	        "Tries to select by value AND by label. It's generally faster to use 'by index/value/label' keywords.\r\n" + 
-	        "\r\n" + 
-	        "Select list keywords work on both lists and combo boxes. Key attributes for select lists are id and name. See `Introduction` for details about locators.")
+	@RobotKeyword("Select the given ``*indexes`` of the multi-select list identified by ``locator``.\r\n" + "\r\n"
+			+ "Tries to select by value AND by label. It's generally faster to use 'by index/value/label' keywords.\r\n"
+			+ "\r\n"
+			+ "Select list keywords work on both lists and combo boxes. Key attributes for select lists are id and name. See `Introduction` for details about locators.")
 	@ArgumentNames({ "locator", "*indexes" })
 	public void selectFromListByIndex(String locator, String... indexes) {
 		if (indexes.length == 0) {
@@ -260,7 +248,7 @@ public class SelectElement extends RunOnFailureKeywordsAdapter {
 
 		List<String> tmp = new ArrayList<>();
 		Collections.addAll(tmp, indexes);
-		String items = String.format("index(es) '%s'", Python.join(", ", tmp));
+		String items = String.format("index(es) '%s'", StringUtils.join(tmp, ", "));
 		logging.info(String.format("Selecting %s from list '%s'.", items, locator));
 
 		Select select = getSelectList(locator);
@@ -269,16 +257,15 @@ public class SelectElement extends RunOnFailureKeywordsAdapter {
 		}
 	}
 
-    @RobotKeyword("Select the given ``*values`` of the multi-select list identified by ``locator``.\r\n" + 
-            "\r\n" + 
-            "Select list keywords work on both lists and combo boxes. Key attributes for select lists are id and name. See `Introduction` for details about locators.")
+	@RobotKeyword("Select the given ``*values`` of the multi-select list identified by ``locator``.\r\n" + "\r\n"
+			+ "Select list keywords work on both lists and combo boxes. Key attributes for select lists are id and name. See `Introduction` for details about locators.")
 	@ArgumentNames({ "locator", "*values" })
 	public void selectFromListByValue(String locator, String... values) {
 		if (values.length == 0) {
 			throw new SeleniumLibraryNonFatalException("No value given.");
 		}
 
-		String items = String.format("value(s) '%s'", Python.join(", ", values));
+		String items = String.format("value(s) '%s'", StringUtils.join(values, ", "));
 		logging.info(String.format("Selecting %s from list '%s'.", items, locator));
 
 		Select select = getSelectList(locator);
@@ -287,16 +274,15 @@ public class SelectElement extends RunOnFailureKeywordsAdapter {
 		}
 	}
 
-    @RobotKeyword("Select the given ``*labels`` of the multi-select list identified by ``locator``.\r\n" + 
-            "\r\n" + 
-            "Select list keywords work on both lists and combo boxes. Key attributes for select lists are id and name. See `Introduction` for details about locators.")
+	@RobotKeyword("Select the given ``*labels`` of the multi-select list identified by ``locator``.\r\n" + "\r\n"
+			+ "Select list keywords work on both lists and combo boxes. Key attributes for select lists are id and name. See `Introduction` for details about locators.")
 	@ArgumentNames({ "locator", "*labels" })
 	public void selectFromListByLabel(String locator, String... labels) {
 		if (labels.length == 0) {
 			throw new SeleniumLibraryNonFatalException("No value given.");
 		}
 
-		String items = String.format("label(s) '%s'", Python.join(", ", labels));
+		String items = String.format("label(s) '%s'", StringUtils.join(labels, ", "));
 		logging.info(String.format("Selecting %s from list '%s'.", items, locator));
 
 		Select select = getSelectList(locator);
@@ -305,16 +291,14 @@ public class SelectElement extends RunOnFailureKeywordsAdapter {
 		}
 	}
 
-	@RobotKeyword("Unselect the given ``*items`` of the multi-select list identified by ``locator``.\r\n" + 
-	        "\r\n" + 
-	        "As a special case, giving an empty *items list will remove all selections.\r\n" + 
-	        "\r\n" + 
-	        "Tries to unselect by value AND by label. It's generally faster to use 'by index/value/label' keywords.\r\n" + 
-	        "\r\n" + 
-	        "Select list keywords work on both lists and combo boxes. Key attributes for select lists are id and name. See `Introduction` for details about locators.")
+	@RobotKeyword("Unselect the given ``*items`` of the multi-select list identified by ``locator``.\r\n" + "\r\n"
+			+ "As a special case, giving an empty *items list will remove all selections.\r\n" + "\r\n"
+			+ "Tries to unselect by value AND by label. It's generally faster to use 'by index/value/label' keywords.\r\n"
+			+ "\r\n"
+			+ "Select list keywords work on both lists and combo boxes. Key attributes for select lists are id and name. See `Introduction` for details about locators.")
 	@ArgumentNames({ "locator", "*items" })
 	public void unselectFromList(String locator, String... items) {
-		String itemList = items.length != 0 ? String.format("option(s) [ %s ]", Python.join(" | ", items))
+		String itemList = items.length != 0 ? String.format("option(s) [ %s ]", StringUtils.join(items, " | "))
 				: "all options";
 		logging.info(String.format("Unselecting %s from list '%s'.", itemList, locator));
 
@@ -337,9 +321,8 @@ public class SelectElement extends RunOnFailureKeywordsAdapter {
 		}
 	}
 
-    @RobotKeyword("Unselect the given ``*indexes`` of the multi-select list identified by ``locator``.\r\n" + 
-            "\r\n" + 
-            "Select list keywords work on both lists and combo boxes. Key attributes for select lists are id and name. See `Introduction` for details about locators.")
+	@RobotKeyword("Unselect the given ``*indexes`` of the multi-select list identified by ``locator``.\r\n" + "\r\n"
+			+ "Select list keywords work on both lists and combo boxes. Key attributes for select lists are id and name. See `Introduction` for details about locators.")
 	@ArgumentNames({ "locator", "*indexes" })
 	public void unselectFromListByIndex(String locator, Integer... indexes) {
 		if (indexes.length == 0) {
@@ -350,7 +333,7 @@ public class SelectElement extends RunOnFailureKeywordsAdapter {
 		for (Integer index : indexes) {
 			tmp.add(index.toString());
 		}
-		String items = String.format("index(es) '%s'", Python.join(", ", tmp));
+		String items = String.format("index(es) '%s'", StringUtils.join(tmp, ", "));
 		logging.info(String.format("Unselecting %s from list '%s'.", items, locator));
 
 		Select select = getSelectList(locator);
@@ -365,16 +348,15 @@ public class SelectElement extends RunOnFailureKeywordsAdapter {
 		}
 	}
 
-    @RobotKeyword("Unselect the given ``*values`` of the multi-select list identified by ``locator``.\r\n" + 
-            "\r\n" + 
-            "Select list keywords work on both lists and combo boxes. Key attributes for select lists are id and name. See `Introduction` for details about locators.")
+	@RobotKeyword("Unselect the given ``*values`` of the multi-select list identified by ``locator``.\r\n" + "\r\n"
+			+ "Select list keywords work on both lists and combo boxes. Key attributes for select lists are id and name. See `Introduction` for details about locators.")
 	@ArgumentNames({ "locator", "*values" })
 	public void unselectFromListByValue(String locator, String... values) {
 		if (values.length == 0) {
 			throw new SeleniumLibraryNonFatalException("No value given.");
 		}
 
-		String items = String.format("value(s) '%s'", Python.join(", ", values));
+		String items = String.format("value(s) '%s'", StringUtils.join(values, ", "));
 		logging.info(String.format("Unselecting %s from list '%s'.", items, locator));
 
 		Select select = getSelectList(locator);
@@ -389,16 +371,15 @@ public class SelectElement extends RunOnFailureKeywordsAdapter {
 		}
 	}
 
-    @RobotKeyword("Unselect the given ``*labels`` of the multi-select list identified by ``locator``.\r\n" + 
-            "\r\n" + 
-            "Select list keywords work on both lists and combo boxes. Key attributes for select lists are id and name. See `Introduction` for details about locators.")
+	@RobotKeyword("Unselect the given ``*labels`` of the multi-select list identified by ``locator``.\r\n" + "\r\n"
+			+ "Select list keywords work on both lists and combo boxes. Key attributes for select lists are id and name. See `Introduction` for details about locators.")
 	@ArgumentNames({ "locator", "*labels" })
 	public void unselectFromListByLabel(String locator, String... labels) {
 		if (labels.length == 0) {
 			throw new SeleniumLibraryNonFatalException("No value given.");
 		}
 
-		String items = String.format("label(s) '%s'", Python.join(", ", labels));
+		String items = String.format("label(s) '%s'", StringUtils.join(labels, ", "));
 		logging.info(String.format("Unselecting %s from list '%s'.", items, locator));
 
 		Select select = getSelectList(locator);

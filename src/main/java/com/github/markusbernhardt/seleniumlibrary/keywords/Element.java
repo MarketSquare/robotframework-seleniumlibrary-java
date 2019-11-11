@@ -200,8 +200,8 @@ public class Element extends RunOnFailureKeywordsAdapter {
         }
     }
 
-    @RobotKeyword("Verify the element identified by ``locator`` is not found on the current page\r\n" + 
-            "\r\n" + 
+    @RobotKeyword("Verify the element identified by ``locator`` is not found on the current page\r\n" +
+            "\r\n" +
             "Key attributes for arbitrary elements are id and name. See `Introduction` for details about log levels and locators.")
     @ArgumentNames({ "locator", "message=NONE", "logLevel=INFO" })
     public void pageShouldNotContainElement(String locator, String...params) {
@@ -254,7 +254,7 @@ public class Element extends RunOnFailureKeywordsAdapter {
     }
 
     @RobotKeyword("Verify the element identified by ``locator`` is disabled.\r\n" +
-            "\r\n" + 
+            "\r\n" +
             "Key attributes for arbitrary elements are id and name. See `Introduction` for details about locators.")
     @ArgumentNames({ "locator" })
     public void elementShouldBeDisabled(String locator) {
@@ -274,7 +274,7 @@ public class Element extends RunOnFailureKeywordsAdapter {
     }
 
     @RobotKeyword("Verify the element identified by ``locator`` is selected.\r\n" +
-            "\r\n" + 
+            "\r\n" +
             "Key attributes for arbitrary elements are id and name. See `Introduction` for details about locators.")
     @ArgumentNames({ "locator", "message=NONE" })
     public void elementShouldBeSelected(String locator, String...params) {
@@ -291,7 +291,7 @@ public class Element extends RunOnFailureKeywordsAdapter {
     }
 
     @RobotKeyword("Verify the element identified by ``locator`` is not selected.\r\n" +
-            "\r\n" + 
+            "\r\n" +
             "Key attributes for arbitrary elements are id and name. See `Introduction` for details about locators.")
     @ArgumentNames({ "locator", "message=NONE" })
     public void elementShouldNotBeSelected(String locator, String...params) {
@@ -326,10 +326,10 @@ public class Element extends RunOnFailureKeywordsAdapter {
         }
     }
 
-    @RobotKeyword("Verify the element identified by ``locator`` is not visible.\r\n" + 
-            "\r\n" + 
-            "Herein, visible means that the element is logically visible, not optically visible in the current browser viewport. For example, an element that carries display:none is not logically visible, so using this keyword on that element would fail.\r\n" + 
-            "\r\n" + 
+    @RobotKeyword("Verify the element identified by ``locator`` is not visible.\r\n" +
+            "\r\n" +
+            "Herein, visible means that the element is logically visible, not optically visible in the current browser viewport. For example, an element that carries display:none is not logically visible, so using this keyword on that element would fail.\r\n" +
+            "\r\n" +
             "Key attributes for arbitrary elements are id and name. See `Introduction` for details about locators.")
     @ArgumentNames({ "locator", "message=NONE" })
     public void elementShouldNotBeVisible(String locator, String...params) {
@@ -345,8 +345,8 @@ public class Element extends RunOnFailureKeywordsAdapter {
         }
     }
 
-    @RobotKeyword("Verify the element identified by ``locator`` is clickable.\r\n" + 
-            "\r\n" +  
+    @RobotKeyword("Verify the element identified by ``locator`` is clickable.\r\n" +
+            "\r\n" +
             "Key attributes for arbitrary elements are id and name. See `Introduction` for details about locators.")
     @ArgumentNames({ "locator", "message=NONE" })
     public void elementShouldBeClickable(String locator, String...params) {
@@ -362,8 +362,8 @@ public class Element extends RunOnFailureKeywordsAdapter {
         }
     }
 
-    @RobotKeyword("Verify the element identified by ``locator`` is not clickable.\r\n" + 
-            "\r\n" +  
+    @RobotKeyword("Verify the element identified by ``locator`` is not clickable.\r\n" +
+            "\r\n" +
             "Key attributes for arbitrary elements are id and name. See `Introduction` for details about locators.")
     @ArgumentNames({ "locator", "message=NONE" })
     public void elementShouldNotBeClickable(String locator, String...params) {
@@ -399,10 +399,10 @@ public class Element extends RunOnFailureKeywordsAdapter {
         }
     }
 
-    @RobotKeyword("Verify the text of the element identified by ``locator`` is not exactly ``text``.\r\n" + 
-            "\r\n" + 
-            "In contrast to `Element Should Not Contain`, this keyword does not try a substring match but an exact match on the element identified by locator.\r\n" + 
-            "\r\n" + 
+    @RobotKeyword("Verify the text of the element identified by ``locator`` is not exactly ``text``.\r\n" +
+            "\r\n" +
+            "In contrast to `Element Should Not Contain`, this keyword does not try a substring match but an exact match on the element identified by locator.\r\n" +
+            "\r\n" +
             "Key attributes for arbitrary elements are id and name. See `Introduction` for details about locators.")
     @ArgumentNames({ "locator", "text", "message=NONE", "ignore_case=False" })
     public void elementTextShouldNotBe(String locator, String text, String...params) {
@@ -510,8 +510,8 @@ public class Element extends RunOnFailureKeywordsAdapter {
         return elements.get(0).getLocation().getX();
     }
 
-    @RobotKeyword("Returns the value attribute of the element identified by ``locator``..\r\n" + 
-            "\r\n" + 
+    @RobotKeyword("Returns the value attribute of the element identified by ``locator``..\r\n" +
+            "\r\n" +
             "Key attributes for arbitrary elements are id and name. See `Introduction` for details about locators.")
     @ArgumentNames({ "locator" })
     public String getValue(String locator) {
@@ -528,8 +528,8 @@ public class Element extends RunOnFailureKeywordsAdapter {
         return elements.get(0).getAttribute("value");
     }
 
-    @RobotKeyword("Returns the text of the element identified by ``locator``..\r\n" + 
-            "\r\n" + 
+    @RobotKeyword("Returns the text of the element identified by ``locator``..\r\n" +
+            "\r\n" +
             "Key attributes for arbitrary elements are id and name. See `Introduction` for details about locators.")
     @ArgumentNames({ "locator" })
     public String getText(String locator) {
@@ -542,10 +542,10 @@ public class Element extends RunOnFailureKeywordsAdapter {
         return elements.get(0).getText();
     }
 
-    @RobotKeyword("Returns vertical position of element identified by ``locator``.\r\n" + 
-            "\r\n" + 
-            "The position is returned in pixels off the left side of the page, as an integer. Fails if the matching element is not found.\r\n" + 
-            "\r\n" + 
+    @RobotKeyword("Returns vertical position of element identified by ``locator``.\r\n" +
+            "\r\n" +
+            "The position is returned in pixels off the left side of the page, as an integer. Fails if the matching element is not found.\r\n" +
+            "\r\n" +
             "Key attributes for arbitrary elements are id and name. See `Introduction` for details about locators.")
     @ArgumentNames({ "locator" })
     public int getVerticalPosition(String locator) {
@@ -563,8 +563,8 @@ public class Element extends RunOnFailureKeywordsAdapter {
     // Keywords - Mouse Input/Events
     // ##############################
 
-    @RobotKeyword("Click on the element identified by ``locator``.\r\n" + 
-            "\r\n" + 
+    @RobotKeyword("Click on the element identified by ``locator``.\r\n" +
+            "\r\n" +
             "Key attributes for arbitrary elements are id and name. See `Introduction` for details about locators.")
     @ArgumentNames({ "locator" })
     public void clickElement(String locator) {
@@ -574,10 +574,10 @@ public class Element extends RunOnFailureKeywordsAdapter {
         elements.get(0).click();
     }
 
-    @RobotKeyword("Click on the element identified by locator at the coordinates ``xOffset`` and ``yOffset``.\r\n" + 
-            "\r\n" + 
-            "The cursor is moved at the center of the element and the to the given x/y offset from that point. Both offsets are specified as negative (left/up) or positive (right/down) number.\r\n" + 
-            "\r\n" + 
+    @RobotKeyword("Click on the element identified by locator at the coordinates ``xOffset`` and ``yOffset``.\r\n" +
+            "\r\n" +
+            "The cursor is moved at the center of the element and the to the given x/y offset from that point. Both offsets are specified as negative (left/up) or positive (right/down) number.\r\n" +
+            "\r\n" +
             "Key attributes for arbitrary elements are id and name. See `Introduction` for details about locators.")
     @ArgumentNames({ "locator", "xOffset", "yOffset" })
     public void clickElementAtCoordinates(String locator, String xOffset, String yOffset) {
@@ -589,8 +589,8 @@ public class Element extends RunOnFailureKeywordsAdapter {
         action.moveToElement(element).moveByOffset(Integer.parseInt(xOffset), Integer.parseInt(yOffset)).perform();
     }
 
-    @RobotKeyword("Double-Click on the element identified by ``locator``.\r\n" + 
-            "\r\n" + 
+    @RobotKeyword("Double-Click on the element identified by ``locator``.\r\n" +
+            "\r\n" +
             "Key attributes for arbitrary elements are id and name. See `Introduction` for details about locators.")
     @ArgumentNames({ "locator" })
     public void doubleClickElement(String locator) {
@@ -670,8 +670,8 @@ public class Element extends RunOnFailureKeywordsAdapter {
         action.clickAndHold(elements.get(0)).perform();
     }
 
-    @RobotKeyword("Simulates moving the mouse away from the element identified by ``locator``.\r\n" + 
-            "\r\n" + 
+    @RobotKeyword("Simulates moving the mouse away from the element identified by ``locator``.\r\n" +
+            "\r\n" +
             "Key attributes for arbitrary elements are id and name. See `Introduction` for details about locators.")
     @ArgumentNames({ "locator" })
     public void mouseOut(String locator) {
@@ -1127,7 +1127,7 @@ public class Element extends RunOnFailureKeywordsAdapter {
     public static String escapeXpathValue(String value) {
         if (value.contains("\"") && value.contains("'")) {
             String[] partsWoApos = value.split("'");
-            return String.format("concat('%s')", Python.join("', \"'\", '", Arrays.asList(partsWoApos)));
+            return String.format("concat('%s')", StringUtils.join(partsWoApos, "', \"'\", '"));
         }
         if (value.contains("'")) {
             return String.format("\"%s\"", value);
