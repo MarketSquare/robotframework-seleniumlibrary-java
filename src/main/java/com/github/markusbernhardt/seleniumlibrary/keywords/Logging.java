@@ -1,8 +1,6 @@
 package com.github.markusbernhardt.seleniumlibrary.keywords;
 
 import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -38,10 +36,10 @@ public class Logging extends RunOnFailureKeywordsAdapter {
      */
     @Autowired
     protected BrowserManagement browserManagement;
-    
-    @Autowired 
+
+    @Autowired
     protected Window window;
-    
+
     @Autowired
     protected Robot robot;
 
@@ -60,8 +58,8 @@ public class Logging extends RunOnFailureKeywordsAdapter {
         return windowIdentifiers;
     }
 
-    @RobotKeyword("Logs and returns the names of all windows known to the current browser instance.\r\n" + 
-            "\r\n" + 
+    @RobotKeyword("Logs and returns the names of all windows known to the current browser instance.\r\n" +
+            "\r\n" +
             "See `Introduction` for details about the ``logLevel``.")
     @ArgumentNames({ "logLevel=INFO" })
     public List<String> logWindowNames(String...params) {
@@ -73,8 +71,8 @@ public class Logging extends RunOnFailureKeywordsAdapter {
         return windowIdentifiers;
     }
 
-    @RobotKeyword("Logs and returns the titles of all windows known to the current browser instance.\r\n" + 
-            "\r\n" + 
+    @RobotKeyword("Logs and returns the titles of all windows known to the current browser instance.\r\n" +
+            "\r\n" +
             "See `Introduction` for details about the ``logLevel``.")
     @ArgumentNames({ "logLevel=INFO" })
     public List<String> logWindowTitles(String...params) {
@@ -85,9 +83,9 @@ public class Logging extends RunOnFailureKeywordsAdapter {
         }
         return windowIdentifiers;
     }
-    
-    @RobotKeyword("Logs and returns the location of current browser instance.\r\n" + 
-            "\r\n" + 
+
+    @RobotKeyword("Logs and returns the location of current browser instance.\r\n" +
+            "\r\n" +
             "See `Introduction` for details about the ``logLevel``.")
     @ArgumentNames({ "logLevel=INFO" })
     public String logLocation(String...params) {
@@ -97,8 +95,8 @@ public class Logging extends RunOnFailureKeywordsAdapter {
         return actual;
     }
 
-    @RobotKeyword("Logs and returns the entire html source of the current page or frame.\r\n" + 
-            "\r\n" + 
+    @RobotKeyword("Logs and returns the entire html source of the current page or frame.\r\n" +
+            "\r\n" +
             "See `Introduction` for details about the ``logLevel``.")
     @ArgumentNames({ "logLevel=INFO" })
     public String logSource(String...params) {
@@ -108,8 +106,8 @@ public class Logging extends RunOnFailureKeywordsAdapter {
         return actual;
     }
 
-    @RobotKeyword("Logs and returns the title of current page.\r\n" + 
-            "\r\n" + 
+    @RobotKeyword("Logs and returns the title of current page.\r\n" +
+            "\r\n" +
             "See `Introduction` for details about the ``logLevel``.")
     @ArgumentNames({ "logLevel=INFO" })
     public String logTitle(String...params) {
@@ -119,8 +117,8 @@ public class Logging extends RunOnFailureKeywordsAdapter {
         return actual;
     }
 
-    @RobotKeyword("Logs and returns basic system information about the execution environment.\r\n" + 
-            "\r\n" + 
+    @RobotKeyword("Logs and returns basic system information about the execution environment.\r\n" +
+            "\r\n" +
             "See `Introduction` for details about the ``logLevel``.")
     @ArgumentNames({ "logLevel=INFO" })
     public String logSystemInfo(String...params) {
@@ -130,10 +128,10 @@ public class Logging extends RunOnFailureKeywordsAdapter {
         return actual;
     }
 
-    @RobotKeyword("Returns the actually supported capabilities of the remote browser instance.\r\n" + 
-            "\r\n" + 
-            "Not all server implementations will support every WebDriver feature. Therefore, the client and server should use JSON objects with the properties listed below when describing which features a user requests that a session support. *If a session cannot support a capability that is requested in the desired capabilities, no error is thrown*; a read-only capabilities object is returned that indicates the capabilities the session actually supports. For more information see: [https://github.com/SeleniumHQ/selenium/wiki/DesiredCapabilities|DesiredCapabilities]\r\n" + 
-            "\r\n" + 
+    @RobotKeyword("Returns the actually supported capabilities of the remote browser instance.\r\n" +
+            "\r\n" +
+            "Not all server implementations will support every WebDriver feature. Therefore, the client and server should use JSON objects with the properties listed below when describing which features a user requests that a session support. *If a session cannot support a capability that is requested in the desired capabilities, no error is thrown*; a read-only capabilities object is returned that indicates the capabilities the session actually supports. For more information see: [https://github.com/SeleniumHQ/selenium/wiki/DesiredCapabilities|DesiredCapabilities]\r\n" +
+            "\r\n" +
             "See `Introduction` for details about the ``logLevel``.")
     @ArgumentNames({ "logLevel=INFO" })
     public String logRemoteCapabilities(String...params) {
@@ -143,8 +141,8 @@ public class Logging extends RunOnFailureKeywordsAdapter {
         return actual;
     }
 
-    @RobotKeyword("Logs and returns the session id of the remote browser instance.\r\n" + 
-            "\r\n" + 
+    @RobotKeyword("Logs and returns the session id of the remote browser instance.\r\n" +
+            "\r\n" +
             "See `Introduction` for details about the ``logLevel``.")
     @ArgumentNames({ "logLevel=INFO" })
     public String logRemoteSessionId(String...params) {
@@ -154,8 +152,8 @@ public class Logging extends RunOnFailureKeywordsAdapter {
         return actual;
     }
 
-    @RobotKeyword("Set the ``logDirectory``, where captured screenshots are stored, to some custom path.\r\n" + 
-            "\r\n" + 
+    @RobotKeyword("Set the ``logDirectory``, where captured screenshots are stored, to some custom path.\r\n" +
+            "\r\n" +
             "Fails, if either the given path does not exist, is no directory or is not writable.")
     @ArgumentNames({ "logDirectory" })
     public void setLogDirectory(String logDirectory) throws Exception {
@@ -200,39 +198,9 @@ public class Logging extends RunOnFailureKeywordsAdapter {
     protected void log(String msg, String logLevel) {
         String[] methodParameters = VALID_LOG_LEVELS.get(logLevel.toLowerCase());
         if (methodParameters != null) {
-            log0(msg, methodParameters[0], methodParameters[1]);
+            System.out.printf("*%s* %s ", logLevel.toUpperCase(), msg);
         } else {
             throw new SeleniumLibraryNonFatalException(String.format("Given log level %s is invalid.", logLevel));
-        }
-    }
-
-    protected void log0(String msg, String methodName, String methodArguments) {
-        msg = String.valueOf(msg);
-        if (msg.length() > 1024) {
-            // Message is too large.
-            // There is a hard limit of 100k in the Jython source code parser
-            try {
-                // Write message to temp file
-                File tempFile = File.createTempFile("SeleniumLibrary-", ".log");
-                tempFile.deleteOnExit();
-                FileWriter writer = new FileWriter(tempFile);
-                writer.write(msg);
-                writer.close();
-
-                // Read the message in Python back and log it.
-                loggingPythonInterpreter.get()
-                        .exec(String.format(
-                                "from __future__ import with_statement\n" + "\n" + "with open('%s', 'r') as msg_file:\n"
-                                        + "    msg = msg_file.read()\n" + "    logger.%s(msg%s)",
-                                tempFile.getAbsolutePath().replace("\\", "\\\\"), methodName, methodArguments));
-
-            } catch (IOException e) {
-                throw new SeleniumLibraryNonFatalException("Error in handling temp file for long log message.", e);
-            }
-        } else {
-            // Message is small enough to get parsed by Jython
-            loggingPythonInterpreter.get().exec(String.format("logger.%s('%s'%s)", methodName,
-                    msg.replace("\\", "\\\\").replace("'", "\\'").replace("\n", "\\n"), methodArguments));
         }
     }
 
