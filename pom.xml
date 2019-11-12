@@ -145,6 +145,11 @@
 			<artifactId>webdrivermanager</artifactId>
 			<version>3.4.0</version>
 		</dependency>
+		<dependency>
+			<groupId>org.apache.commons</groupId>
+			<artifactId>commons-lang3</artifactId>
+			<version>3.9</version>
+		</dependency>
 	</dependencies>
 
 	<build>
@@ -227,6 +232,7 @@
 								<variables>
 									<variable>browser:${browser}</variable>
 									<variable>downloadWebDriver:${downloadWebDriver}</variable>
+									<variable>testHTMLDirectory:${project.basedir}/src/test/resources</variable>
 								</variables>
 								<report>target/robotframework-reports/${browser}_report.html</report>
 								<log>target/robotframework-reports/${browser}_log.html</log>

@@ -1,7 +1,7 @@
 *** Settings ***
 Suite Teardown    Close All Browsers
 Resource          ../../settings/Settings.robot
-Default Tags      htmlunitwith    htmlunitwithjs
+Default Tags      htmlunit    htmlunitwithjs
 
 *** Variables ***
 ${URL Application}    http://www.w3schools.com

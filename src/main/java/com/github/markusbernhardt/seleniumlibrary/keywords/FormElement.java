@@ -3,6 +3,7 @@ package com.github.markusbernhardt.seleniumlibrary.keywords;
 import java.io.File;
 import java.util.List;
 
+import org.apache.commons.lang3.StringUtils;
 import org.openqa.selenium.WebElement;
 import org.robotframework.javalib.annotation.ArgumentNames;
 import org.robotframework.javalib.annotation.Autowired;
@@ -252,8 +253,8 @@ public class FormElement extends RunOnFailureKeywordsAdapter {
 	public void textfieldValueShouldBe(String locator, String text, String...params) {
         String message = robot.getParamsValue(params, 0, "");
 		String actual = element.getValue(locator, "text field");
-		if (!actual.contains(text)) {
-			if (message == null) {
+		if (actual == null || !actual.contains(text)) {
+			if (StringUtils.isEmpty(message)) {
 				message = String.format("Value of text field '%s' should have been '%s' but was '%s'", locator, text,
 						actual);
 			}

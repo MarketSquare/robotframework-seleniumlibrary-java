@@ -1,6 +1,7 @@
 .project
 .settings
 .classpath
+.vscode
 target
 webdriver
 /libspecs/
