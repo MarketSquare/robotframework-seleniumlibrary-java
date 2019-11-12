@@ -14,21 +14,21 @@ public class TableElementFinder {
 		addLocatorSuffix(locatorSuffixesMap, "css.default", "");
 		addLocatorSuffix(locatorSuffixesMap, "css.content", "");
 		addLocatorSuffix(locatorSuffixesMap, "css.header", " th");
-		addLocatorSuffix(locatorSuffixesMap, "css.footer", " tfoot td");
+		addLocatorSuffix(locatorSuffixesMap, "css.footer", " tfoot td", " tfoot th");
 		addLocatorSuffix(locatorSuffixesMap, "css.row", " tr:nth-child(%s)");
 		addLocatorSuffix(locatorSuffixesMap, "css.col", " tr td:nth-child(%s)", " tr th:nth-child(%s)");
 
 		addLocatorSuffix(locatorSuffixesMap, "sizzle.default", "");
 		addLocatorSuffix(locatorSuffixesMap, "sizzle.content", "");
 		addLocatorSuffix(locatorSuffixesMap, "sizzle.header", " th");
-		addLocatorSuffix(locatorSuffixesMap, "sizzle.footer", " tfoot td");
+		addLocatorSuffix(locatorSuffixesMap, "sizzle.footer", " tfoot td", " tfoot th");
 		addLocatorSuffix(locatorSuffixesMap, "sizzle.row", " tr:nth-child(%s)");
 		addLocatorSuffix(locatorSuffixesMap, "sizzle.col", " tr td:nth-child(%s)", " tr th:nth-child(%s)");
 
 		addLocatorSuffix(locatorSuffixesMap, "xpath.default", "");
 		addLocatorSuffix(locatorSuffixesMap, "xpath.content", "//*");
 		addLocatorSuffix(locatorSuffixesMap, "xpath.header", "//th");
-		addLocatorSuffix(locatorSuffixesMap, "xpath.footer", "//tfoot//td");
+		addLocatorSuffix(locatorSuffixesMap, "xpath.footer", "//tfoot//td", "//tfoot//th");
 		addLocatorSuffix(locatorSuffixesMap, "xpath.row", "//tr[%s]//*");
 		addLocatorSuffix(locatorSuffixesMap, "xpath.col", "//tr//*[self::td or self::th][%s]");
 	}
@@ -94,11 +94,11 @@ public class TableElementFinder {
 
 		List<String> locatorSuffixes = locatorSuffixesMap.get(tableLocatorType + locationMethod);
 
-		List<String> parsedTabeLocators = new ArrayList<>();
+		List<String> parsedTableLocators = new ArrayList<>();
 		for (String locatorSuffix : locatorSuffixes) {
-			parsedTabeLocators.add(tableLocator + locatorSuffix);
+			parsedTableLocators.add(tableLocator + locatorSuffix);
 		}
-		return parsedTabeLocators;
+		return parsedTableLocators;
 	}
 
 	protected static WebElement searchInLocators(WebDriver webDriver, List<String> locators, String content) {

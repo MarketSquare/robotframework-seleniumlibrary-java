@@ -3,10 +3,12 @@ package com.github.markusbernhardt.seleniumlibrary.utils;
 import java.util.ArrayList;
 import java.util.List;
 
-public class TimestrHelper {
+import org.apache.commons.lang3.StringUtils;
+
+public class TimeStringHelper {
 
 	protected boolean compact;
-	protected List<String> ret = new ArrayList<String>();
+	protected List<String> ret = new ArrayList<>();
 	protected String sign;
 	protected int millis;
 	protected int secs;
@@ -14,11 +16,11 @@ public class TimestrHelper {
 	protected int hours;
 	protected int days;
 
-	public TimestrHelper(double double_secs) {
+	public TimeStringHelper(double double_secs) {
 		this(double_secs, false);
 	}
 
-	public TimestrHelper(double double_secs, boolean compact) {
+	public TimeStringHelper(double double_secs, boolean compact) {
 		this.compact = compact;
 		secsToComponents(double_secs);
 		addItem(days, "d", "day");
@@ -30,7 +32,7 @@ public class TimestrHelper {
 
 	public String getValue() {
 		if (ret.size() > 0) {
-			return sign + Python.join(" ", ret);
+			return sign + StringUtils.join(ret, " ");
 		}
 		return compact ? "0s" : "0 seconds";
 	}
