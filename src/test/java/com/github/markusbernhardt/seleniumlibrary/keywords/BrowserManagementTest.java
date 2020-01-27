@@ -29,7 +29,7 @@ public class BrowserManagementTest {
         String[] arguments = { "unitTestUrl", "desiredCapabilities=" + desired, "browserOptions={}" };
         try {
             when(bm.createLocalWebDriver(eq("firefox"), any(DesiredCapabilities.class))).thenReturn(wdMock);
-            bm.openBrowser("about:blank", arguments);
+            bm.openBrowser("about:blank", "firefox", "", "unitTestUrl", desired, "", false);
         } catch (Throwable e) {
             // TODO Auto-generated catch block
             e.printStackTrace();

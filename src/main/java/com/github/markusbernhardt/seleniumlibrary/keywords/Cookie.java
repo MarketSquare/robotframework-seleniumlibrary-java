@@ -72,10 +72,7 @@ public class Cookie extends RunOnFailureKeywordsAdapter {
 
 	@RobotKeyword("Adds a cookie to your current session.")
 	@ArgumentNames({ "name", "value", "path=NONE", "domain=NONE", "secure=NONE"})
-	public void addCookie(String name, String value, String...params) {
-	    String path = robot.getParamsValue(params, 0, null);
-	    String domain = robot.getParamsValue(params, 1, null);
-	    String secure = robot.getParamsValue(params, 2, "");
+	public void addCookie(String name, String value, String path, String domain, String secure) {
 	    Date expiry = null;
 		org.openqa.selenium.Cookie cookie = new org.openqa.selenium.Cookie(name, value, domain, path, expiry,
 				"true".equals(secure.toLowerCase()));
