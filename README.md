@@ -67,20 +67,20 @@ use this library by adding the following dependency to
 your pom.xml:
 
     <dependency>
-        <groupId>com.github.hi-fi</groupId>
+        <groupId>com.github.marketsquare</groupId>
         <artifactId>robotframework-seleniumlibrary</artifactId>
-        <version>4.0.0-alpha-2.0</version>
+        <version>4.0.0-alpha-2.1</version>
         <scope>test</scope>
     </dependency>
 
 If you cannot use the robotframework-maven-plugin you can use the
-[jar-with-dependencies](https://repo1.maven.org/maven2/com/github/hi-fi/robotframework-seleniumlibrary/4.0.0-alpha-2.0/robotframework-seleniumlibrary-4.0.0-alpha-2.0-jar-with-dependencies.jar),
-which contains all required libraries except ios/android ones (Appium and Selendroid). Running of tests with this can be done with command `java -jar robotframework-seleniumlibrary-4.0.0-alpha-2.0-jar-with-dependencies.jar <test location>`.  
+[jar-with-dependencies](https://repo1.maven.org/maven2/com/github/marketsquare/robotframework-seleniumlibrary/4.0.0-alpha-2.1/robotframework-seleniumlibrary-4.0.0-alpha-2.1-jar-with-dependencies.jar),
+which contains all required libraries except ios/android ones (Appium and Selendroid). Running of tests with this can be done with command `java -jar robotframework-seleniumlibrary-4.0.0-alpha-2.1-jar-with-dependencies.jar <test location>`.  
 
 * More information about this library can be found in the
-  [Keyword Documentation](https://repo1.maven.org/maven2/com/github/hi-fi/robotframework-seleniumlibrary/4.0.0-alpha-2.0/robotframework-seleniumlibrary-4.0.0-alpha-2.0.html).
+  [Keyword Documentation](https://repo1.maven.org/maven2/com/github/marketsquare/robotframework-seleniumlibrary/4.0.0-alpha-2.1/robotframework-seleniumlibrary-4.0.0-alpha-2.1.html).
 * For keyword completion in RIDE you can download this
-  [Library Specs](https://repo1.maven.org/maven2/com/github/hi-fi/robotframework-seleniumlibrary/4.0.0-alpha-2.0/robotframework-seleniumlibrary-4.0.0-alpha-2.0.xml)
+  [Library Specs](https://repo1.maven.org/maven2/com/github/marketsquare/robotframework-seleniumlibrary/4.0.0-alpha-2.1/robotframework-seleniumlibrary-4.0.0-alpha-2.1.xml)
   and place it in your PYTHONPATH.
 
 Testing IOS/Android browsers with library

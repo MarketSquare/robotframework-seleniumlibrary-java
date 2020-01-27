@@ -51,7 +51,6 @@ import org.openqa.selenium.safari.SafariOptions;
 import org.robotframework.javalib.annotation.ArgumentNames;
 import org.robotframework.javalib.annotation.Autowired;
 import org.robotframework.javalib.annotation.RobotKeyword;
-import org.robotframework.javalib.annotation.RobotKeywordOverload;
 import org.robotframework.javalib.annotation.RobotKeywords;
 
 import com.github.markusbernhardt.seleniumlibrary.RunOnFailureKeywordsAdapter;
@@ -124,11 +123,6 @@ public class BrowserManagement extends RunOnFailureKeywordsAdapter {
     // Keywords
     // ##############################
 
-    @RobotKeywordOverload
-    public void addLocationStrategy(String strategyName, String functionDefinition) {
-        addLocationStrategy(strategyName, functionDefinition, null);
-    }
-
     @RobotKeyword("Registers a JavaScript function as locator with the specified strategy name.\r\n" +
             "\r\n" +
             "The registered function has to return a WebElement, a List of WebElements or null. Optionally a delimiter can be given to split the value of the locator in multiple arguments when executing the JavaScript function. \r\n" +
@@ -184,14 +178,7 @@ public class BrowserManagement extends RunOnFailureKeywordsAdapter {
             "If the provided configuration options are not enough, it is possible to use `Create Webdriver` to customize browser initialization even more.")
     @ArgumentNames({ "url", "browserName=firefox", "alias=None", "remoteUrl=None", "desiredCapabilities=None",
             "browserOptions=None", "isWebDriverManager=false" })
-    public String openBrowser(String url, String... args) {
-        String browserName = robot.getParamsValue(args, 0, "firefox");
-        String alias = robot.getParamsValue(args, 1, "None");
-        String remoteUrl = robot.getParamsValue(args, 2, "None");
-        String desiredCapabilities = robot.getParamsValue(args, 3, "None");
-        String browserOptions = robot.getParamsValue(args, 4, "None");
-        boolean isWebDriverManager = robot.getParamsValue(args, 5, false);
-
+    public String openBrowser(String url, String browserName, String alias, String remoteUrl, String desiredCapabilities, String browserOptions, boolean isWebDriverManager) {
         if (isWebDriverManager) {
             webDriverManagerSetup(browserName);
         }
@@ -511,12 +498,7 @@ public class BrowserManagement extends RunOnFailureKeywordsAdapter {
             " - If a ``domain`` is provided, NTLM based authentication is used\r\n" +
             " - If no ``workstation`` is provided and NTLM based authentication is used, the hostname is used as workstation name.")
     @ArgumentNames({ "host", "port", "username=None", "password=None", "domain=None", "workstation=None" })
-    public void setRemoteWebDriverProxy(String host, String port, String... args) {
-        String username = robot.getParamsValue(args, 0, "");
-        String password = robot.getParamsValue(args, 1, "");
-        String domain = robot.getParamsValue(args, 2, "");
-        String workstation = robot.getParamsValue(args, 3, "");
-
+    public void setRemoteWebDriverProxy(String host, String port, String username, String password, String domain, String workstation) {
         if (host.length() == 0 || port.length() == 0) {
             // No host and port given as proxy
             remoteWebDriverProxyHost = "";
