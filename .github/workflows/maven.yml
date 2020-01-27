@@ -1,0 +1,102 @@
+name: Java CI
+
+on: [push]
+
+jobs:
+  build_and_test:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ 'ubuntu-latest', 'macos-latest', 'windows-latest' ]
+        java-version: [ 8 ]
+        browser: ['jbrowser', 'googlechromeheadless', 'firefoxheadless'] # 'htmlunitwithjs' not working with Selenium4
+        include:
+          - os: ubuntu-latest
+            set_display: export DISPLAY=:99; Xvfb :99 -screen 0 1024x768x24 -ac -noreset & sleep 3
+            install_dependencies: sudo apt-get -y -q install xvfb zip curl
+          - os: windows-latest
+            install_dependencies: choco install firefox googlechrome curl zip -y --no-progress
+          - os: macos-latest
+            install_dependencies: |
+              brew cask install firefox
+              brew cask install google-chrome
+              brew install zip
+              brew install curl
+
+    runs-on: ${{ matrix.os }}
+    name: Test on ${{ matrix.os }} with Java ${{ matrix.java-version }} using browser ${{ matrix.browser }}
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set up JDK ${{ matrix.java-version }}
+        uses: actions/setup-java@v1.2.0
+        with:
+          java-version: ${{ matrix.java-version }}
+          java-package: jdk+fx # needed for jbrowser
+      - name: Set up other dependencies
+        run: |
+          ${{ matrix.install_dependencies }}
+          ${{ matrix.set_display }}
+      - name: Build with Maven
+        run: mvn -B verify --file pom.xml -P 'build,${{ matrix.browser }}'
+      - name: Delete output.xml (on Win)
+        run: |
+          Get-ChildItem target/robotframework-reports -Include *output.xml -Recurse | Remove-Item
+          echo "::set-env name=REPORT_FILE::$(Get-ChildItem target/robotframework-reports -Include *report.html -Recurse -Name)"
+        if: always() && runner.os == 'Windows'
+
+      - name: Delete output.xml (on Unix-like)
+        run: |
+          find target/robotframework-reports -type f -name '*output.xml' -exec rm {} +
+          echo "::set-env name=REPORT_FILE::$(find target/robotframework-reports -type f -name '*report.html' | sed 's#.*/##')"
+        if: always() && runner.os != 'Windows'
+
+      - name: Archive acceptances test results
+        uses: actions/upload-artifact@v1.0.0
+        with:
+          name: at-results-${{ matrix.browser }}-${{ matrix.os }}-${{ matrix.java-version }}
+          path: target/robotframework-reports
+        if: always() && job.status == 'failure'
+
+      - name: Upload results
+        run: |
+          echo '<html><head><meta http-equiv = "refresh" content =" 0 ; url = /${{ env.REPORT_FILE }}"></head></html>' > target/robotframework-reports/index.html
+          zip -r -j site.zip target/robotframework-reports > no_output 2>&1
+          curl -s -H "Content-Type: application/zip" -H "Authorization: Bearer ${{ secrets.NETLIFY_TOKEN }}" --data-binary "@site.zip" https://api.netlify.com/api/v1/sites > response.json
+          echo "::set-env name=REPORT_URL::$(cat response.json|python -c "import sys, json; print('https://' + json.load(sys.stdin)['subdomain'] + '.netlify.com')")"
+          echo "::set-env name=JOB_STATUS::$(python -c "print('${{ job.status }}'.lower())")"
+        if: always() && job.status == 'failure'
+
+      - uses: octokit/request-action@57ec46afcc4c58c813af3afe67e57ced1ea9f165
+        name: Update status with Github Status API
+        id: update_status
+        with:
+          route: POST /repos/:repository/statuses/:sha
+          repository: ${{ github.repository }}
+          sha: ${{ github.sha }}
+          state: "${{env.JOB_STATUS}}"
+          target_url: "${{env.REPORT_URL}}"
+          description: "Link to test report."
+          context: at-results-${{ matrix.browser }}-${{ matrix.os }}-${{ matrix.java-version }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        if: always() && job.status == 'failure'
+
+  release:
+    needs: [build_and_test]
+    if: github.ref == 'refs/heads/develop' || github.ref == 'refs/heads/selenium4' || startsWith(github.ref, 'refs/tags/')
+    runs-on: ubuntu-latest
+    name: Release package
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set up JDK
+        uses: actions/setup-java@v1.2.0
+        with:
+          java-version: 8
+      - name: Release Maven package
+        uses: samuelmeuli/action-maven-publish@1221d1fa792cab948a772c5e7c1f3abe84aec3bf
+        with:
+          gpg_private_key: ${{ secrets.gpg_private_key }}
+          gpg_passphrase: ${{ secrets.gpg_passphrase }}
+          nexus_username: ${{ secrets.nexus_username }}
+          nexus_password: ${{ secrets.nexus_password }}
+          maven_args: -DskipTests

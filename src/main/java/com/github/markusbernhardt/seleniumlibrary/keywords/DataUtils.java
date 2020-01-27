@@ -34,14 +34,13 @@ public class DataUtils extends RunOnFailureKeywordsAdapter {
      * Sort list of strings.
      *
      * @param jsonStringOfList  json string of list strings
-     * @param params            sorting order
+     * @param order            sorting order
      * @return sorting list of strings
      */
     @RobotKeyword("Returns sorting list of strings by ``order``.")
     @ArgumentNames({"list", "order=ascending"})
-    public List<String> sortStrings(String jsonStringOfList, String... params) {
+    public List<String> sortStrings(String jsonStringOfList, String order) {
         List<String> listOfStrings = robot.parseRobotList(jsonStringOfList);
-        String order = robot.getParamsValue(params, 0, ASCENDING);
         List<String> sortedList = new ArrayList<>(listOfStrings);
         if (order.equalsIgnoreCase(DESCENDING)) {
             listOfStrings.sort(Collections.reverseOrder());

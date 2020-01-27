@@ -1,7 +1,12 @@
+# IDEs
 .project
 .settings
 .classpath
+.idea
 .vscode
+*.iml
+
+# App specifics
 target
 webdriver
 /libspecs/
