@@ -7,7 +7,6 @@ import org.openqa.selenium.WebElement;
 import org.robotframework.javalib.annotation.ArgumentNames;
 import org.robotframework.javalib.annotation.Autowired;
 import org.robotframework.javalib.annotation.RobotKeyword;
-import org.robotframework.javalib.annotation.RobotKeywordOverload;
 import org.robotframework.javalib.annotation.RobotKeywords;
 
 import com.github.markusbernhardt.seleniumlibrary.RunOnFailureKeywordsAdapter;
@@ -34,11 +33,6 @@ public class FormElement extends RunOnFailureKeywordsAdapter {
 	// ##############################
 	// Keywords
 	// ##############################
-
-	@RobotKeywordOverload
-	public void submitForm() {
-		submitForm(null);
-	}
 
     @RobotKeyword("Submit the form identified by ``locator``.\r\n" + 
             "\r\n" + 
@@ -85,9 +79,7 @@ public class FormElement extends RunOnFailureKeywordsAdapter {
             "\r\n" + 
             "Key attributes for checkboxes are id and name. See `Introduction` for details about locators.")
 	@ArgumentNames({ "locator", "message=NONE", "logLevel=INFO" })
-	public void pageShouldContainCheckbox(String locator, String...params) {
-        String message = robot.getParamsValue(params, 0, "");
-        String logLevel = robot.getParamsValue(params, 1, "INFO");
+	public void pageShouldContainCheckbox(String locator, String message, String logLevel) {
 		element.pageShouldContainElement(locator, "checkbox", message, logLevel);
 	}
 
@@ -95,9 +87,7 @@ public class FormElement extends RunOnFailureKeywordsAdapter {
             "\r\n" + 
             "Key attributes for checkboxes are id and name. See `Introduction` for details about locators.")
 	@ArgumentNames({ "locator", "message=NONE", "logLevel=INFO" })
-	public void pageShouldNotContainCheckbox(String locator, String...params) {
-        String message = robot.getParamsValue(params, 0, "");
-        String logLevel = robot.getParamsValue(params, 1, "INFO");
+	public void pageShouldNotContainCheckbox(String locator, String message, String logLevel) {
 		element.pageShouldNotContainElement(locator, "checkbox", message, logLevel);
 	}
 
@@ -133,9 +123,7 @@ public class FormElement extends RunOnFailureKeywordsAdapter {
             "\r\n" + 
             "Key attributes for radio buttons are id and name. See `Introduction` for details about locators.")
 	@ArgumentNames({ "locator", "message=NONE", "logLevel=INFO" })
-	public void pageShouldContainRadioButton(String locator, String...params) {
-        String message = robot.getParamsValue(params, 0, "");
-        String logLevel = robot.getParamsValue(params, 1, "INFO");
+	public void pageShouldContainRadioButton(String locator, String message, String logLevel) {
 		element.pageShouldContainElement(locator, "radio button", message, logLevel);
 	}
 
@@ -143,9 +131,7 @@ public class FormElement extends RunOnFailureKeywordsAdapter {
             "\r\n" + 
             "Key attributes for radio buttons are id and name. See `Introduction` for details about locators.")
 	@ArgumentNames({ "locator", "message=NONE", "logLevel=INFO" })
-	public void pageShouldNotContainRadioButton(String locator, String...params) {
-        String message = robot.getParamsValue(params, 0, "");
-        String logLevel = robot.getParamsValue(params, 1, "INFO");
+	public void pageShouldNotContainRadioButton(String locator, String message, String logLevel) {
 		element.pageShouldNotContainElement(locator, "radio button", message, logLevel);
 	}
 
@@ -229,9 +215,7 @@ public class FormElement extends RunOnFailureKeywordsAdapter {
             "\r\n" + 
             "Key attributes for input fields are id and name. See `Introduction` for details about locators.") 
 	@ArgumentNames({ "locator", "message=NONE", "logLevel=INFO" })
-	public void pageShouldContainTextfield(String locator, String...params) {
-        String message = robot.getParamsValue(params, 0, "");
-        String logLevel = robot.getParamsValue(params, 1, "INFO");
+	public void pageShouldContainTextfield(String locator, String message, String logLevel) {
 		element.pageShouldContainElement(locator, "text field", message, logLevel);
 	}
 
@@ -239,9 +223,7 @@ public class FormElement extends RunOnFailureKeywordsAdapter {
             "\r\n" + 
             "Key attributes for input fields are id and name. See `Introduction` for details about locators.") 
 	@ArgumentNames({ "locator", "message=NONE", "logLevel=INFO" })
-	public void pageShouldNotContainTextfield(String locator, String...params) {
-        String message = robot.getParamsValue(params, 0, "");
-        String logLevel = robot.getParamsValue(params, 1, "INFO");
+	public void pageShouldNotContainTextfield(String locator, String message, String logLevel) {
 		element.pageShouldNotContainElement(locator, "text field", message, logLevel);
 	}
 
@@ -249,8 +231,7 @@ public class FormElement extends RunOnFailureKeywordsAdapter {
             "\r\n" + 
             "Key attributes for input fields are id and name. See `Introduction` for details about locators.") 
 	@ArgumentNames({ "locator", "text", "message=NONE" })
-	public void textfieldValueShouldBe(String locator, String text, String...params) {
-        String message = robot.getParamsValue(params, 0, "");
+	public void textfieldValueShouldBe(String locator, String text, String message) {
 		String actual = element.getValue(locator, "text field");
 		if (!actual.contains(text)) {
 			if (message == null) {
@@ -266,8 +247,7 @@ public class FormElement extends RunOnFailureKeywordsAdapter {
             "\r\n" + 
             "Key attributes for input fields are id and name. See `Introduction` for details about locators.") 
 	@ArgumentNames({ "locator", "text", "message=NONE" })
-	public void textfieldValueShouldNotBe(String locator, String text, String...params) {
-        String message = robot.getParamsValue(params, 0, "");
+	public void textfieldValueShouldNotBe(String locator, String text, String message) {
 		String actual = element.getValue(locator, "text field");
 		if (actual.contains(text)) {
 			if (message == null) {
@@ -283,8 +263,7 @@ public class FormElement extends RunOnFailureKeywordsAdapter {
             "\r\n" + 
             "Key attributes for input fields are id and name. See `Introduction` for details about locators.") 
 	@ArgumentNames({ "locator", "text", "message=NONE" })
-	public void textfieldShouldContain(String locator, String text, String...params) {
-        String message = robot.getParamsValue(params, 0, "");
+	public void textfieldShouldContain(String locator, String text, String message) {
 		String actual = element.getValue(locator, "text field");
 		if (!actual.contains(text)) {
 			if (message == null) {
@@ -300,8 +279,7 @@ public class FormElement extends RunOnFailureKeywordsAdapter {
             "\r\n" + 
             "Key attributes for input fields are id and name. See `Introduction` for details about locators.") 
 	@ArgumentNames({ "locator", "text", "message=NONE" })
-	public void textfieldShouldNotContain(String locator, String text, String...params) {
-        String message = robot.getParamsValue(params, 0, "");
+	public void textfieldShouldNotContain(String locator, String text, String message) {
 		String actual = element.getValue(locator, "text field");
 		if (actual.contains(text)) {
 			if (message == null) {
@@ -317,8 +295,7 @@ public class FormElement extends RunOnFailureKeywordsAdapter {
             "\r\n" + 
             "Key attributes for text areas are id and name. See `Introduction` for details about locators.") 
 	@ArgumentNames({ "locator", "text", "message=NONE" })
-	public void textareaShouldContain(String locator, String text, String...params) {
-        String message = robot.getParamsValue(params, 0, "");
+	public void textareaShouldContain(String locator, String text, String message) {
 		String actual = element.getValue(locator, "text area");
 		if (!actual.contains(text)) {
 			if (message == null) {
@@ -334,8 +311,7 @@ public class FormElement extends RunOnFailureKeywordsAdapter {
             "\r\n" + 
             "Key attributes for text areas are id and name. See `Introduction` for details about locators.") 
 	@ArgumentNames({ "locator", "text", "message=NONE" })
-	public void textareaShouldNotContain(String locator, String text, String...params) {
-        String message = robot.getParamsValue(params, 0, "");
+	public void textareaShouldNotContain(String locator, String text, String message) {
 		String actual = element.getValue(locator, "text area");
 		if (!actual.contains(text)) {
 			if (message == null) {
@@ -351,8 +327,7 @@ public class FormElement extends RunOnFailureKeywordsAdapter {
             "\r\n" + 
             "Key attributes for text areas are id and name. See `Introduction` for details about locators.") 
 	@ArgumentNames({ "locator", "text", "message=NONE" })
-	public void textareaValueShouldBe(String locator, String text, String...params) {
-        String message = robot.getParamsValue(params, 0, "");
+	public void textareaValueShouldBe(String locator, String text, String message) {
 		String actual = element.getValue(locator, "text area");
 		if (!actual.contains(text)) {
 			if (message == null) {
@@ -368,8 +343,7 @@ public class FormElement extends RunOnFailureKeywordsAdapter {
             "\r\n" + 
             "Key attributes for text areas are id and name. See `Introduction` for details about locators.") 
 	@ArgumentNames({ "locator", "text", "message=NONE" })
-	public void textareaValueShouldNotBe(String locator, String text, String...params) {
-        String message = robot.getParamsValue(params, 0, "");
+	public void textareaValueShouldNotBe(String locator, String text, String message) {
 		String actual = element.getValue(locator, "text area");
 		if (actual.contains(text)) {
 			if (message == null) {
@@ -398,9 +372,7 @@ public class FormElement extends RunOnFailureKeywordsAdapter {
             "\r\n" + 
             "Key attributes for buttons are id and name. See `Introduction` for details about locators.") 
 	@ArgumentNames({ "locator", "message=NONE", "logLevel=INFO" })
-	public void pageShouldContainButton(String locator, String...params) {
-        String message = robot.getParamsValue(params, 0, "");
-        String logLevel = robot.getParamsValue(params, 1, "INFO");
+	public void pageShouldContainButton(String locator, String message, String logLevel) {
 		try {
 			element.pageShouldContainElement(locator, "input", message, logLevel);
 		} catch (SeleniumLibraryNonFatalException e) {
@@ -412,9 +384,7 @@ public class FormElement extends RunOnFailureKeywordsAdapter {
             "\r\n" + 
             "Key attributes for buttons are id and name. See `Introduction` for details about locators.") 
 	@ArgumentNames({ "locator", "message=NONE", "logLevel=INFO" })
-	public void pageShouldNotContainButton(String locator, String...params) {
-        String message = robot.getParamsValue(params, 0, "");
-        String logLevel = robot.getParamsValue(params, 1, "INFO");
+	public void pageShouldNotContainButton(String locator, String message, String logLevel) {
 		element.pageShouldNotContainElement(locator, "input", message, logLevel);
 		element.pageShouldNotContainElement(locator, "button", message, logLevel);
 	}

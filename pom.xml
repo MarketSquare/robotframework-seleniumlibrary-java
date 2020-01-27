@@ -1,16 +1,16 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+		 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		 xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
-	<groupId>com.github.hi-fi</groupId>
+	<groupId>com.github.MarketSquare</groupId>
 	<artifactId>robotframework-seleniumlibrary</artifactId>
-	<version>4.0.0-alpha-2.0</version>
+	<version>4.0.0-alpha-2.1-SNAPSHOT</version>
 	<packaging>jar</packaging>
 
 	<name>Robot Framework :: SeleniumLibrary</name>
 	<description>Java port of the Python based SeleniumLibrary for Robot Framework</description>
-	<url>https://github.com/Hi-Fi/robotframework-seleniumlibrary-java</url>
+	<url>https://github.com/MarketSquare/robotframework-seleniumlibrary-java</url>
 
 	<distributionManagement>
 		<snapshotRepository>
@@ -34,8 +34,13 @@
 
 	<issueManagement>
 		<system>GitHub Issues</system>
-		<url>https://github.com/Hi-Fi/robotframework-seleniumlibrary-java/issues</url>
+		<url>https://github.com/MarketSquare/robotframework-seleniumlibrary-java/issues</url>
 	</issueManagement>
+
+	<ciManagement>
+		<system>Github Actions</system>
+		<url>https://github.com/MarketSquare/robotframework-seleniumlibrary-java/actions</url>
+	</ciManagement>
 
 	<licenses>
 		<license>
@@ -46,9 +51,10 @@
 	</licenses>
 
 	<scm>
-		<url>https://github.com/Hi-Fi/robotframework-seleniumlibrary-java</url>
-		<connection>scm:git://github.com/Hi-Fi/robotframework-seleniumlibrary-java.git</connection>
-		<developerConnection>scm:git:ssh://git@github.com:Hi-Fi/robotframework-seleniumlibrary-java.git</developerConnection>
+		<url>https://github.com/MarketSquare/robotframework-seleniumlibrary-java</url>
+		<connection>scm:git://github.com/MarketSquare/robotframework-seleniumlibrary-java.git</connection>
+		<developerConnection>scm:git:ssh://git@github.com:Hi-Fi/robotframework-seleniumlibrary-java.git
+		</developerConnection>
 	</scm>
 
 	<developers>
@@ -67,9 +73,9 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<downloadSources>true</downloadSources>
 		<downloadJavadocs>true</downloadJavadocs>
-		<aspectj.version>1.9.4</aspectj.version>
+		<aspectj.version>1.9.5</aspectj.version>
 		<java.version>1.8</java.version>
-		<robotframework.maven.plugin.version>1.5.1</robotframework.maven.plugin.version>
+		<robotframework.maven.plugin.version>1.6.0</robotframework.maven.plugin.version>
 		<robotframework.version>3.1.2</robotframework.version>
 		<selenium.version>4.0.0-alpha-2</selenium.version>
 		<keywords.class>SeleniumLibrary</keywords.class>
@@ -81,7 +87,7 @@
 		<dependency>
 			<groupId>org.robotframework</groupId>
 			<artifactId>javalib-core</artifactId>
-			<version>1.2.1</version>
+			<version>2.0.3</version>
 		</dependency>
 		<dependency>
 			<groupId>org.robotframework</groupId>
@@ -118,7 +124,7 @@
 		<dependency>
 			<groupId>io.appium</groupId>
 			<artifactId>java-client</artifactId>
-			<version>7.2.0</version>
+			<version>7.3.0</version>
 			<exclusions>
 				<exclusion>
 					<groupId>org.seleniumhq.selenium</groupId>
@@ -139,17 +145,17 @@
 		<dependency>
 			<groupId>com.machinepublishers</groupId>
 			<artifactId>jbrowserdriver</artifactId>
-			<version>1.1.0-RC2</version>
+			<version>1.1.1</version>
 			<exclusions>
-                <exclusion>
-                    <groupId>org.seleniumhq.selenium</groupId>
-                    <artifactId>selenium-remote-driver</artifactId>
-                </exclusion>
-                <exclusion>
-                    <groupId>org.seleniumhq.selenium</groupId>
-                    <artifactId>selenium-api</artifactId>
-                </exclusion>
-            </exclusions>
+				<exclusion>
+					<groupId>org.seleniumhq.selenium</groupId>
+					<artifactId>selenium-remote-driver</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>org.seleniumhq.selenium</groupId>
+					<artifactId>selenium-api</artifactId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 		<dependency>
 		    <groupId>org.seleniumhq.selenium</groupId>
@@ -173,13 +179,13 @@
 		<dependency>
 			<groupId>org.mockito</groupId>
 			<artifactId>mockito-core</artifactId>
-			<version>2.18.3</version>
+			<version>2.28.2</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
 			<groupId>io.github.bonigarcia</groupId>
 			<artifactId>webdrivermanager</artifactId>
-			<version>3.6.2</version>
+			<version>3.8.1</version>
 		</dependency>
 	</dependencies>
 
@@ -349,7 +355,7 @@
 						<!-- Set 1.7 as target, use project source encoding -->
 						<groupId>org.apache.maven.plugins</groupId>
 						<artifactId>maven-compiler-plugin</artifactId>
-						<version>3.8.0</version>
+						<version>3.8.1</version>
 						<configuration>
 							<source>${java.version}</source>
 							<target>${java.version}</target>
@@ -363,7 +369,7 @@
 						<!-- extract documentation for libdoc -->
 						<groupId>org.apache.maven.plugins</groupId>
 						<artifactId>maven-javadoc-plugin</artifactId>
-						<version>2.10.4</version>
+						<version>3.1.1</version>
 						<executions>
 							<execution>
 								<id>attach-javadocs</id>
@@ -377,7 +383,7 @@
 						<!-- Build the fat jar with all dependencies -->
 						<groupId>org.apache.maven.plugins</groupId>
 						<artifactId>maven-assembly-plugin</artifactId>
-						<version>3.1.0</version>
+						<version>3.2.0</version>
 						<configuration>
 							<archive>
 								<manifest>
@@ -401,6 +407,13 @@
 					</plugin>
 				</plugins>
 			</build>
+		</profile>
+		<profile>
+			<id>jbrowser</id>
+			<properties>
+				<browser>jbrowser</browser>
+				<downloadWebDriver>False</downloadWebDriver>
+			</properties>
 		</profile>
         <profile>
             <id>htmlunitwithjs</id>
@@ -438,13 +451,13 @@
 			</properties>
 		</profile>
 		<profile>
-			<id>release</id>
+			<id>deploy</id>
 			<build>
 				<plugins>
 					<plugin>
 						<groupId>org.apache.maven.plugins</groupId>
 						<artifactId>maven-source-plugin</artifactId>
-						<version>3.0.1</version>
+						<version>3.2.1</version>
 						<executions>
 							<execution>
 								<id>attach-sources</id>
@@ -457,7 +470,7 @@
 					<plugin>
 						<groupId>org.apache.maven.plugins</groupId>
 						<artifactId>maven-javadoc-plugin</artifactId>
-						<version>2.10.4</version>
+						<version>3.1.1</version>
 						<executions>
 							<execution>
 								<id>attach-javadocs</id>
@@ -528,6 +541,7 @@
 							</execution>
 						</executions>
 					</plugin>
+					<!-- GPG plugin -->
 					<plugin>
 						<groupId>org.apache.maven.plugins</groupId>
 						<artifactId>maven-gpg-plugin</artifactId>
@@ -539,29 +553,25 @@
 								<goals>
 									<goal>sign</goal>
 								</goals>
+								<configuration>
+									<!-- Prevent `gpg` from using pinentry programs -->
+									<gpgArguments>
+										<arg>--pinentry-mode</arg>
+										<arg>loopback</arg>
+									</gpgArguments>
+								</configuration>
 							</execution>
 						</executions>
 					</plugin>
 					<plugin>
 						<groupId>org.sonatype.plugins</groupId>
 						<artifactId>nexus-staging-maven-plugin</artifactId>
-						<version>1.6.8</version>
+						<version>1.6.7</version>
 						<extensions>true</extensions>
 						<configuration>
 							<serverId>ossrh</serverId>
 							<nexusUrl>https://oss.sonatype.org/</nexusUrl>
 							<autoReleaseAfterClose>true</autoReleaseAfterClose>
-						</configuration>
-					</plugin>
-					<plugin>
-						<groupId>org.apache.maven.plugins</groupId>
-						<artifactId>maven-release-plugin</artifactId>
-						<version>2.5.3</version>
-						<configuration>
-							<autoVersionSubmodules>true</autoVersionSubmodules>
-							<useReleaseProfile>false</useReleaseProfile>
-							<releaseProfiles>release</releaseProfiles>
-							<goals>deploy</goals>
 						</configuration>
 					</plugin>
 				</plugins>

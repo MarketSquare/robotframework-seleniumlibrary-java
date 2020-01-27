@@ -14,7 +14,6 @@ import org.openqa.selenium.WebDriverException;
 import org.robotframework.javalib.annotation.ArgumentNames;
 import org.robotframework.javalib.annotation.Autowired;
 import org.robotframework.javalib.annotation.RobotKeyword;
-import org.robotframework.javalib.annotation.RobotKeywordOverload;
 import org.robotframework.javalib.annotation.RobotKeywords;
 
 import com.github.markusbernhardt.seleniumlibrary.RunOnFailureKeywordsAdapter;
@@ -46,19 +45,13 @@ public class JavaScript extends RunOnFailureKeywordsAdapter {
 	// Keywords
 	// ##############################
 
-	@RobotKeywordOverload
-	public void alertShouldBePresent() {
-		alertShouldBePresent("");
-	}
-
 	@RobotKeyword("Verify an alert is present and dismiss it.\r\n" + 
 	        "\r\n" + 
 	        "If ``text`` is a non-empty string, then it is also verified that the message of the alert equals to text.\r\n" + 
 	        "\r\n" + 
 	        "Will fail if no alert is present. Note that following keywords will fail unless the alert is confirmed by this keyword or another like `Confirm Action`.")
 	@ArgumentNames({ "text=NONE" })
-	public void alertShouldBePresent(String...params) {
-        String text = robot.getParamsValue(params, 0, null);
+	public void alertShouldBePresent(String text) {
 		String alertText = confirmAction();
 		if (text != null && !alertText.equals(text)) {
 			throw new SeleniumLibraryNonFatalException(String.format("Alert text should have been '%s' but was '%s'",

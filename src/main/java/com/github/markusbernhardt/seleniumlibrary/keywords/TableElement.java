@@ -41,8 +41,7 @@ public class TableElement extends RunOnFailureKeywordsAdapter {
 	        "\r\n" + 
 	        "Key attributes for tables are id and name. See `Introduction` for details about locators and log levels.")
 	@ArgumentNames({ "tableLocator", "row", "column", "logLevel=INFO" })
-	public String getTableCell(String tableLocator, int row, int column, String...params) {
-        String logLevel = robot.getParamsValue(params, 0, "INFO");
+	public String getTableCell(String tableLocator, int row, int column, String logLevel) {
 		int rowIndex = row - 1;
 		int columnIndex = column - 1;
 		WebElement table = TableElementFinder.find(browserManagement.getCurrentWebDriver(), tableLocator);
@@ -75,8 +74,7 @@ public class TableElement extends RunOnFailureKeywordsAdapter {
             "\r\n" + 
             "Key attributes for tables are id and name. See `Introduction` for details about locators and log levels.")
 	@ArgumentNames({ "tableLocator", "row", "column", "text", "logLevel=INFO" })
-	public void tableCellShouldContain(String tableLocator, int row, int column, String text, String...params) {
-        String logLevel = robot.getParamsValue(params, 0, "INFO");
+	public void tableCellShouldContain(String tableLocator, int row, int column, String text, String logLevel) {
 		String message = String.format("Cell in table '%s' in row #%d and column #%d should have contained text '%s'.",
 				tableLocator, row, column, text);
 
@@ -105,8 +103,7 @@ public class TableElement extends RunOnFailureKeywordsAdapter {
 	        " | Table Column Should Contain | tableId | 3 | C | \r\n" + 
 	        " | Table Column Should Contain | tableId | 2 | C |")
 	@ArgumentNames({ "tableLocator", "col", "text", "logLevel=INFO" })
-	public void tableColumnShouldContain(String tableLocator, int col, String text, String...params) {
-        String logLevel = robot.getParamsValue(params, 0, "INFO");
+	public void tableColumnShouldContain(String tableLocator, int col, String text, String logLevel) {
 		WebElement element = TableElementFinder.findByCol(browserManagement.getCurrentWebDriver(), tableLocator, col,
 				text);
 		if (element == null) {
@@ -120,8 +117,7 @@ public class TableElement extends RunOnFailureKeywordsAdapter {
             "\r\n" + 
             "Key attributes for tables are id and name. See `Introduction` for details about locators and log levels.")
 	@ArgumentNames({ "tableLocator", "text", "logLevel=INFO" })
-	public void tableFooterShouldContain(String tableLocator, String text, String...params) {
-        String logLevel = robot.getParamsValue(params, 0, "INFO");
+	public void tableFooterShouldContain(String tableLocator, String text, String logLevel) {
 		WebElement element = TableElementFinder.findByFooter(browserManagement.getCurrentWebDriver(), tableLocator,
 				text);
 		if (element == null) {
@@ -135,8 +131,7 @@ public class TableElement extends RunOnFailureKeywordsAdapter {
             "\r\n" + 
             "Key attributes for tables are id and name. See `Introduction` for details about locators and log levels.")
 	@ArgumentNames({ "tableLocator", "text", "logLevel=INFO" })
-	public void tableHeaderShouldContain(String tableLocator, String text, String...params) {
-        String logLevel = robot.getParamsValue(params, 0, "INFO");
+	public void tableHeaderShouldContain(String tableLocator, String text, String logLevel) {
 		WebElement element = TableElementFinder.findByHeader(browserManagement.getCurrentWebDriver(), tableLocator,
 				text);
 		if (element == null) {
@@ -154,8 +149,7 @@ public class TableElement extends RunOnFailureKeywordsAdapter {
 	        "\r\n" + 
 	        "If the table contains cells that span multiple rows, a match only occurs for the uppermost row of those merged cells.")
 	@ArgumentNames({ "tableLocator", "row", "text", "logLevel=INFO" })
-	public void tableRowShouldContain(String tableLocator, int row, String text, String...params) {
-        String logLevel = robot.getParamsValue(params, 0, "INFO");
+	public void tableRowShouldContain(String tableLocator, int row, String text, String logLevel) {
 		WebElement element = TableElementFinder.findByRow(browserManagement.getCurrentWebDriver(), tableLocator, row,
 				text);
 		if (element == null) {
@@ -169,8 +163,7 @@ public class TableElement extends RunOnFailureKeywordsAdapter {
             "\r\n" + 
             "Key attributes for tables are id and name. See `Introduction` for details about locators and log levels.")
 	@ArgumentNames({ "tableLocator", "text", "logLevel=INFO" })
-	public void tableShouldContain(String tableLocator, String text, String...params) {
-        String logLevel = robot.getParamsValue(params, 0, "INFO");
+	public void tableShouldContain(String tableLocator, String text, String logLevel) {
 		WebElement element = TableElementFinder.findByContent(browserManagement.getCurrentWebDriver(), tableLocator,
 				text);
 		if (element == null) {

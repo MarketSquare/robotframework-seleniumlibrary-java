@@ -116,7 +116,7 @@ public class SelectElement extends RunOnFailureKeywordsAdapter {
 				: "no options";
 		logging.info(String.format("Verifying list '%s' has %s selected.", locator, itemList));
 
-		pageShouldContainList(locator);
+		pageShouldContainList(locator, "" , "INFO");
 
 		List<WebElement> options = getSelectListOptionsSelected(locator);
 		List<String> selectedLabels = getLabelsForOptions(options);
@@ -155,9 +155,7 @@ public class SelectElement extends RunOnFailureKeywordsAdapter {
             "\r\n" +
             "Select list keywords work on both lists and combo boxes. Key attributes for select lists are id and name. See `Introduction` for details about locators.")
 	@ArgumentNames({ "locator", "message=NONE", "logLevel=INFO" })
-	public void pageShouldContainList(String locator, String...params) {
-        String message = robot.getParamsValue(params, 0, "");
-        String logLevel = robot.getParamsValue(params, 1, "INFO");
+	public void pageShouldContainList(String locator, String message, String logLevel) {
 		element.pageShouldContainElement(locator, "list", message, logLevel);
 	}
 
@@ -165,9 +163,7 @@ public class SelectElement extends RunOnFailureKeywordsAdapter {
             "\r\n" +
             "Select list keywords work on both lists and combo boxes. Key attributes for select lists are id and name. See `Introduction` for details about locators.")
 	@ArgumentNames({ "locator", "message=NONE", "logLevel=INFO" })
-	public void pageShouldNotContainList(String locator, String...params) {
-        String message = robot.getParamsValue(params, 0, "");
-        String logLevel = robot.getParamsValue(params, 1, "INFO");
+	public void pageShouldNotContainList(String locator, String message, String logLevel) {
 		element.pageShouldNotContainElement(locator, "list", message, logLevel);
 	}
 
