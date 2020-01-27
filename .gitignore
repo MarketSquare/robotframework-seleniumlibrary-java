@@ -5,6 +5,7 @@
 .idea
 .vscode
 *.iml
+.factorypath
 
 # App specifics
 target
