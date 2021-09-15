@@ -290,9 +290,12 @@
 								<log>target/robotframework-reports/${browser}_log.html</log>
 								<output>target/robotframework-reports/${browser}_output.xml</output>
 								<xunitFile>target/robotframework-reports/${browser}_xUnit.xml</xunitFile>
-								<nonCriticalTags>
-									<nonCriticalTag>${browser}</nonCriticalTag>
-								</nonCriticalTags>
+								<skips>
+									<skip>${browser}</skip>
+								</skips>
+								<skiponfailures>
+									<skiponfailure>${browser}</skiponfailure>
+								</skiponfailures>
 							</configuration>
 						</execution>
 						<execution>
