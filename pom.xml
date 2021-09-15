@@ -433,6 +433,13 @@
 			</properties>
 		</profile>
 		<profile>
+			<id>edgeheadless</id>
+			<properties>
+				<browser>edgeheadless</browser>
+				<downloadWebDriver>True</downloadWebDriver>
+			</properties>
+		</profile>
+		<profile>
 			<id>deploy</id>
 			<build>
 				<plugins>

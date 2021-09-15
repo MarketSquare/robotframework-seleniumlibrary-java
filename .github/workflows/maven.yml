@@ -1,6 +1,13 @@
 name: Java CI
 
-on: [push, pull_request]
+on: 
+  pull_request:
+  push:
+    tags:
+    branches:
+      - develop
+      - selenium4
+
 
 jobs:
   build_and_test:
@@ -9,17 +16,24 @@ jobs:
       matrix:
         os: [ 'ubuntu-latest', 'macos-latest', 'windows-latest' ]
         java-version: [ 8 ]
-        browser: ['jbrowser', 'googlechromeheadless', 'firefoxheadless'] # 'htmlunitwithjs' not working with Selenium4
+        browser: ['jbrowser', 'googlechromeheadless', 'firefoxheadless', 'edgeheadless'] # 'htmlunitwithjs' not working with Selenium4
         include:
           - os: ubuntu-latest
             set_display: export DISPLAY=:99; Xvfb :99 -screen 0 1024x768x24 -ac -noreset & sleep 3
-            install_dependencies: sudo apt-get -y -q install xvfb zip curl
+            install_dependencies: |
+              curl https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor > microsoft.gpg
+              sudo install -o root -g root -m 644 microsoft.gpg /etc/apt/trusted.gpg.d/
+              sudo sh -c 'echo "deb [arch=amd64] https://packages.microsoft.com/repos/edge stable main" > /etc/apt/sources.list.d/microsoft-edge-dev.list'
+              sudo rm microsoft.gpg
+              sudo apt update
+              sudo apt-get -y -q install xvfb zip curl microsoft-edge-beta
           - os: windows-latest
             install_dependencies: choco install firefox googlechrome curl zip -y --no-progress
           - os: macos-latest
             install_dependencies: |
-              brew cask install firefox
-              brew cask install google-chrome
+              brew install --cask firefox
+              brew install --cask google-chrome
+              brew install --cask microsoft-edge
               brew install zip
               brew install curl
 
@@ -28,8 +42,9 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - name: Set up JDK ${{ matrix.java-version }}
-        uses: actions/setup-java@v1.2.0
+        uses: actions/setup-java@v2.3.0
         with:
+          distribution: zulu
           java-version: ${{ matrix.java-version }}
           java-package: jdk+fx # needed for jbrowser
       - name: Set up other dependencies
@@ -37,40 +52,56 @@ jobs:
           ${{ matrix.install_dependencies }}
           ${{ matrix.set_display }}
       - name: Build with Maven
-        run: mvn -B verify --file pom.xml -P 'build,${{ matrix.browser }}'
+        run: mvn -B -ntp -q verify --file pom.xml -P 'build,${{ matrix.browser }}'
       - name: Delete output.xml (on Win)
         run: |
           Get-ChildItem target/robotframework-reports -Include *output.xml -Recurse | Remove-Item
-          echo "::set-env name=REPORT_FILE::$(Get-ChildItem target/robotframework-reports -Include *report.html -Recurse -Name)"
+          echo "REPORT_FILE=$(Get-ChildItem target/robotframework-reports -Include *report.html -Recurse -Name)" | Out-File -FilePath $env:GITHUB_ENV -Encoding utf8 -Append
         if: always() && runner.os == 'Windows'
 
       - name: Delete output.xml (on Unix-like)
         run: |
           find target/robotframework-reports -type f -name '*output.xml' -exec rm {} +
-          echo "::set-env name=REPORT_FILE::$(find target/robotframework-reports -type f -name '*report.html' | sed 's#.*/##')"
+          echo "REPORT_FILE=$(find target/robotframework-reports -type f -name '*report.html' | sed 's#.*/##')" >> $GITHUB_ENV
         if: always() && runner.os != 'Windows'
 
       - name: Archive acceptances test results
-        uses: actions/upload-artifact@v1.0.0
+        uses: actions/upload-artifact@v2.2.4
         with:
           name: at-results-${{ matrix.browser }}-${{ matrix.os }}-${{ matrix.java-version }}
           path: target/robotframework-reports
         if: always() && job.status == 'failure'
 
-      - name: Upload results
+      - name: Upload results on failure
+        id: upload_results
         run: |
           echo '<html><head><meta http-equiv = "refresh" content =" 0 ; url = /${{ env.REPORT_FILE }}"></head></html>' > target/robotframework-reports/index.html
           zip -r -j site.zip target/robotframework-reports > no_output 2>&1
           curl -s -H "Content-Type: application/zip" -H "Authorization: Bearer ${{ secrets.NETLIFY_TOKEN }}" --data-binary "@site.zip" https://api.netlify.com/api/v1/sites > response.json
-          echo "::set-env name=REPORT_URL::$(cat response.json|python -c "import sys, json; print('https://' + json.load(sys.stdin)['subdomain'] + '.netlify.com')")"
-          echo "::set-env name=JOB_STATUS::$(python -c "print('${{ job.status }}'.lower())")"
+          echo "::set-output name=REPORT_URL::$(cat response.json|python -c "import sys, json; print('https://' + json.load(sys.stdin)['subdomain'] + '.netlify.com')")"
+          echo "::set-output name=JOB_STATUS::$(python -c "print('${{ job.status }}'.lower())")"
         if: always() && job.status == 'failure'
 
-      - uses: octokit/request-action@57ec46afcc4c58c813af3afe67e57ced1ea9f165
+      - uses: octokit/request-action@7e93b91076fad3920c29d44eb2a6311d929db3dd
         name: Update status with Github Status API
-        id: update_status
+        id: update_status_pr
         with:
-          route: POST /repos/:repository/statuses/:sha
+          route: POST /repos/{repository}/statuses/{sha}
+          repository: ${{ github.repository }}
+          sha: ${{ github.event.pull_request.head.sha }}
+          state: "${{steps.upload_results.outputs.JOB_STATUS}}"
+          target_url: "${{steps.upload_results.outputs.REPORT_URL}}"
+          description: "Link to test report."
+          context: at-results-${{ matrix.browser }}-${{ matrix.os }}-${{ matrix.java-version }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        if: always() && job.status == 'failure' && github.event.pull_request
+
+      - uses: octokit/request-action@7e93b91076fad3920c29d44eb2a6311d929db3dd
+        name: Update status with Github Status API
+        id: update_status_push
+        with:
+          route: POST /repos/{repository}/statuses/{sha}
           repository: ${{ github.repository }}
           sha: ${{ github.sha }}
           state: "${{env.JOB_STATUS}}"
@@ -79,21 +110,22 @@ jobs:
           context: at-results-${{ matrix.browser }}-${{ matrix.os }}-${{ matrix.java-version }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        if: always() && job.status == 'failure'
+        if: always() && job.status == 'failure' && github.event.push
 
   release:
     needs: [build_and_test]
-    if: github.ref == 'refs/heads/develop' || github.ref == 'refs/heads/selenium4' || startsWith(github.ref, 'refs/tags/')
+    if: github.event.push
     runs-on: ubuntu-latest
     name: Release package
     steps:
       - uses: actions/checkout@v2
       - name: Set up JDK
-        uses: actions/setup-java@v1.2.0
+        uses: actions/setup-java@v2.3.0
         with:
+          distribution: zulu
           java-version: 8
       - name: Release Maven package
-        uses: samuelmeuli/action-maven-publish@1221d1fa792cab948a772c5e7c1f3abe84aec3bf
+        uses: samuelmeuli/action-maven-publish@201a45a3f311b2ee888f252ba9f4194257545709
         with:
           gpg_private_key: ${{ secrets.gpg_private_key }}
           gpg_passphrase: ${{ secrets.gpg_passphrase }}
