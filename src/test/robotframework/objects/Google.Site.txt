@@ -24,6 +24,7 @@ Go To
     ${Current.Location}=    Get Location
     Run Keyword If    '${Current.Location}'!='${Google.Site.Url}'    SeleniumLibrary.Go To    ${Google.Site.Url}
     Title Should Be    ${Google.Site.PageTitle}
+    Handle Cookie Consent    xpath:(//div[@role="none"])[last()]
 
 Close
     Close Browser
