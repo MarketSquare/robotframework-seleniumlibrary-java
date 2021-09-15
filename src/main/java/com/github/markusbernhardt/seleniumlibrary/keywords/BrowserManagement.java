@@ -1,8 +1,8 @@
 package com.github.markusbernhardt.seleniumlibrary.keywords;
 
 import io.appium.java_client.ios.IOSDriver;
-import io.github.bonigarcia.wdm.DriverManagerType;
 import io.github.bonigarcia.wdm.WebDriverManager;
+import io.github.bonigarcia.wdm.config.DriverManagerType;
 import io.selendroid.client.SelendroidDriver;
 
 import java.io.File;
@@ -157,6 +157,7 @@ public class BrowserManagement extends RunOnFailureKeywordsAdapter {
             "| Google Chrome (headless)    | googlechromeheadless, chromeheadless, gcheadless |\r\n" + 
             "| Internet Explorer | internetexplorer, ie     |\r\n" + 
             "| Edge      | edge      |\r\n" + 
+            "| Edge (headless)     | edgeheadless      |\r\n" + 
             "| Safari    | safari    |\r\n" + 
             "| Android   | android   |\r\n" + 
             "| Iphone    | iphone    |\r\n" + 
@@ -632,6 +633,7 @@ public class BrowserManagement extends RunOnFailureKeywordsAdapter {
             case "internetexplorer":
                 return new InternetExplorerDriver((InternetExplorerOptions)desiredCapabilities);
             case "edge":
+            case "edgeheadless":
                 return new EdgeDriver((EdgeOptions)desiredCapabilities);
             case "gc":
             case "chrome":
@@ -688,6 +690,7 @@ public class BrowserManagement extends RunOnFailureKeywordsAdapter {
                 WebDriverManager.getInstance(DriverManagerType.IEXPLORER).setup();
                 break;
             case "edge":
+            case "edgeheadless":
                 WebDriverManager.getInstance(DriverManagerType.EDGE).setup();
                 break;
             case "gc":
@@ -731,6 +734,10 @@ public class BrowserManagement extends RunOnFailureKeywordsAdapter {
         case "edge":
             desiredCapabilities = new EdgeOptions();
             break;
+        case "edgeheadless":
+            desiredCapabilities = new EdgeOptions();
+            ((EdgeOptions)desiredCapabilities).setHeadless(true);
+            break;           
         case "gc":
         case "chrome":
         case "googlechrome":
