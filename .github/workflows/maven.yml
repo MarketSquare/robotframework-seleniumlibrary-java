@@ -36,7 +36,11 @@ jobs:
               brew install --cask microsoft-edge
               brew install zip
               brew install curl
-
+        exclude:
+          - os: macos-latest
+            browser: firefoxheadless # Webdriver download if not working with Firefox at GHA
+            java-version: 8
+  
     runs-on: ${{ matrix.os }}
     name: Test on ${{ matrix.os }} with Java ${{ matrix.java-version }} using browser ${{ matrix.browser }}
     steps:
