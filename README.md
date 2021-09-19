@@ -50,13 +50,13 @@ your pom.xml:
     </dependency>
 
 If you cannot use the robotframework-maven-plugin you can use the
-[jar-with-dependencies](http://central.maven.org/maven2/com/github/hi-fi/robotframework-seleniumlibrary/3.141.59.26535/robotframework-seleniumlibrary-3.141.59.26535-jar-with-dependencies.jar),
+[jar-with-dependencies](https://repo1.maven.org/maven2/com/github/hi-fi/robotframework-seleniumlibrary/3.141.59.26535/robotframework-seleniumlibrary-3.141.59.26535-jar-with-dependencies.jar),
 which contains all required libraries. Running of tests with this can be done with command `java -jar robotframework-seleniumlibrary-3.141.59.26535-jar-with-dependencies.jar <test location>`.  
 
 * More information about this library can be found in the
-  [Keyword Documentation](http://central.maven.org/maven2/com/github/hi-fi/robotframework-seleniumlibrary/3.141.59.26535/robotframework-seleniumlibrary-3.141.59.26535.html).
+  [Keyword Documentation](https://repo1.maven.org/maven2/com/github/hi-fi/robotframework-seleniumlibrary/3.141.59.26535/robotframework-seleniumlibrary-3.141.59.26535.html).
 * For keyword completion in RIDE you can download this
-  [Library Specs](http://central.maven.org/maven2/com/github/hi-fi/robotframework-seleniumlibrary/3.141.59.26535/robotframework-seleniumlibrary-3.141.59.26535.xml)
+  [Library Specs](https://repo1.maven.org/maven2/com/github/hi-fi/robotframework-seleniumlibrary/3.141.59.26535/robotframework-seleniumlibrary-3.141.59.26535.xml)
   and place it in your PYTHONPATH.
 
 Usage, Selenium 4 (WIP)

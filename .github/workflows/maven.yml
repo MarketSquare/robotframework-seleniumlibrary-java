@@ -9,7 +9,6 @@ on:
       - develop
       - selenium4
 
-
 jobs:
   build_and_test:
     strategy:
