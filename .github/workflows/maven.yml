@@ -4,6 +4,7 @@ on:
   pull_request:
   push:
     tags:
+      - '*'
     branches:
       - develop
       - selenium4
@@ -62,7 +63,7 @@ jobs:
         run: |
           Get-ChildItem target/robotframework-reports -Include *output.xml -Recurse | Remove-Item
           echo "REPORT_FILE=$(Get-ChildItem target/robotframework-reports -Include *report.html -Recurse -Name)" | Out-File -FilePath $env:GITHUB_ENV -Encoding utf8 -Append
-          echo "SHA=$(("${{ github.event_name }}" -eq "push") ? "${{ github.sha }}" : "${{ github.event.pull_request.head.sha }}")" | Out-File -FilePath $env:GITHUB_ENV -Encoding utf8 -Append
+          echo "SHA=$(("${{ github.event_name }}" -eq "push") ? '${{ github.sha }}' : '${{ github.event.pull_request.head.sha }}')" | Out-File -FilePath $env:GITHUB_ENV -Encoding utf8 -Append
         if: always() && runner.os == 'Windows'
 
       - name: Delete output.xml (on Unix-like)
@@ -74,7 +75,7 @@ jobs:
 
       - name: Print actual triggering commit
         run: echo "${{ env.SHA }}"
-        
+
       - name: Archive acceptances test results
         uses: actions/upload-artifact@v2.2.4
         with:
