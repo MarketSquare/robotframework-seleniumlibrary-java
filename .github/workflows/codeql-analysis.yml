@@ -13,10 +13,10 @@ name: "CodeQL"
 
 on:
   push:
-    branches: [ selenium4, develop, master ]
+    branches: [ develop, master ]
   pull_request:
     # The branches below must be a subset of the branches above
-    branches: [ selenium4, develop ]
+    branches: [ develop ]
   schedule:
     - cron: '15 5 * * 6'
 
