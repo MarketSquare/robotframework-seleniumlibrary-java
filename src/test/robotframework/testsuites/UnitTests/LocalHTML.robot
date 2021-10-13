@@ -1,6 +1,7 @@
 *** Settings ***
 Suite Teardown    Close All Browsers
 Resource          ../../settings/Settings.robot
+Default Tags      jbrowser
 
 *** Test Cases *** 
 Check Form

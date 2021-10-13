@@ -49,8 +49,7 @@ public class Logging extends RunOnFailureKeywordsAdapter {
 
     @RobotKeyword("Logs and returns the id attributes of all windows known to the current browser instance.")
     @ArgumentNames({ "logLevel=INFO" })
-    public List<String> logWindowIdentifiers(String...params) {
-        String logLevel = robot.getParamsValue(params, 0, "INFO");
+    public List<String> logWindowIdentifiers(String logLevel) {
         List<String> windowIdentifiers = window.getWindowIdentifiers();
         for (String windowIdentifier : windowIdentifiers) {
             log(windowIdentifier, logLevel);
@@ -62,8 +61,7 @@ public class Logging extends RunOnFailureKeywordsAdapter {
             "\r\n" +
             "See `Introduction` for details about the ``logLevel``.")
     @ArgumentNames({ "logLevel=INFO" })
-    public List<String> logWindowNames(String...params) {
-        String logLevel = robot.getParamsValue(params, 0, "INFO");
+    public List<String> logWindowNames(String logLevel) {
         List<String> windowIdentifiers = window.getWindowNames();
         for (String windowIdentifier : windowIdentifiers) {
             log(windowIdentifier, logLevel);
@@ -75,8 +73,7 @@ public class Logging extends RunOnFailureKeywordsAdapter {
             "\r\n" +
             "See `Introduction` for details about the ``logLevel``.")
     @ArgumentNames({ "logLevel=INFO" })
-    public List<String> logWindowTitles(String...params) {
-        String logLevel = robot.getParamsValue(params, 0, "INFO");
+    public List<String> logWindowTitles(String logLevel) {
         List<String> windowIdentifiers = window.getWindowTitles();
         for (String windowIdentifier : windowIdentifiers) {
             log(windowIdentifier, logLevel);
@@ -88,8 +85,7 @@ public class Logging extends RunOnFailureKeywordsAdapter {
             "\r\n" +
             "See `Introduction` for details about the ``logLevel``.")
     @ArgumentNames({ "logLevel=INFO" })
-    public String logLocation(String...params) {
-        String logLevel = robot.getParamsValue(params, 0, "INFO");
+    public String logLocation(String logLevel) {
         String actual = browserManagement.getLocation();
         log(actual, logLevel);
         return actual;
@@ -99,8 +95,7 @@ public class Logging extends RunOnFailureKeywordsAdapter {
             "\r\n" +
             "See `Introduction` for details about the ``logLevel``.")
     @ArgumentNames({ "logLevel=INFO" })
-    public String logSource(String...params) {
-        String logLevel = robot.getParamsValue(params, 0, "INFO");
+    public String logSource(String logLevel) {
         String actual = browserManagement.getSource();
         log(actual, logLevel);
         return actual;
@@ -110,8 +105,7 @@ public class Logging extends RunOnFailureKeywordsAdapter {
             "\r\n" +
             "See `Introduction` for details about the ``logLevel``.")
     @ArgumentNames({ "logLevel=INFO" })
-    public String logTitle(String...params) {
-        String logLevel = robot.getParamsValue(params, 0, "INFO");
+    public String logTitle(String logLevel) {
         String actual = browserManagement.getTitle();
         log(actual, logLevel);
         return actual;
@@ -121,8 +115,7 @@ public class Logging extends RunOnFailureKeywordsAdapter {
             "\r\n" +
             "See `Introduction` for details about the ``logLevel``.")
     @ArgumentNames({ "logLevel=INFO" })
-    public String logSystemInfo(String...params) {
-        String logLevel = robot.getParamsValue(params, 0, "INFO");
+    public String logSystemInfo(String logLevel) {
         String actual = browserManagement.getSystemInfo();
         log(actual, logLevel);
         return actual;
@@ -134,8 +127,7 @@ public class Logging extends RunOnFailureKeywordsAdapter {
             "\r\n" +
             "See `Introduction` for details about the ``logLevel``.")
     @ArgumentNames({ "logLevel=INFO" })
-    public String logRemoteCapabilities(String...params) {
-        String logLevel = robot.getParamsValue(params, 0, "INFO");
+    public String logRemoteCapabilities(String logLevel) {
         String actual = browserManagement.getRemoteCapabilities();
         log(actual, logLevel);
         return actual;
@@ -145,8 +137,7 @@ public class Logging extends RunOnFailureKeywordsAdapter {
             "\r\n" +
             "See `Introduction` for details about the ``logLevel``.")
     @ArgumentNames({ "logLevel=INFO" })
-    public String logRemoteSessionId(String...params) {
-        String logLevel = robot.getParamsValue(params, 0, "INFO");
+    public String logRemoteSessionId(String logLevel) {
         String actual = browserManagement.getRemoteSessionId();
         log(actual, logLevel);
         return actual;
