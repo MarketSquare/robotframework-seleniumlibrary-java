@@ -60,8 +60,6 @@ import com.github.markusbernhardt.seleniumlibrary.locators.ElementFinder;
 import com.github.markusbernhardt.seleniumlibrary.utils.Robotframework;
 import com.github.markusbernhardt.seleniumlibrary.utils.WebDriverCache;
 import com.github.markusbernhardt.seleniumlibrary.utils.WebDriverCache.SessionIdAliasWebDriverTuple;
-import com.machinepublishers.jbrowserdriver.JBrowserDriver;
-import com.machinepublishers.jbrowserdriver.Settings;
 
 @RobotKeywords
 public class BrowserManagement extends RunOnFailureKeywordsAdapter {
@@ -161,7 +159,6 @@ public class BrowserManagement extends RunOnFailureKeywordsAdapter {
             "| Safari    | safari    |\r\n" + 
             "| Android   | android   |\r\n" + 
             "| Iphone    | iphone    |\r\n" + 
-            "| JBrowser  | jbrowser  |\r\n" + 
             "\r\n" + 
             "To be able to actually use one of these browsers, you need to have a matching Selenium browser driver available. See the [https://github.com/Hi-Fi/robotframework-seleniumlibrary-java#browser-drivers|project documentation] for more details.\r\n" + 
             "\r\n" + 
@@ -640,8 +637,6 @@ public class BrowserManagement extends RunOnFailureKeywordsAdapter {
                 return new ChromeDriver((ChromeOptions)desiredCapabilities);
             case "safari":
                 return new SafariDriver(new SafariOptions().merge(desiredCapabilities));
-            case "jbrowser":
-                return new JBrowserDriver(Settings.builder().build());
             case "android":
                 try {
                     return new SelendroidDriver(desiredCapabilities);
@@ -751,9 +746,6 @@ public class BrowserManagement extends RunOnFailureKeywordsAdapter {
             break;
         case "safari":
             desiredCapabilities = new SafariOptions();
-            break;
-        case "jbrowser":
-            desiredCapabilities = new DesiredCapabilities("jbrowser", "1", Platform.ANY);
             break;
         case "htmlunit":
         case "htmlunitwithjs":

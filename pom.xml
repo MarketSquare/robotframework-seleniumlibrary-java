@@ -1,11 +1,10 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0"
-		 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-		 xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
 	<groupId>com.github.marketsquare</groupId>
 	<artifactId>robotframework-seleniumlibrary</artifactId>
-	<version>4.0.0-rc-1.1-SNAPSHOT</version>
+	<version>4.0.0.0</version>
 	<packaging>jar</packaging>
 
 	<name>Robot Framework :: SeleniumLibrary</name>
@@ -73,13 +72,13 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<downloadSources>true</downloadSources>
 		<downloadJavadocs>true</downloadJavadocs>
-		<aspectj.version>1.9.8.M1</aspectj.version>
-		<java.version>1.8</java.version>
+		<aspectj.version>1.9.8.RC1</aspectj.version>
+		<java.version>11</java.version>
 		<robotframework.maven.plugin.version>2.1.0</robotframework.maven.plugin.version>
 		<robotframework.version>4.1</robotframework.version>
-		<selenium.version>4.0.0-rc-1</selenium.version>
+		<selenium.version>4.0.0</selenium.version>
 		<keywords.class>SeleniumLibrary</keywords.class>
-		<browser>jbrowser</browser>
+		<browser>googlechromeheadless</browser>
 		<downloadWebDriver>False</downloadWebDriver>
 	</properties>
 
@@ -124,7 +123,7 @@
 		<dependency>
 			<groupId>io.appium</groupId>
 			<artifactId>java-client</artifactId>
-			<version>7.5.1</version>
+			<version>7.6.0</version>
 			<exclusions>
 				<exclusion>
 					<groupId>org.seleniumhq.selenium</groupId>
@@ -143,9 +142,9 @@
 			<version>1.3</version>
 		</dependency>
 		<dependency>
-			<groupId>com.machinepublishers</groupId>
-			<artifactId>jbrowserdriver</artifactId>
-			<version>1.1.1</version>
+			<groupId>org.seleniumhq.selenium</groupId>
+			<artifactId>htmlunit-driver</artifactId>
+			<version>2.53.0</version>
 			<exclusions>
 				<exclusion>
 					<groupId>org.seleniumhq.selenium</groupId>
@@ -155,26 +154,11 @@
 					<groupId>org.seleniumhq.selenium</groupId>
 					<artifactId>selenium-api</artifactId>
 				</exclusion>
+				<exclusion>
+					<groupId>org.seleniumhq.selenium</groupId>
+					<artifactId>selenium-support</artifactId>
+				</exclusion>
 			</exclusions>
-		</dependency>
-		<dependency>
-		    <groupId>org.seleniumhq.selenium</groupId>
-		    <artifactId>htmlunit-driver</artifactId>
-		    <version>2.53.0</version>
-		    <exclusions>
-                <exclusion>
-                    <groupId>org.seleniumhq.selenium</groupId>
-                    <artifactId>selenium-remote-driver</artifactId>
-                </exclusion>
-                <exclusion>
-                    <groupId>org.seleniumhq.selenium</groupId>
-                    <artifactId>selenium-api</artifactId>
-                </exclusion>
-                <exclusion>
-                    <groupId>org.seleniumhq.selenium</groupId>
-                    <artifactId>selenium-support</artifactId>
-                </exclusion>
-            </exclusions>
 		</dependency>
 		<dependency>
 			<groupId>org.mockito</groupId>
@@ -185,12 +169,12 @@
 		<dependency>
 			<groupId>io.github.bonigarcia</groupId>
 			<artifactId>webdrivermanager</artifactId>
-			<version>5.0.2</version>
+			<version>5.0.3</version>
 		</dependency>
 		<dependency>
 			<groupId>org.apache.commons</groupId>
 			<artifactId>commons-lang3</artifactId>
-			<version>3.9</version>
+			<version>3.12.0</version>
 		</dependency>
 	</dependencies>
 
@@ -216,13 +200,11 @@
 
 		<plugins>
 			<plugin>
-				<!-- Set 1.7 as target, use project source encoding -->
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
 				<version>3.8.1</version>
 				<configuration>
-					<source>${java.version}</source>
-					<target>${java.version}</target>
+					<release>11</release>
 					<encoding>${project.build.sourceEncoding}</encoding>
 					<optimize>true</optimize>
 					<debug>true</debug>
@@ -394,19 +376,12 @@
 			</build>
 		</profile>
 		<profile>
-			<id>jbrowser</id>
+			<id>htmlunitwithjs</id>
 			<properties>
-				<browser>jbrowser</browser>
+				<browser>htmlunitwithjs</browser>
 				<downloadWebDriver>False</downloadWebDriver>
 			</properties>
 		</profile>
-        <profile>
-            <id>htmlunitwithjs</id>
-            <properties>
-                <browser>htmlunitwithjs</browser>
-                <downloadWebDriver>False</downloadWebDriver>
-            </properties>
-        </profile>
 		<profile>
 			<id>firefox</id>
 			<properties>

@@ -7,7 +7,6 @@ on:
       - '*'
     branches:
       - develop
-      - selenium4
 
 jobs:
   build_and_test:
@@ -15,8 +14,8 @@ jobs:
       fail-fast: false
       matrix:
         os: [ 'ubuntu-latest', 'macos-latest', 'windows-latest' ]
-        java-version: [ 8 ]
-        browser: ['jbrowser', 'googlechromeheadless', 'firefoxheadless', 'edgeheadless'] # 'htmlunitwithjs' not working with Selenium4
+        java-version: [ 11 ]
+        browser: ['googlechromeheadless', 'firefoxheadless', 'edgeheadless']
         include:
           - os: ubuntu-latest
             set_display: export DISPLAY=:99; Xvfb :99 -screen 0 1024x768x24 -ac -noreset & sleep 3
@@ -118,7 +117,7 @@ jobs:
         uses: actions/setup-java@v2.3.0
         with:
           distribution: zulu
-          java-version: 8
+          java-version: 11
       - name: Release Maven package
         uses: samuelmeuli/action-maven-publish@201a45a3f311b2ee888f252ba9f4194257545709
         with:
