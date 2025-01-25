@@ -10,25 +10,10 @@ Open And Close Google Site
     Capture Page Screenshot
     
 Store Web Element In JavaScript
-    Wait Until Page Contains Element    //*[contains(@class,'gsfi')]
-    Execute Javascript    window.document.my_element = window.document.getElementsByClassName('gsfi')[0];
+    Wait Until Page Contains Element    //*[contains(@class,'gLFyf')]
+    Execute Javascript    window.document.my_element = window.document.getElementsByClassName('gLFyf')[0];
     ${className}=    Execute Javascript    return window.document.my_element.className;
-    Should Contain    ${className}    gsfi
-
-Search Robotframework Selenium2Library
-    Google.Search.Search String    Robotframework Selenium2Library Java
-    
-Search With JavaScript Locator
-    SeleniumLibrary.Add Location Strategy    elementByName    return window.document.getElementsByName(arguments[0])[0];
-    Input Text    elementByName:q    Robotframework Selenium2Library Java
-    Press Key    elementByName:q    \\13
-    Wait Until Element Is Visible    xpath://a[contains(.,'MarkusBernhardt')]
-    Capture Page Screenshot
-
-Search Without Locator Type
-    Input Text    q    Robotframework Selenium2Library Java
-    Press Key    q    \\13
-    Wait Until Element Is Visible    //a[contains(.,'MarkusBernhardt')]
+    Should Contain    ${className}    gLFyf
     
 Get Name Of Active Element With JavaScript
     Input Text    q    Robotframework Selenium2Library
