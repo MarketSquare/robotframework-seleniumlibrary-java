@@ -18,18 +18,18 @@ your pom.xml:
     <dependency>
         <groupId>com.github.marketsquare</groupId>
         <artifactId>robotframework-seleniumlibrary</artifactId>
-        <version>4.0.0.0</version>
+        <version>4.28.1.0</version>
         <scope>test</scope>
     </dependency>
 
 If you cannot use the robotframework-maven-plugin you can use the
-[jar-with-dependencies](https://repo1.maven.org/maven2/com/github/marketsquare/robotframework-seleniumlibrary/4.0.0.0/robotframework-seleniumlibrary-4.0.0.0-jar-with-dependencies.jar),
-which contains all required libraries except ios/android ones (Appium and Selendroid). Running of tests with this can be done with command `java -jar robotframework-seleniumlibrary-4.0.0.0-jar-with-dependencies.jar <test location>`.
+[jar-with-dependencies](https://repo1.maven.org/maven2/com/github/marketsquare/robotframework-seleniumlibrary/4.28.1.0/robotframework-seleniumlibrary-4.28.1.0-jar-with-dependencies.jar),
+which contains all required libraries except ios/android ones (Appium). Running of tests with this can be done with command `java -jar robotframework-seleniumlibrary-4.28.1.0-jar-with-dependencies.jar <test location>`.
 
 - More information about this library can be found in the
-  [Keyword Documentation](https://repo1.maven.org/maven2/com/github/marketsquare/robotframework-seleniumlibrary/4.0.0.0/robotframework-seleniumlibrary-4.0.0.0.html).
+  [Keyword Documentation](https://repo1.maven.org/maven2/com/github/marketsquare/robotframework-seleniumlibrary/4.28.1.0/robotframework-seleniumlibrary-4.28.1.0.html).
 - For keyword completion in RIDE you can download this
-  [Library Specs](https://repo1.maven.org/maven2/com/github/marketsquare/robotframework-seleniumlibrary/4.0.0.0/robotframework-seleniumlibrary-4.0.0.0.xml)
+  [Library Specs](https://repo1.maven.org/maven2/com/github/marketsquare/robotframework-seleniumlibrary/4.28.1.0/robotframework-seleniumlibrary-4.28.1.0.xml)
   and place it in your PYTHONPATH.
 
 ## Old versions
@@ -82,8 +82,8 @@ which contains all required libraries. Running of tests with this can be done wi
 
 ## Testing IOS/Android browsers with library
 
-Pre-Selenium 4 fat-jar contains Appium and Selendroid that allow testing of IOS and Android browsers. Those are dropped in Selenium 4 -versions,
-so dependencies needs to be handles self with either Maven/Gradle or manually. If there's need to have fat-jar with those, please create issue about that.
+Pre-Selenium 4 fat-jar contained Appium and Selendroid that allowed testing of IOS and Android browsers. Those are dropped in Selenium 4 -versions,
+so dependencies needs to be handles self with either Maven/Gradle or manually. Also 4.28.1.0 version of the library moved purely to Appium. If there's need to have fat-jar with those, please create issue about that.
 
 ## Differences
 
