@@ -1,7 +1,11 @@
 package com.github.markusbernhardt.seleniumlibrary.keywords;
 
 import static org.junit.Assert.*;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.*;
+
+import java.io.IOException;
 
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -41,25 +45,39 @@ public class BrowserManagementTest {
         String desired = "{\"platform\":\"WINDOWS\",\"browserName\":\"firefox\",\"version\":\"\"}";
         String browserOptions = "{\"preferences\": {\"network.proxy.type\": 1, \"network.proxy.http\": \"localhost\", \"network.proxy.http_port\": 73571}}";
         Capabilities dc = bm.createCapabilities("firefox", desired, browserOptions);
-        FirefoxProfile profile = (FirefoxProfile) dc.getCapability("firefox_profile");
-        assertTrue(dc.getCapability("platform").toString().equals("WINDOWS"));
-        assertTrue(profile.getStringPreference("network.proxy.http", "wrong") != "wrong");
+        @SuppressWarnings("unchecked")
+        String profileString = ((java.util.Map<String, String>) dc.getCapability("moz:firefoxOptions")).get("profile");
+        FirefoxProfile profile;
+        try {
+            profile = FirefoxProfile.fromJson(profileString);
+            assertTrue(dc.getCapability("platform").toString().equals("WINDOWS"));
+            assertTrue(profile.getStringPreference("network.proxy.http", "wrong") != "wrong");
+        } catch (IOException e) {
+            fail(e.getMessage());
+        }
     }
     
     @Test
     public void testCreateDesiredCapabilitiesWithoutBrowserOptions() {
         String desired = "{\"platform\":\"WINDOWS\",\"browserName\":\"firefox\",\"version\":\"\"}";
         Capabilities dc = bm.createCapabilities("firefox", desired, null);
-        FirefoxProfile profile = (FirefoxProfile) dc.getCapability("firefox_profile");
         assertTrue(dc.getCapability("platform").toString().equals("WINDOWS"));
     }
     
+    @SuppressWarnings("rawtypes")
     @Test
     public void testCreateDesiredCapabilitiesWithOnlyBrowserOptions() {
         String browserOptions = "{\"preferences\": {\"network.proxy.type\": 1, \"network.proxy.http\": \"localhost\", \"network.proxy.http_port\": 73571}}";
         Capabilities dc = bm.createCapabilities("firefox", null, browserOptions);
-        FirefoxProfile profile = (FirefoxProfile) dc.getCapability("firefox_profile");
-        assertTrue(profile.getStringPreference("network.proxy.http", "wrong") != "wrong");
+        @SuppressWarnings("unchecked")
+        String profileString = ((java.util.Map<String, String>) dc.getCapability("moz:firefoxOptions")).get("profile");
+        FirefoxProfile profile;
+        try {
+            profile = FirefoxProfile.fromJson(profileString);
+            assertTrue(profile.getStringPreference("network.proxy.http", "wrong") != "wrong");
+        } catch (IOException e) {
+            fail(e.getMessage());
+        }
     }
     
     @Test
@@ -79,7 +97,6 @@ public class BrowserManagementTest {
     
     @Test
     public void parseChromeCapabilities() {
-        ChromeOptions chromeOptions = new ChromeOptions();
         String browserName = "googlechromeheadless";
         String browserOptions = "{\"args\":[\"start-maximized\"],\"extensions\":[],\"prefs\":{\"intl.accept_languages\":\"de-AT\"}}";
         String desiredCapabilitiesString = "{}";

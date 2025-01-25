@@ -1,9 +1,9 @@
 package com.github.markusbernhardt.seleniumlibrary.keywords;
 
+import io.appium.java_client.android.AndroidDriver;
 import io.appium.java_client.ios.IOSDriver;
 import io.github.bonigarcia.wdm.WebDriverManager;
 import io.github.bonigarcia.wdm.config.DriverManagerType;
-import io.selendroid.client.SelendroidDriver;
 
 import java.io.File;
 import java.lang.reflect.Field;
@@ -60,6 +60,8 @@ import com.github.markusbernhardt.seleniumlibrary.locators.ElementFinder;
 import com.github.markusbernhardt.seleniumlibrary.utils.Robotframework;
 import com.github.markusbernhardt.seleniumlibrary.utils.WebDriverCache;
 import com.github.markusbernhardt.seleniumlibrary.utils.WebDriverCache.SessionIdAliasWebDriverTuple;
+
+import static org.openqa.selenium.remote.Browser.HTMLUNIT;
 
 @RobotKeywords
 public class BrowserManagement extends RunOnFailureKeywordsAdapter {
@@ -639,14 +641,14 @@ public class BrowserManagement extends RunOnFailureKeywordsAdapter {
                 return new SafariDriver(new SafariOptions().merge(desiredCapabilities));
             case "android":
                 try {
-                    return new SelendroidDriver(desiredCapabilities);
+                    return new AndroidDriver(desiredCapabilities);
                 } catch (Exception e) {
                     throw new SeleniumLibraryFatalException(e);
                 }
             case "ipad":
             case "iphone":
                 try {
-                    return new IOSDriver<>(new URL(""), desiredCapabilities);
+                    return new IOSDriver(new URL(""), desiredCapabilities);
                 } catch (Exception e) {
                     throw new SeleniumLibraryFatalException("Creating " + browserName + " instance failed.", e);
                 }
@@ -716,7 +718,7 @@ public class BrowserManagement extends RunOnFailureKeywordsAdapter {
         case "firefoxheadless":
             desiredCapabilities = new FirefoxOptions();
             parseBrowserOptionsFirefox(browserOptions, desiredCapabilities);
-            ((FirefoxOptions)desiredCapabilities).setHeadless(true);
+            ((FirefoxOptions)desiredCapabilities).addArguments("-headless");
             break;
         case "ie":
         case "internetexplorer":
@@ -727,7 +729,7 @@ public class BrowserManagement extends RunOnFailureKeywordsAdapter {
             break;
         case "edgeheadless":
             desiredCapabilities = new EdgeOptions();
-            ((EdgeOptions)desiredCapabilities).setHeadless(true);
+            ((EdgeOptions)desiredCapabilities).addArguments("--headless=chrome");
             break;           
         case "gc":
         case "chrome":
@@ -742,14 +744,14 @@ public class BrowserManagement extends RunOnFailureKeywordsAdapter {
             desiredCapabilities = new ChromeOptions();
             logging.debug("Parsing chrome options: "+browserOptions);
             parseBrowserOptionsChrome(browserOptions, desiredCapabilities);
-            ((ChromeOptions)desiredCapabilities).setHeadless(true);
+            ((ChromeOptions)desiredCapabilities).addArguments("--headless=chrome");
             break;
         case "safari":
             desiredCapabilities = new SafariOptions();
             break;
         case "htmlunit":
         case "htmlunitwithjs":
-            desiredCapabilities = DesiredCapabilities.htmlUnit();
+            desiredCapabilities = new DesiredCapabilities(HTMLUNIT.browserName(), "", Platform.ANY);
             ((DesiredCapabilities) desiredCapabilities).setBrowserName("htmlunit");
             break;
         default:
@@ -858,7 +860,7 @@ public class BrowserManagement extends RunOnFailureKeywordsAdapter {
                         logging.warn("Unknown browserOption: " + key + ":" + entry.getValue());
                     }
                 }
-                ((FirefoxOptions) desiredCapabilities).setCapability(FirefoxDriver.PROFILE, firefoxProfile);
+                ((FirefoxOptions) desiredCapabilities).setProfile(firefoxProfile);
             } else {
                 logging.warn("Invalid browserOptions: " + browserOptions);
             }
