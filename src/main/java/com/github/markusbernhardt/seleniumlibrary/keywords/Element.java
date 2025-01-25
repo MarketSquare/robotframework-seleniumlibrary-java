@@ -51,8 +51,7 @@ public class Element extends RunOnFailureKeywordsAdapter {
             + "\n\r"
             + "See `Introduction` for details about log levels.")
     @ArgumentNames({ "text", "logLevel=INFO" })
-    public void currentFrameContains(String text, String...params) {
-        String logLevel = robot.getParamsValue(params, 0, "INFO");
+    public void currentFrameContains(String text, String logLevel) {
         if (!isTextPresent(text)) {
             logging.log(String.format("Current Frame Contains: %s => FAILED", text), logLevel);
             throw new SeleniumLibraryNonFatalException(
@@ -66,8 +65,7 @@ public class Element extends RunOnFailureKeywordsAdapter {
             + "\n\r"
             + "See `Introduction` for details about log levels.")
     @ArgumentNames({ "text", "logLevel=INFO" })
-    public void currentFrameShouldNotContain(String text, String...params) {
-        String logLevel = robot.getParamsValue(params, 0, "INFO");
+    public void currentFrameShouldNotContain(String text, String logLevel) {
         if (isTextPresent(text)) {
             logging.log(String.format("Current Frame Should Not Contain: %s => FAILED", text), logLevel);
             throw new SeleniumLibraryNonFatalException(
@@ -81,9 +79,7 @@ public class Element extends RunOnFailureKeywordsAdapter {
             + "\n\r"
             + "See `Introduction` for details about locators.")
     @ArgumentNames({ "locator", "text", "message=NONE", "ignore_case=False" })
-    public void elementShouldContain(String locator, String text, String...params) {
-        String message = robot.getParamsValue(params, 0, StringUtils.EMPTY);
-        Boolean ignoreCase = robot.getParamsValue(params, 1, Boolean.FALSE);
+    public void elementShouldContain(String locator, String text, String message, boolean ignoreCase) {
         String actual = getText(locator);
 
         if (!textContains(actual, text, ignoreCase)) {
@@ -101,9 +97,7 @@ public class Element extends RunOnFailureKeywordsAdapter {
             + "\r\n"
             + "See `Introduction` for details about locators.")
     @ArgumentNames({ "locator", "text", "message=NONE", "ignore_case=False" })
-    public void elementShouldNotContain(String locator, String text, String...params) {
-        String message = robot.getParamsValue(params, 0, StringUtils.EMPTY);
-        Boolean ignoreCase = robot.getParamsValue(params, 1, Boolean.FALSE);
+    public void elementShouldNotContain(String locator, String text, String message, boolean ignoreCase) {
         String actual = getText(locator);
 
         if (textContains(actual, text, ignoreCase)) {
@@ -121,8 +115,7 @@ public class Element extends RunOnFailureKeywordsAdapter {
             + "\n\r"
             + "See `Introduction` for details about locators.")
     @ArgumentNames({ "locator", "text", "logLevel=INFO" })
-    public void frameShouldContain(String locator, String text, String...params) {
-        String logLevel = robot.getParamsValue(params, 0, "INFO");
+    public void frameShouldContain(String locator, String text, String logLevel) {
         if (!frameContains(locator, text)) {
             logging.log(String.format("Frame Should Contain: %s => FAILED", text), logLevel);
             throw new SeleniumLibraryNonFatalException(
@@ -136,8 +129,7 @@ public class Element extends RunOnFailureKeywordsAdapter {
             + "\n\r"
             + "See `Introduction` for details about locators.")
     @ArgumentNames({ "locator", "text", "logLevel=INFO" })
-    public void frameShouldNotContain(String locator, String text, String...params) {
-        String logLevel = robot.getParamsValue(params, 0, "INFO");
+    public void frameShouldNotContain(String locator, String text, String logLevel) {
         if (frameContains(locator, text)) {
             logging.log(String.format("Frame Should Not Contain: %s => FAILED", text), logLevel);
             throw new SeleniumLibraryNonFatalException(
@@ -151,8 +143,7 @@ public class Element extends RunOnFailureKeywordsAdapter {
             + "\n\r"
             + "See `Introduction` for details about log levels.")
     @ArgumentNames({ "text", "logLevel=INFO" })
-    public void pageShouldContain(String text, String...params) {
-        String logLevel = robot.getParamsValue(params, 0, "INFO");
+    public void pageShouldContain(String text, String logLevel) {
         if (!pageContains(text)) {
             logging.log(String.format("Page Should Contain: %s => FAILED", text), logLevel);
             throw new SeleniumLibraryNonFatalException(
@@ -166,8 +157,7 @@ public class Element extends RunOnFailureKeywordsAdapter {
             + "\n\r"
             + "See `Introduction` for details about log levels.")
     @ArgumentNames({ "text", "logLevel=INFO" })
-    public void pageShouldNotContain(String text, String...params) {
-        String logLevel = robot.getParamsValue(params, 0, "INFO");
+    public void pageShouldNotContain(String text, String logLevel) {
         if (pageContains(text)) {
             logging.log(String.format("Page Should Not Contain: %s => FAILED", text), logLevel);
             throw new SeleniumLibraryNonFatalException(
@@ -181,16 +171,14 @@ public class Element extends RunOnFailureKeywordsAdapter {
             "\r\n" +
             "Key attributes for arbitrary elements are id and name. See `Introduction` for details about log levels and locators.")
     @ArgumentNames({ "locator", "message=NONE", "logLevel=INFO" })
-    public void pageShouldContainElement(String locator, String...params) {
-        String message = robot.getParamsValue(params, 0, "");
-        String logLevel = robot.getParamsValue(params, 1, "INFO");
+    public void pageShouldContainElement(String locator, String message, String logLevel) {
         pageShouldContainElement(locator, null, message, logLevel);
     }
 
     protected void pageShouldContainElement(String locator, String tag, String message, String logLevel) {
         String name = tag != null ? tag : "element";
         if (!isElementPresent(locator, tag)) {
-            if (message == null || message.equals("")) {
+            if (StringUtils.isEmpty(message)) {
                 message = String.format("Page should have contained %s '%s' but did not", name, locator);
             }
             logging.log(message, logLevel);
@@ -204,16 +192,14 @@ public class Element extends RunOnFailureKeywordsAdapter {
             "\r\n" +
             "Key attributes for arbitrary elements are id and name. See `Introduction` for details about log levels and locators.")
     @ArgumentNames({ "locator", "message=NONE", "logLevel=INFO" })
-    public void pageShouldNotContainElement(String locator, String...params) {
-        String message = robot.getParamsValue(params, 0, "");
-        String logLevel = robot.getParamsValue(params, 1, "INFO");
+    public void pageShouldNotContainElement(String locator, String message, String logLevel) {
         pageShouldNotContainElement(locator, null, message, logLevel);
     }
 
     protected void pageShouldNotContainElement(String locator, String tag, String message, String logLevel) {
         String name = tag != null ? tag : "element";
         if (isElementPresent(locator, tag)) {
-            if (message == null || message.equals("")) {
+            if (StringUtils.isEmpty(message)) {
                 message = String.format("Page should not have contained %s '%s' but did", name, locator);
             }
             logging.log(message, logLevel);
@@ -277,13 +263,12 @@ public class Element extends RunOnFailureKeywordsAdapter {
             "\r\n" +
             "Key attributes for arbitrary elements are id and name. See `Introduction` for details about locators.")
     @ArgumentNames({ "locator", "message=NONE" })
-    public void elementShouldBeSelected(String locator, String...params) {
-        String message = robot.getParamsValue(params, 0, "");
+    public void elementShouldBeSelected(String locator, String message) {
         logging.info(String.format("Verifying element '%s' is selected.", locator));
         boolean selected = isSelected(locator);
 
         if (!selected) {
-            if (message == null || message.equals("")) {
+            if (StringUtils.isEmpty(message)) {
                 message = String.format("Element '%s' should be selected, but it is not.", locator);
             }
             throw new SeleniumLibraryNonFatalException(message);
@@ -294,13 +279,12 @@ public class Element extends RunOnFailureKeywordsAdapter {
             "\r\n" +
             "Key attributes for arbitrary elements are id and name. See `Introduction` for details about locators.")
     @ArgumentNames({ "locator", "message=NONE" })
-    public void elementShouldNotBeSelected(String locator, String...params) {
-        String message = robot.getParamsValue(params, 0, "");
+    public void elementShouldNotBeSelected(String locator, String message) {
         logging.info(String.format("Verifying element '%s' is not selected.", locator));
         boolean selected = isSelected(locator);
 
         if (selected) {
-            if (message == null || message.equals("")) {
+            if (StringUtils.isEmpty(message)) {
                 message = String.format("Element '%s' should not be selected, but it is.", locator);
             }
             throw new SeleniumLibraryNonFatalException(message);
@@ -313,13 +297,12 @@ public class Element extends RunOnFailureKeywordsAdapter {
             "\r\n" +
             "Key attributes for arbitrary elements are id and name. See `Introduction` for details about locators.")
     @ArgumentNames({ "locator", "message=NONE" })
-    public void elementShouldBeVisible(String locator, String...params) {
-        String message = robot.getParamsValue(params, 0, "");
+    public void elementShouldBeVisible(String locator, String message) {
         logging.info(String.format("Verifying element '%s' is visible.", locator));
         boolean visible = isVisible(locator);
 
         if (!visible) {
-            if (message == null || message.equals("")) {
+            if (StringUtils.isEmpty(message)) {
                 message = String.format("Element '%s' should be visible, but it is not.", locator);
             }
             throw new SeleniumLibraryNonFatalException(message);
@@ -332,13 +315,12 @@ public class Element extends RunOnFailureKeywordsAdapter {
             "\r\n" +
             "Key attributes for arbitrary elements are id and name. See `Introduction` for details about locators.")
     @ArgumentNames({ "locator", "message=NONE" })
-    public void elementShouldNotBeVisible(String locator, String...params) {
-        String message = robot.getParamsValue(params, 0, "");
+    public void elementShouldNotBeVisible(String locator, String message) {
         logging.info(String.format("Verifying element '%s' is not visible.", locator));
         boolean visible = isVisible(locator);
 
         if (visible) {
-            if (message == null || message.equals("")) {
+            if (StringUtils.isEmpty(message)) {
                 message = String.format("Element '%s' should not be visible, but it is.", locator);
             }
             throw new SeleniumLibraryNonFatalException(message);
@@ -349,13 +331,12 @@ public class Element extends RunOnFailureKeywordsAdapter {
             "\r\n" +
             "Key attributes for arbitrary elements are id and name. See `Introduction` for details about locators.")
     @ArgumentNames({ "locator", "message=NONE" })
-    public void elementShouldBeClickable(String locator, String...params) {
-        String message = robot.getParamsValue(params, 0, "");
+    public void elementShouldBeClickable(String locator, String message) {
         logging.info(String.format("Verifying element '%s' is clickable.", locator));
         boolean clickable = isClickable(locator);
 
         if (!clickable) {
-            if (message == null || message.equals("")) {
+            if (StringUtils.isEmpty(message)) {
                 message = String.format("Element '%s' should be clickable, but it is not.", locator);
             }
             throw new SeleniumLibraryNonFatalException(message);
@@ -366,13 +347,12 @@ public class Element extends RunOnFailureKeywordsAdapter {
             "\r\n" +
             "Key attributes for arbitrary elements are id and name. See `Introduction` for details about locators.")
     @ArgumentNames({ "locator", "message=NONE" })
-    public void elementShouldNotBeClickable(String locator, String...params) {
-        String message = robot.getParamsValue(params, 0, "");
+    public void elementShouldNotBeClickable(String locator, String message) {
         logging.info(String.format("Verifying element '%s' is not clickable.", locator));
         boolean clickable = isClickable(locator);
 
         if (clickable) {
-            if (message == null || message.equals("")) {
+            if (StringUtils.isEmpty(message)) {
                 message = String.format("Element '%s' should not be clickable, but it is.", locator);
             }
             throw new SeleniumLibraryNonFatalException(message);
@@ -385,9 +365,7 @@ public class Element extends RunOnFailureKeywordsAdapter {
             "\r\n" +
             "Key attributes for arbitrary elements are id and name. See `Introduction` for details about locators.")
     @ArgumentNames({ "locator", "text", "message=NONE", "ignore_case=False" })
-    public void elementTextShouldBe(String locator, String text, String...params) {
-        String message = robot.getParamsValue(params, 0, "");
-        Boolean ignoreCase = robot.getParamsValue(params, 1, Boolean.FALSE);
+    public void elementTextShouldBe(String locator, String text, String message, boolean ignoreCase) {
         List<WebElement> elements = elementFind(locator, true, true);
         String actual = elements.get(0).getText();
         if (!textIs(actual, text, ignoreCase)) {
@@ -405,10 +383,8 @@ public class Element extends RunOnFailureKeywordsAdapter {
             "\r\n" +
             "Key attributes for arbitrary elements are id and name. See `Introduction` for details about locators.")
     @ArgumentNames({ "locator", "text", "message=NONE", "ignore_case=False" })
-    public void elementTextShouldNotBe(String locator, String text, String...params) {
-        String message = robot.getParamsValue(params, 0, "");
+    public void elementTextShouldNotBe(String locator, String text, String message, boolean ignoreCase) {
         List<WebElement> elements = elementFind(locator, true, true);
-        Boolean ignoreCase = robot.getParamsValue(params, 1, Boolean.FALSE);
         String actual = elements.get(0).getText();
         if (textIs(actual, text, ignoreCase)) {
             if (StringUtils.isEmpty(message)) {
@@ -417,12 +393,6 @@ public class Element extends RunOnFailureKeywordsAdapter {
             }
             throw new SeleniumLibraryNonFatalException(message);
         }
-    }
-
-    @RobotKeywordOverload
-    public String getElementAttribute(String locator) {
-        String[] parts = parseAttributeLocator(locator);
-        return getElementAttribute(parts[0], parts[1]);
     }
 
     @RobotKeyword("Get the value of a given CSS property.")
@@ -444,8 +414,7 @@ public class Element extends RunOnFailureKeywordsAdapter {
             "\r\n" +
             "Passing attribute name as part of the locator was removed in SeleniumLibrary 3.2. The explicit attribute argument should be used instead.")
     @ArgumentNames({ "locator", "attribute=None" })
-    public String getElementAttribute(String locator, String... attribute) {
-        String attributeName = robot.getParamsValue(attribute, 0, "None");
+    public String getElementAttribute(String locator, String attributeName) {
         List<WebElement> elements = elementFind(locator, true, false);
 
         if (elements.size() == 0) {
@@ -817,9 +786,7 @@ public class Element extends RunOnFailureKeywordsAdapter {
             "\r\n" +
             "Key attributes for links are id, name, href and link text. See `Introduction` for details about log levels and locators.")
     @ArgumentNames({ "locator", "message=NONE", "logLevel=INFO" })
-    public void pageShouldContainLink(String locator, String...params) {
-        String message = robot.getParamsValue(params, 0, "");
-        String logLevel = robot.getParamsValue(params, 1, "INFO");
+    public void pageShouldContainLink(String locator, String message, String logLevel) {
         pageShouldContainElement(locator, "link", message, logLevel);
     }
 
@@ -827,9 +794,7 @@ public class Element extends RunOnFailureKeywordsAdapter {
             "\r\n" +
             "Key attributes for links are id, name, href and link text. See `Introduction` for details about log levels and locators.")
     @ArgumentNames({ "locator", "message=NONE", "logLevel=INFO" })
-    public void pageShouldNotContainLink(String locator, String...params) {
-        String message = robot.getParamsValue(params, 0, "");
-        String logLevel = robot.getParamsValue(params, 1, "INFO");
+    public void pageShouldNotContainLink(String locator, String message, String logLevel) {
         pageShouldNotContainElement(locator, "link", message, logLevel);
     }
 
@@ -870,9 +835,7 @@ public class Element extends RunOnFailureKeywordsAdapter {
             "\r\n" +
             "Key attributes for images are id, src and alt. See `Introduction` for details about log levels and locators.")
     @ArgumentNames({ "locator", "message=NONE", "logLevel=INFO" })
-    public void pageShouldContainImage(String locator, String...params) {
-        String message = robot.getParamsValue(params, 0, "");
-        String logLevel = robot.getParamsValue(params, 1, "INFO");
+    public void pageShouldContainImage(String locator, String message, String logLevel) {
         pageShouldContainElement(locator, "image", message, logLevel);
     }
 
@@ -880,9 +843,7 @@ public class Element extends RunOnFailureKeywordsAdapter {
             "\r\n" +
             "Key attributes for images are id, src and alt. See `Introduction` for details about log levels and locators.")
     @ArgumentNames({ "locator", "message=NONE", "logLevel=INFO" })
-    public void pageShouldNotContainImage(String locator, String...params) {
-        String message = robot.getParamsValue(params, 0, "");
-        String logLevel = robot.getParamsValue(params, 1, "INFO");
+    public void pageShouldNotContainImage(String locator, String message, String logLevel) {
         pageShouldNotContainElement(locator, "image", message, logLevel);
     }
 
@@ -905,9 +866,7 @@ public class Element extends RunOnFailureKeywordsAdapter {
 
     @RobotKeyword("Verify that the page contains the ``expectedXpathCount`` of elements located by the given ``xpath``.")
     @ArgumentNames({ "xpath", "expectedXpathCount", "message=NONE", "logLevel=INFO" })
-    public void xpathShouldMatchXTimes(String xpath, int expectedXpathCount, String...params) {
-        String message = robot.getParamsValue(params, 0, "");
-        String logLevel = robot.getParamsValue(params, 1, "INFO");
+    public void xpathShouldMatchXTimes(String xpath, int expectedXpathCount, String message, String logLevel) {
         if (!xpath.startsWith("xpath=") && !xpath.startsWith("xpath:")) {
             xpath = "xpath:" + xpath;
         }
@@ -928,9 +887,7 @@ public class Element extends RunOnFailureKeywordsAdapter {
 
     @RobotKeyword("Click to element from list elements by locator ``xpath``.")
     @ArgumentNames({"xpath", "index=0", "message=NONE"})
-    public void clickElementByIndex(String xpath, String... params) {
-        int index = robot.getParamsValue(params, 0, 0);
-        String message = robot.getParamsValue(params, 1, "");
+    public void clickElementByIndex(String xpath, int index, String message) {
         List<WebElement> elements = elementFind(xpath, false, false);
         if (elements.isEmpty()) {
             if (message.isEmpty()) {

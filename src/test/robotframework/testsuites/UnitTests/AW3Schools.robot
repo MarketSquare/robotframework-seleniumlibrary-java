@@ -8,12 +8,15 @@ ${URL Application}    http://www.w3schools.com
 
 *** Test Cases *** 
 Select
-    Open Browser    https://developer.mozilla.org/en/docs/Web/HTML/Element/select#Examples    ${browser}    mainbrowser
-    Wait Until Page Contains Element    xpath://select
-    Select From List    xpath://select    Third Value
-    ${label}    Get Selected List Label    xpath://select
-    Should Be Equal    ${label}    Third Value
-    List Selection Should Be    xpath://select    Third Value
+    [Tags]    jbrowser
+    Open Browser    https://interactive-examples.mdn.mozilla.net/pages/tabbed/select.html    ${browser}    mainbrowser
+    Wait Until Page Contains Element    output-iframe
+    Select Frame    output-iframe
+    Wait Until Page Contains Element    xpath://select[@name="pets"]
+    Select From List    xpath://select[@name="pets"]   Spider
+    ${label}    Get Selected List Label    xpath://select[@name="pets"]
+    Should Be Equal    ${label}    Spider
+    List Selection Should Be    xpath://select[@name="pets"]    Spider
     
 Multiple Browsers
     Open Browser    ${URL Application}    ${browser}    mainbrowser1

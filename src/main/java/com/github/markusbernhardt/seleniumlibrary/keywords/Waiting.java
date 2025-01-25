@@ -3,6 +3,7 @@ package com.github.markusbernhardt.seleniumlibrary.keywords;
 import com.github.markusbernhardt.seleniumlibrary.RunOnFailureKeywordsAdapter;
 import com.github.markusbernhardt.seleniumlibrary.SeleniumLibraryNonFatalException;
 import com.github.markusbernhardt.seleniumlibrary.utils.Robotframework;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.openqa.selenium.JavascriptExecutor;
 import org.robotframework.javalib.annotation.ArgumentNames;
@@ -44,11 +45,9 @@ public class Waiting extends RunOnFailureKeywordsAdapter {
 	        "Note that by default the code will be executed in the context of the Selenium object itself, so *this* will refer to the Selenium object. Use *window* to refer to the window of your application, e.g. _window.document.getElementById('foo')_.\r\n" + 
 	        "\r\n" + 
 	        "See `Introduction` for details about timeouts.")
-	@ArgumentNames({ "condition", "timeout=NONE", "message=NONE" })
-	public void waitForCondition(final String condition, String...params) {
-        String timeout = robot.getParamsValue(params, 0, null);
-        String message = robot.getParamsValue(params, 1, null);
-		if (message == null) {
+	@ArgumentNames({ "condition", "timeout=5s", "message=NONE" })
+	public void waitForCondition(final String condition, String timeout, String message) {
+		if (StringUtils.isEmpty(message)) {
 			message = String.format("Condition '%s' did not become true in <TIMEOUT>", condition);
 		}
 		waitUntil(
@@ -62,11 +61,9 @@ public class Waiting extends RunOnFailureKeywordsAdapter {
             "Fails, if the timeout expires, before the text appears. \r\n" + 
             "\r\n" + 
             "See `Introduction` for details about timeouts.")
-	@ArgumentNames({ "condition", "timeout=NONE", "message=NONE" })
-	public void waitUntilPageContains(final String text, String...params) {
-        String timeout = robot.getParamsValue(params, 0, null);
-        String message = robot.getParamsValue(params, 1, null);
-		if (message == null) {
+	@ArgumentNames({ "condition", "timeout=5s", "message=NONE" })
+	public void waitUntilPageContains(final String text, String timeout, String message) {
+		if (StringUtils.isEmpty(message)) {
 			message = String.format("Text '%s' did not appear in <TIMEOUT>", text);
 		}
 		waitUntil(
@@ -80,11 +77,9 @@ public class Waiting extends RunOnFailureKeywordsAdapter {
             "Fails, if the timeout expires, before the text disappears. \r\n" + 
             "\r\n" + 
             "See `Introduction` for details about timeouts.")
-	@ArgumentNames({ "text", "timeout=NONE", "message=NONE" })
-	public void waitUntilPageNotContains(final String text, String...params) {
-        String timeout = robot.getParamsValue(params, 0, null);
-        String message = robot.getParamsValue(params, 1, null);
-		if (message == null) {
+	@ArgumentNames({ "text", "timeout=5s", "message=NONE" })
+	public void waitUntilPageNotContains(final String text, String timeout, String message) {
+		if (StringUtils.isEmpty(message)) {
 			message = String.format("Text '%s' did not disappear in <TIMEOUT>", text);
 		}
 		waitUntil(
@@ -98,10 +93,8 @@ public class Waiting extends RunOnFailureKeywordsAdapter {
             "Fails, if the timeout expires, before the text disappears. \r\n" + 
             "\r\n" + 
             "See `Introduction` for details about timeouts.")
-	@ArgumentNames({ "text", "timeout=NONE", "message=NONE" })
-	public void waitUntilPageDoesNotContain(final String text, String...params) {
-        String timeout = robot.getParamsValue(params, 0, null);
-        String message = robot.getParamsValue(params, 1, null);
+	@ArgumentNames({ "text", "timeout=5s", "message=NONE" })
+	public void waitUntilPageDoesNotContain(final String text, String timeout, String message) {
 		waitUntilPageNotContains(text, timeout, message);
 	}
 
@@ -110,11 +103,9 @@ public class Waiting extends RunOnFailureKeywordsAdapter {
             "Fails, if the timeout expires, before the element appears. \r\n" + 
             "\r\n" + 
             "See `Introduction` for details about timeouts.")
-	@ArgumentNames({ "locator", "timeout=NONE", "message=NONE" })
-	public void waitUntilPageContainsElement(final String locator, String...params) {
-        String timeout = robot.getParamsValue(params, 0, null);
-        String message = robot.getParamsValue(params, 1, null);
-		if (message == null) {
+	@ArgumentNames({ "locator", "timeout=5s", "message=NONE" })
+	public void waitUntilPageContainsElement(final String locator, String timeout, String message) {
+		if (StringUtils.isEmpty(message)) {
 			message = String.format("Element '%s' did not appear in <TIMEOUT>", locator);
 		}
 		waitUntil(
@@ -128,11 +119,9 @@ public class Waiting extends RunOnFailureKeywordsAdapter {
             "Fails, if the timeout expires, before the element disappears. \r\n" + 
             "\r\n" + 
             "See `Introduction` for details about timeouts.")
-	@ArgumentNames({ "locator", "timeout=NONE", "message=NONE" })
-	public void waitUntilPageNotContainsElement(final String locator, String...params) {
-        String timeout = robot.getParamsValue(params, 0, null);
-        String message = robot.getParamsValue(params, 1, null);
-		if (message == null) {
+	@ArgumentNames({ "locator", "timeout=5s", "message=NONE" })
+	public void waitUntilPageNotContainsElement(final String locator, String timeout, String message) {
+		if (StringUtils.isEmpty(message)) {
 			message = String.format("Element '%s' did not disappear in <TIMEOUT>", locator);
 		}
 		waitUntil(
@@ -146,10 +135,8 @@ public class Waiting extends RunOnFailureKeywordsAdapter {
             "Fails, if the timeout expires, before the element disappears. \r\n" + 
             "\r\n" + 
             "See `Introduction` for details about timeouts.")
-	@ArgumentNames({ "locator", "timeout=NONE", "message=NONE" })
-	public void waitUntilPageDoesNotContainElement(final String locator, String...params) {
-        String timeout = robot.getParamsValue(params, 0, null);
-        String message = robot.getParamsValue(params, 1, null);
+	@ArgumentNames({ "locator", "timeout=5s", "message=NONE" })
+	public void waitUntilPageDoesNotContainElement(final String locator, String timeout, String message) {
 	    waitUntilPageNotContainsElement(locator, timeout, message);
 	}
 
@@ -158,11 +145,9 @@ public class Waiting extends RunOnFailureKeywordsAdapter {
             "Fails, if the timeout expires, before the element gets visible. \r\n" + 
             "\r\n" + 
             "See `Introduction` for details about timeouts.")
-	@ArgumentNames({ "locator", "timeout=NONE", "message=NONE" })
-	public void waitUntilElementIsVisible(final String locator, String...params) {
-        String timeout = robot.getParamsValue(params, 0, null);
-        String message = robot.getParamsValue(params, 1, null);
-		if (message == null) {
+	@ArgumentNames({ "locator", "timeout=5s", "message=NONE" })
+	public void waitUntilElementIsVisible(final String locator, String timeout, String message) {
+		if (StringUtils.isEmpty(message)) {
 			message = String.format("Element '%s' not visible in <TIMEOUT>", locator);
 		}
 		waitUntil(
@@ -176,11 +161,9 @@ public class Waiting extends RunOnFailureKeywordsAdapter {
             "Fails, if the timeout expires, before the element gets invisible. \r\n" + 
             "\r\n" + 
             "See `Introduction` for details about timeouts.")
-	@ArgumentNames({ "locator", "timeout=NONE", "message=NONE" })
-	public void waitUntilElementIsNotVisible(final String locator, String...params) {
-        String timeout = robot.getParamsValue(params, 0, null);
-        String message = robot.getParamsValue(params, 1, null);
-		if (message == null) {
+	@ArgumentNames({ "locator", "timeout=5s", "message=NONE" })
+	public void waitUntilElementIsNotVisible(final String locator, String timeout, String message) {
+		if (StringUtils.isEmpty(message)) {
 			message = String.format("Element '%s' still visible in <TIMEOUT>", locator);
 		}
 		waitUntil(
@@ -194,11 +177,9 @@ public class Waiting extends RunOnFailureKeywordsAdapter {
             "Fails, if the timeout expires, before the element gets clickable. \r\n" + 
             "\r\n" + 
             "See `Introduction` for details about timeouts.")
-	@ArgumentNames({ "locator", "timeout=NONE", "message=NONE" })
-	public void waitUntilElementIsClickable(final String locator, String...params) {
-        String timeout = robot.getParamsValue(params, 0, null);
-        String message = robot.getParamsValue(params, 1, null);
-		if (message == null) {
+	@ArgumentNames({ "locator", "timeout=5s", "message=NONE" })
+	public void waitUntilElementIsClickable(final String locator, String timeout, String message) {
+		if (StringUtils.isEmpty(message)) {
 			message = String.format("Element '%s' not clickable in <TIMEOUT>", locator);
 		}
 		waitUntil(
@@ -212,11 +193,9 @@ public class Waiting extends RunOnFailureKeywordsAdapter {
             "Fails, if the timeout expires, before the element gets unclickable. \r\n" + 
             "\r\n" + 
             "See `Introduction` for details about timeouts.")
-	@ArgumentNames({ "locator", "timeout=NONE", "message=NONE" })
-	public void waitUntilElementIsNotClickable(final String locator, String...params) {
-        String timeout = robot.getParamsValue(params, 0, null);
-        String message = robot.getParamsValue(params, 1, null);
-		if (message == null) {
+	@ArgumentNames({ "locator", "timeout=5s", "message=NONE" })
+	public void waitUntilElementIsNotClickable(final String locator, String timeout, String message) {
+		if (StringUtils.isEmpty(message)) {
 			message = String.format("Element '%s' still clickable in <TIMEOUT>", locator);
 		}
 		waitUntil(
@@ -230,11 +209,9 @@ public class Waiting extends RunOnFailureKeywordsAdapter {
             "Fails, if the timeout expires, before the element gets clicked on. \r\n" + 
             "\r\n" + 
             "See `Introduction` for details about timeouts.")
-	@ArgumentNames({ "locator", "timeout=NONE", "message=NONE" })
-	public void waitUntilElementIsSuccessfullyClicked(final String locator, String...params) {
-        String timeout = robot.getParamsValue(params, 0, null);
-        String message = robot.getParamsValue(params, 1, null);
-		if (message == null) {
+	@ArgumentNames({ "locator", "timeout=5s", "message=NONE" })
+	public void waitUntilElementIsSuccessfullyClicked(final String locator, String timeout, String message) {
+		if (StringUtils.isEmpty(message)) {
 			message = String.format("Element '%s' not successfully clicked in <TIMEOUT>", locator);
 		}
         waitUntil(
@@ -251,11 +228,9 @@ public class Waiting extends RunOnFailureKeywordsAdapter {
             "Fails, if the timeout expires, before the element gets selected. \r\n" + 
             "\r\n" + 
             "See `Introduction` for details about timeouts.")
-	@ArgumentNames({ "locator", "timeout=NONE", "message=NONE" })
-	public void waitUntilElementIsSelected(final String locator, String...params) {
-        String timeout = robot.getParamsValue(params, 0, null);
-        String message = robot.getParamsValue(params, 1, null);
-		if (message == null) {
+	@ArgumentNames({ "locator", "timeout=5s", "message=NONE" })
+	public void waitUntilElementIsSelected(final String locator, String timeout, String message) {
+		if (StringUtils.isEmpty(message)) {
 			message = String.format("Element '%s' not selected in <TIMEOUT>", locator);
 		}
         waitUntil(
@@ -269,11 +244,9 @@ public class Waiting extends RunOnFailureKeywordsAdapter {
             "Fails, if the timeout expires, before the element gets unselected. \r\n" + 
             "\r\n" + 
             "See `Introduction` for details about timeouts.")
-	@ArgumentNames({ "locator", "timeout=NONE", "message=NONE" })
-	public void waitUntilElementIsNotSelected(final String locator, String...params) {
-        String timeout = robot.getParamsValue(params, 0, null);
-        String message = robot.getParamsValue(params, 1, null);
-		if (message == null) {
+	@ArgumentNames({ "locator", "timeout=5s", "message=NONE" })
+	public void waitUntilElementIsNotSelected(final String locator, String timeout, String message) {
+		if (StringUtils.isEmpty(message)) {
 			message = String.format("Element '%s' still selected in <TIMEOUT>", locator);
 		}
 		waitUntil(
@@ -287,11 +260,9 @@ public class Waiting extends RunOnFailureKeywordsAdapter {
             "Fails, if the timeout expires, before the page title contains the given title. \r\n" + 
             "\r\n" + 
             "See `Introduction` for details about timeouts.")
-	@ArgumentNames({ "title", "timeout=NONE", "message=NONE" })
-	public void waitUntilTitleContains(final String title, String...params) {
-        String timeout = robot.getParamsValue(params, 0, null);
-        String message = robot.getParamsValue(params, 1, null);
-		if (message == null) {
+	@ArgumentNames({ "title", "timeout=5s", "message=NONE" })
+	public void waitUntilTitleContains(final String title, String timeout, String message) {
+		if (StringUtils.isEmpty(message)) {
 			message = String.format("Title '%s' did not appear in <TIMEOUT>", title);
 		}
         waitUntil(
@@ -328,11 +299,9 @@ public class Waiting extends RunOnFailureKeywordsAdapter {
             "Fails, if the timeout expires, before the page title does not contain the given title. \r\n" + 
             "\r\n" + 
             "See `Introduction` for details about timeouts.")
-	@ArgumentNames({ "title", "timeout=NONE", "message=NONE" })
-	public void waitUntilTitleNotContains(final String title, String...params) {
-        String timeout = robot.getParamsValue(params, 0, null);
-        String message = robot.getParamsValue(params, 1, null);
-		if (message == null) {
+	@ArgumentNames({ "title", "timeout=5s", "message=NONE" })
+	public void waitUntilTitleNotContains(final String title, String timeout, String message) {
+		if (StringUtils.isEmpty(message)) {
 			message = String.format("Title '%s' did not appear in <TIMEOUT>", title);
 		}
         waitUntil(
@@ -349,11 +318,9 @@ public class Waiting extends RunOnFailureKeywordsAdapter {
             "Fails, if the timeout expires, before the page title matches the given title. \r\n" + 
             "\r\n" + 
             "See `Introduction` for details about timeouts.")
-	@ArgumentNames({ "title", "timeout=NONE", "message=NONE" })
-	public void waitUntilTitleIs(final String title, String...params) {
-        String timeout = robot.getParamsValue(params, 0, null);
-        String message = robot.getParamsValue(params, 1, null);
-		if (message == null) {
+	@ArgumentNames({ "title", "timeout=5s", "message=NONE" })
+	public void waitUntilTitleIs(final String title, String timeout, String message) {
+		if (StringUtils.isEmpty(message)) {
 			message = String.format("Title '%s' did not appear in <TIMEOUT>", title);
 		}
         waitUntil(
@@ -370,11 +337,9 @@ public class Waiting extends RunOnFailureKeywordsAdapter {
             "Fails, if the timeout expires, before the page title does not match the given title. \r\n" + 
             "\r\n" + 
             "See `Introduction` for details about timeouts.")
-	@ArgumentNames({ "title", "timeout=NONE", "message=NONE" })
-	public void waitUntilTitleIsNot(final String title, String...params) {
-        String timeout = robot.getParamsValue(params, 0, null);
-        String message = robot.getParamsValue(params, 1, null);
-		if (message == null) {
+	@ArgumentNames({ "title", "timeout=5s", "message=NONE" })
+	public void waitUntilTitleIsNot(final String title, String timeout, String message) {
+		if (StringUtils.isEmpty(message)) {
 			message = String.format("Title '%s' did not appear in <TIMEOUT>", title);
 		}
         waitUntil(

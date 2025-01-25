@@ -58,8 +58,7 @@ public class Screenshot extends RunOnFailureKeywordsAdapter {
 			"\r\n" +
 			"A CSS can be used to modify how the screenshot is taken. By default the background color is changed to avoid possible problems with background leaking when the page layout is somehow broken.")
 	@ArgumentNames({"filename=selenium-screenshot-{index}.png"})
-	public void capturePageScreenshot(String...params) {
-	    String filename = robot.getParamsValue(params, 0, null);
+	public void capturePageScreenshot(String filename) {
 		File logdir = screenshotDir != null ? screenshotDir : logging.getLogDir();
 		File path = new File(logdir, normalizeFilename(filename));
 		String link = Robotframework.getLinkPath(path, logdir);
