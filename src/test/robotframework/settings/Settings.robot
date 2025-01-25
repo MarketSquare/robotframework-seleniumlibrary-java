@@ -17,9 +17,12 @@ Test
 
 Handle Cookie Consent
     [Arguments]    ${consent click xpath}
+    Reload Page
     Comment    Consent search causes stack overflow to jbrowser, so tagging tescases using this keyword
     Set Tags    jbrowser
     ${count}    Get Matching Xpath Count    ${consent click xpath}
     IF    ${count} > 0
+    Capture Page Screenshot
+    Wait Until Element Is Clickable    ${consent click xpath}  30s
     Click Element    ${consent click xpath}
     END
