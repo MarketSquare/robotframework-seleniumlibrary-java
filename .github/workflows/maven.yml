@@ -119,10 +119,9 @@ jobs:
           distribution: zulu
           java-version: 17
       - name: Release Maven package
-        run:
-          echo $GPG_PRIVATE_KEY > .m2/private-key.txt
-          gpg --import --batch .m2/private-key.txt
-          rm .m2/private-key.txt
+        run: |
+          export GPG_TTY=$(tty)
+          echo -n "$GPG_PRIVATE_KEY" | gpg --allow-secret-key-import --batch --import
           mvn clean deploy --batch-mode --activate-profiles deploy --settings ${{ github.workspace }}/.m2/settings.xml -DskipTests -B -ntp
         env:
           GPG_PRIVATE_KEY: ${{ secrets.gpg_private_key }}
