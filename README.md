@@ -1,3 +1,10 @@
+> [!WARNING]  
+> Repository is not currently maintained. Version released on 25th of January will probably be last one for this library as it has mostly lost it's meaning after Robot Framework dropped Jython support (due to dropping support for Python 2)
+> 
+> If you're interested of starting to maintain this library please check [MarketSquare](https://marketsquare.github.io/) and create issue to there.
+> 
+> Repository will be archived for time being to make this very clear.
+
 # Java port of the Python based SeleniumLibrary for Robot Framework
 
 ## Introduction
