@@ -14,7 +14,7 @@ jobs:
       fail-fast: false
       matrix:
         os: [ 'ubuntu-latest', 'macos-latest', 'windows-latest' ]
-        java-version: [ 11 ]
+        java-version: [ 17 ]
         browser: ['googlechromeheadless', 'firefoxheadless', 'edgeheadless']
         include:
           - os: ubuntu-latest
@@ -43,9 +43,9 @@ jobs:
     runs-on: ${{ matrix.os }}
     name: Test on ${{ matrix.os }} with Java ${{ matrix.java-version }} using browser ${{ matrix.browser }}
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
       - name: Set up JDK ${{ matrix.java-version }}
-        uses: actions/setup-java@v2.3.0
+        uses: actions/setup-java@v4
         with:
           distribution: zulu
           java-version: ${{ matrix.java-version }}
@@ -75,7 +75,7 @@ jobs:
         run: echo "${{ env.SHA }}"
 
       - name: Archive acceptances test results
-        uses: actions/upload-artifact@v2.2.4
+        uses: actions/upload-artifact@v4
         with:
           name: at-results-${{ matrix.browser }}-${{ matrix.os }}-${{ matrix.java-version }}
           path: target/robotframework-reports
@@ -91,7 +91,7 @@ jobs:
           echo "::set-output name=JOB_STATUS::$(python -c "print('${{ job.status }}'.lower())")"
         if: always() && job.status == 'failure'
 
-      - uses: octokit/request-action@7e93b91076fad3920c29d44eb2a6311d929db3dd
+      - uses: octokit/request-action@dad4362715b7fb2ddedf9772c8670824af564f0d #v2.4.0
         name: Update status with Github Status API
         id: update_status_pr
         with:
@@ -112,17 +112,20 @@ jobs:
     runs-on: ubuntu-latest
     name: Release package
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
       - name: Set up JDK
-        uses: actions/setup-java@v2.3.0
+        uses: actions/setup-java@v4
         with:
           distribution: zulu
-          java-version: 11
+          java-version: 17
       - name: Release Maven package
-        uses: samuelmeuli/action-maven-publish@201a45a3f311b2ee888f252ba9f4194257545709
-        with:
-          gpg_private_key: ${{ secrets.gpg_private_key }}
-          gpg_passphrase: ${{ secrets.gpg_passphrase }}
-          nexus_username: ${{ secrets.nexus_username }}
-          nexus_password: ${{ secrets.nexus_password }}
-          maven_args: -DskipTests -B -ntp
+        run:
+          echo $GPG_PRIVATE_KEY > .m2/private-key.txt
+          gpg --import --batch .m2/private-key.txt
+          rm .m2/private-key.txt
+          mvn clean deploy --batch-mode --activate-profiles deploy --settings ${{ github.workspace }}/.m2/settings.xml -DskipTests -B -ntp
+        env:
+          GPG_PRIVATE_KEY: ${{ secrets.gpg_private_key }}
+          GPG_PASSPHRASE: ${{ secrets.gpg_passphrase }}
+          NEXUS_USERNAME: ${{ secrets.nexus_username }}
+          NEXUS_PASSWORD: ${{ secrets.nexus_password }}
